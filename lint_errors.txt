@@ -1,0 +1,177 @@
+
+> vite_react_shadcn_ts@0.0.0 lint
+> eslint .
+
+
+C:\Users\ajees\Downloads\krtjewels-main\src\components\admin\ImageUpload.tsx
+  99:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\ajees\Downloads\krtjewels-main\src\components\admin\ProductVariationsForm.tsx
+  172:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  185:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  223:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  260:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\ajees\Downloads\krtjewels-main\src\components\admin\VariationImageUpload.tsx
+  48:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\ajees\Downloads\krtjewels-main\src\components\dev\DebugPanel.tsx
+  22:93  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\ajees\Downloads\krtjewels-main\src\components\dev\NetworkWatcher.tsx
+  11:12  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\ajees\Downloads\krtjewels-main\src\components\product\ProductVariantSelector.tsx
+   23:34  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                   @typescript-eslint/no-explicit-any
+  109:5   warning  Unused eslint-disable directive (no problems were reported from 'no-console')
+  121:6   warning  React Hook useEffect has a missing dependency: 'selectedMetal'. Either include it or remove the dependency array                                                                                                                                                                           react-hooks/exhaustive-deps
+  130:6   warning  React Hook useEffect has a missing dependency: 'selectedSize'. Either include it or remove the dependency array                                                                                                                                                                            react-hooks/exhaustive-deps
+  146:6   warning  React Hook useEffect has missing dependencies: 'availableMetals', 'onVariationChange', and 'sizeOptions'. Either include them or remove the dependency array. If 'onVariationChange' changes too often, find the parent component that defines it and wrap that definition in useCallback  react-hooks/exhaustive-deps
+
+C:\Users\ajees\Downloads\krtjewels-main\src\components\products\ImageLightbox.tsx
+  52:6  warning  React Hook useEffect has missing dependencies: 'goToNext', 'goToPrevious', and 'onClose'. Either include them or remove the dependency array. If 'onClose' changes too often, find the parent component that defines it and wrap that definition in useCallback  react-hooks/exhaustive-deps
+
+C:\Users\ajees\Downloads\krtjewels-main\src\components\products\ProductReviews.tsx
+   62:6   warning  React Hook useEffect has a missing dependency: 'fetchReviews'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+  114:21  error    Unexpected any. Specify a different type                                                                         @typescript-eslint/no-explicit-any
+
+C:\Users\ajees\Downloads\krtjewels-main\src\components\ui\badge.tsx
+  29:17  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+C:\Users\ajees\Downloads\krtjewels-main\src\components\ui\button.tsx
+  47:18  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+C:\Users\ajees\Downloads\krtjewels-main\src\components\ui\form.tsx
+  129:10  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+C:\Users\ajees\Downloads\krtjewels-main\src\components\ui\navigation-menu.tsx
+  111:3  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+C:\Users\ajees\Downloads\krtjewels-main\src\components\ui\sidebar.tsx
+  636:3  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+C:\Users\ajees\Downloads\krtjewels-main\src\components\ui\sonner.tsx
+  27:19  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+C:\Users\ajees\Downloads\krtjewels-main\src\components\ui\toggle.tsx
+  37:18  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+C:\Users\ajees\Downloads\krtjewels-main\src\hooks\useGoldRate.ts
+  18:9  warning  Unused eslint-disable directive (no problems were reported from 'no-console')
+
+C:\Users\ajees\Downloads\krtjewels-main\src\hooks\useProducts.ts
+  136:69  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  198:64  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\ajees\Downloads\krtjewels-main\src\hooks\usePushNotifications.ts
+  120:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  157:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  191:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\ajees\Downloads\krtjewels-main\src\hooks\useWishlist.ts
+  38:38  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\ajees\Downloads\krtjewels-main\src\integrations\supabase\client.ts
+  21:3  warning  Unused eslint-disable directive (no problems were reported from 'no-console')
+
+C:\Users\ajees\Downloads\krtjewels-main\src\lib\pwaRecovery.ts
+   7:88  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   8:23  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  78:74  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\ajees\Downloads\krtjewels-main\src\lib\types.ts
+  78:34  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\ajees\Downloads\krtjewels-main\src\main.tsx
+  22:7  warning  Unused eslint-disable directive (no problems were reported from 'no-console')
+  25:7  warning  Unused eslint-disable directive (no problems were reported from 'no-console')
+
+C:\Users\ajees\Downloads\krtjewels-main\src\pages\Checkout.tsx
+  137:38  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\ajees\Downloads\krtjewels-main\src\pages\ChitFundLookup.tsx
+  117:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\ajees\Downloads\krtjewels-main\src\pages\Collection.tsx
+  38:55  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\ajees\Downloads\krtjewels-main\src\pages\Compare.tsx
+  34:58  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  44:47  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  44:68  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\ajees\Downloads\krtjewels-main\src\pages\Contact.tsx
+  47:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\ajees\Downloads\krtjewels-main\src\pages\ProductDetail.tsx
+  100:35  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\ajees\Downloads\krtjewels-main\src\pages\TrackOrder.tsx
+  125:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\ajees\Downloads\krtjewels-main\src\pages\account\Addresses.tsx
+   40:6   warning  React Hook useEffect has a missing dependency: 'fetchAddresses'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+   87:21  error    Unexpected any. Specify a different type                                                                           @typescript-eslint/no-explicit-any
+  129:21  error    Unexpected any. Specify a different type                                                                           @typescript-eslint/no-explicit-any
+  162:21  error    Unexpected any. Specify a different type                                                                           @typescript-eslint/no-explicit-any
+
+C:\Users\ajees\Downloads\krtjewels-main\src\pages\account\Dashboard.tsx
+  41:52  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\ajees\Downloads\krtjewels-main\src\pages\account\Profile.tsx
+  81:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\ajees\Downloads\krtjewels-main\src\pages\admin\ChitFunds.tsx
+  147:22  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  203:22  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  233:22  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\ajees\Downloads\krtjewels-main\src\pages\admin\Coupons.tsx
+  114:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  156:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  174:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\ajees\Downloads\krtjewels-main\src\pages\admin\GoldRates.tsx
+  84:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\ajees\Downloads\krtjewels-main\src\pages\admin\InventoryAlerts.tsx
+  76:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\ajees\Downloads\krtjewels-main\src\pages\admin\Login.tsx
+  66:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\ajees\Downloads\krtjewels-main\src\pages\admin\MakingCharges.tsx
+  97:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\ajees\Downloads\krtjewels-main\src\pages\admin\Orders.tsx
+   51:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   91:37  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  120:22  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\ajees\Downloads\krtjewels-main\src\pages\admin\ProductForm.tsx
+   82:6   warning  React Hook useEffect has missing dependencies: 'fetchProduct' and 'isEditing'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+  115:21  error    Unexpected any. Specify a different type                                                                                           @typescript-eslint/no-explicit-any
+  201:21  error    Unexpected any. Specify a different type                                                                                           @typescript-eslint/no-explicit-any
+
+C:\Users\ajees\Downloads\krtjewels-main\src\pages\admin\Products.tsx
+   47:9   warning  Unused eslint-disable directive (no problems were reported from 'no-console')
+   55:67  error    Unexpected any. Specify a different type                                       @typescript-eslint/no-explicit-any
+   56:60  error    Unexpected any. Specify a different type                                       @typescript-eslint/no-explicit-any
+   96:21  error    Unexpected any. Specify a different type                                       @typescript-eslint/no-explicit-any
+  121:21  error    Unexpected any. Specify a different type                                       @typescript-eslint/no-explicit-any
+  165:19  error    Unexpected any. Specify a different type                                       @typescript-eslint/no-explicit-any
+
+C:\Users\ajees\Downloads\krtjewels-main\src\pages\admin\Reviews.tsx
+   94:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  118:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\ajees\Downloads\krtjewels-main\src\pages\admin\Users.tsx
+  103:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  132:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\ajees\Downloads\krtjewels-main\tailwind.config.ts
+  148:13  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+
+Γ£û 79 problems (59 errors, 20 warnings)
+  0 errors and 6 warnings potentially fixable with the `--fix` option.
+

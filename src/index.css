@@ -1,0 +1,510 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 
+ * LUXURY JEWELLERY DESIGN SYSTEM
+ * Premium gold, ivory, and maroon palette
+ * All colors in HSL format
+ */
+
+@layer base {
+  :root {
+    /* Sunhera Gold Palette - Primary Brand Color */
+    --gold: 43 72% 54%;
+    --gold-light: 45 78% 62%;
+    --gold-dark: 40 68% 42%;
+    --gold-shimmer: 46 85% 58%;
+    
+    /* Pure White & Subtle Cream */
+    --ivory: 0 0% 100%;
+    --cream: 40 20% 97%;
+    
+    /* Imli Brown - Accent Color */
+    --maroon: 14 32% 28%;
+    --maroon-light: 14 28% 38%;
+    --maroon-dark: 14 36% 20%;
+    
+    /* Rich Black */
+    --rich-black: 14 20% 10%;
+    --charcoal: 14 15% 18%;
+    
+    /* Core semantic tokens - Pure White Background */
+    --background: 0 0% 100%;
+    --foreground: 14 20% 12%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 14 20% 12%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 14 20% 12%;
+
+    --primary: 43 72% 54%;
+    --primary-foreground: 14 20% 10%;
+
+    --secondary: 40 15% 95%;
+    --secondary-foreground: 14 20% 18%;
+
+    --muted: 40 12% 96%;
+    --muted-foreground: 14 10% 45%;
+
+    --accent: 14 32% 28%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 40 15% 90%;
+    --input: 40 15% 90%;
+    --ring: 43 72% 54%;
+
+    --radius: 0.5rem;
+
+    /* Sidebar */
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 14 20% 18%;
+    --sidebar-primary: 43 72% 54%;
+    --sidebar-primary-foreground: 14 20% 10%;
+    --sidebar-accent: 40 15% 95%;
+    --sidebar-accent-foreground: 14 20% 18%;
+    --sidebar-border: 40 15% 90%;
+    --sidebar-ring: 43 72% 54%;
+    
+    /* Luxury effects */
+    --gradient-gold: linear-gradient(135deg, hsl(43 72% 54%) 0%, hsl(46 85% 58%) 50%, hsl(43 72% 54%) 100%);
+    --gradient-premium: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(40 20% 98%) 100%);
+    --shadow-luxury: 0 25px 50px -12px hsl(14 32% 28% / 0.12);
+    --shadow-gold: 0 10px 40px -10px hsl(43 72% 54% / 0.3);
+    --shadow-soft: 0 4px 20px -4px hsl(14 20% 10% / 0.08);
+  }
+
+  .dark {
+    --background: 14 20% 8%;
+    --foreground: 40 20% 95%;
+
+    --card: 14 18% 12%;
+    --card-foreground: 40 20% 95%;
+
+    --popover: 14 18% 12%;
+    --popover-foreground: 40 20% 95%;
+
+    --primary: 43 72% 54%;
+    --primary-foreground: 14 20% 8%;
+
+    --secondary: 14 15% 18%;
+    --secondary-foreground: 40 20% 95%;
+
+    --muted: 14 12% 20%;
+    --muted-foreground: 40 15% 65%;
+
+    --accent: 14 28% 38%;
+    --accent-foreground: 40 20% 95%;
+
+    --destructive: 0 62.8% 40%;
+    --destructive-foreground: 40 20% 95%;
+
+    --border: 14 12% 22%;
+    --input: 14 12% 22%;
+    --ring: 43 72% 54%;
+
+    --sidebar-background: 14 18% 10%;
+    --sidebar-foreground: 40 20% 95%;
+    --sidebar-primary: 43 72% 54%;
+    --sidebar-primary-foreground: 14 20% 8%;
+    --sidebar-accent: 14 15% 18%;
+    --sidebar-accent-foreground: 40 20% 95%;
+    --sidebar-border: 14 12% 22%;
+    --sidebar-ring: 43 72% 54%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: Poppins, Arial, Tahoma, sans-serif;
+    font-weight: 300;
+    font-style: normal;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: Poppins, Arial, Tahoma, sans-serif;
+    font-weight: 300;
+    font-style: normal;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  /* Allow text selection only on paragraphs and text content */
+  p, span, a, label {
+    -webkit-user-select: text;
+    user-select: text;
+  }
+
+  /* Allow text selection in inputs and textareas */
+  input, textarea {
+    -webkit-user-select: text;
+    user-select: text;
+  }
+}
+
+@layer components {
+  /* Gold gradient text */
+  .text-gold-gradient {
+    background: linear-gradient(135deg, hsl(43 74% 52%) 0%, hsl(48 90% 65%) 50%, hsl(40 60% 45%) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Gold shimmer animation */
+  .gold-shimmer {
+    background: linear-gradient(
+      90deg,
+      hsl(43 74% 52%) 0%,
+      hsl(48 90% 70%) 25%,
+      hsl(43 74% 52%) 50%,
+      hsl(48 90% 70%) 75%,
+      hsl(43 74% 52%) 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 3s ease-in-out infinite;
+  }
+
+  @keyframes shimmer {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  @keyframes slide-in-left {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(0); }
+  }
+
+  .animate-slide-in-left {
+    animation: slide-in-left 0.3s ease-out;
+  }
+
+  /* Premium card hover effect */
+  .card-luxury {
+    @apply relative overflow-hidden transition-all duration-500;
+    box-shadow: 0 4px 20px -4px hsl(0 0% 0% / 0.08);
+  }
+
+  .card-luxury:hover {
+    box-shadow: 0 20px 40px -15px hsl(43 74% 49% / 0.25);
+    transform: translateY(-4px);
+  }
+
+  .card-luxury::before {
+    content: '';
+    @apply absolute inset-0 opacity-0 transition-opacity duration-500;
+    background: linear-gradient(135deg, hsl(43 74% 52% / 0.05) 0%, transparent 50%);
+  }
+
+  .card-luxury:hover::before {
+    @apply opacity-100;
+  }
+
+  /* Elegant underline animation */
+  .link-elegant {
+    @apply relative;
+  }
+
+  .link-elegant::after {
+    content: '';
+    @apply absolute bottom-0 left-0 w-0 h-[1px] transition-all duration-300;
+    background: linear-gradient(90deg, hsl(43 74% 52%), hsl(48 90% 60%));
+  }
+
+  .link-elegant:hover::after {
+    @apply w-full;
+  }
+
+  /* Premium button - hover overlay removed to keep text visible */
+  .btn-premium {
+    @apply relative overflow-hidden transition-all duration-300 text-rich-black font-semibold;
+    background: linear-gradient(135deg, hsl(43 74% 52%) 0%, hsl(48 90% 55%) 100%);
+    box-shadow: 0 4px 15px -3px hsl(43 74% 49% / 0.4);
+  }
+
+  .btn-premium:hover {
+    box-shadow: 0 8px 25px -5px hsl(43 74% 49% / 0.5);
+    transform: translateY(-2px);
+    background: linear-gradient(135deg, hsl(48 90% 60%) 0%, hsl(43 74% 52%) 100%);
+  }
+
+  /* Maroon accent button */
+  .btn-maroon {
+    @apply relative overflow-hidden transition-all duration-300;
+    background: linear-gradient(135deg, hsl(0 60% 25%) 0%, hsl(0 50% 35%) 100%);
+    color: hsl(60 100% 97%);
+  }
+
+  .btn-maroon:hover {
+    background: linear-gradient(135deg, hsl(0 50% 35%) 0%, hsl(0 60% 25%) 100%);
+    box-shadow: 0 8px 25px -5px hsl(0 60% 25% / 0.4);
+    transform: translateY(-2px);
+  }
+
+  /* Floating label input */
+  .input-luxury {
+    @apply w-full px-4 py-3 border-2 rounded-lg transition-all duration-300;
+    border-color: hsl(40 25% 85%);
+    background: hsl(60 100% 99%);
+  }
+
+  .input-luxury:focus {
+    border-color: hsl(43 74% 52%);
+    box-shadow: 0 0 0 3px hsl(43 74% 49% / 0.1);
+    outline: none;
+  }
+
+  /* Price display */
+  .price-tag {
+    font-family: Poppins, Arial, Tahoma, sans-serif;
+    font-weight: 300;
+    font-style: normal;
+  }
+
+  /* Gold rate ticker */
+  .ticker-gold {
+    background: linear-gradient(90deg, hsl(0 0% 5%) 0%, hsl(0 0% 10%) 100%);
+    color: hsl(43 74% 52%);
+  }
+
+  /* Image zoom on hover */
+  .img-zoom {
+    @apply overflow-hidden;
+  }
+
+  .img-zoom img {
+    @apply transition-transform duration-700 ease-out;
+  }
+
+  .img-zoom:hover img {
+    transform: scale(1.08);
+  }
+
+  /* Scroll reveal animation */
+  .reveal {
+    @apply opacity-0 translate-y-8 transition-all duration-700 ease-out;
+  }
+
+  .reveal.active {
+    @apply opacity-100 translate-y-0;
+  }
+
+  /* Premium section divider */
+  .divider-gold {
+    @apply h-px w-full;
+    background: linear-gradient(90deg, transparent 0%, hsl(43 74% 52%) 50%, transparent 100%);
+  }
+
+  /* Luxury badge */
+  .badge-luxury {
+    @apply inline-flex items-center px-3 py-1 text-xs font-medium rounded-full;
+    background: linear-gradient(135deg, hsl(43 74% 52%) 0%, hsl(48 90% 55%) 100%);
+    color: hsl(0 0% 5%);
+  }
+
+  /* Fade in up animation */
+  @keyframes fade-in-up {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fade-in-up {
+    animation: fade-in-up 0.6s ease-out forwards;
+  }
+
+  /* Enhanced floating effect */
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  /* Pulse glow effect */
+  @keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 5px hsl(43 74% 52% / 0.3); }
+    50% { box-shadow: 0 0 20px hsl(43 74% 52% / 0.6); }
+  }
+
+  .animate-pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  /* Section heading premium */
+  .section-heading {
+    @apply relative inline-block;
+  }
+
+  .section-heading::after {
+    content: '';
+    @apply absolute -bottom-3 left-1/2 -translate-x-1/2 w-16 h-1 rounded-full;
+    background: linear-gradient(90deg, hsl(43 74% 52%), hsl(48 90% 60%));
+  }
+
+  /* Premium glass effect */
+  .glass-premium {
+    background: hsl(0 0% 100% / 0.7);
+    backdrop-filter: blur(20px);
+    border: 1px solid hsl(43 74% 52% / 0.2);
+  }
+
+  /* Text glow */
+  .text-glow {
+    text-shadow: 0 0 30px hsl(43 74% 52% / 0.5);
+  }
+}
+
+@layer utilities {
+  /* Prevent text selection on interactive elements */
+  .select-none {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+  }
+
+  /* Allow text selection when needed */
+  .select-text {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    user-select: text;
+  }
+
+  /* Prevent cursor from showing on non-interactive elements */
+  .cursor-default {
+    cursor: default !important;
+  }
+
+  /* Custom scrollbar */
+  .scrollbar-luxury::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  .scrollbar-luxury::-webkit-scrollbar-track {
+    background: hsl(40 30% 95%);
+    border-radius: 4px;
+  }
+
+  .scrollbar-luxury::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, hsl(43 74% 52%) 0%, hsl(40 60% 40%) 100%);
+    border-radius: 4px;
+  }
+
+  .scrollbar-luxury::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, hsl(48 90% 55%) 0%, hsl(43 74% 52%) 100%);
+  }
+
+  /* Text shadow for headings */
+  .text-shadow-luxury {
+    text-shadow: 0 2px 10px hsl(0 0% 0% / 0.1);
+  }
+
+  /* Background patterns */
+  .bg-pattern-dots {
+    background-image: radial-gradient(hsl(43 74% 52% / 0.1) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+
+  .bg-pattern-lines {
+    background-image: linear-gradient(90deg, hsl(43 74% 52% / 0.05) 1px, transparent 1px);
+    background-size: 40px 100%;
+  }
+
+  /* Cart slide-in from right animation */
+  @keyframes cart-slide-in {
+    0% {
+      transform: translateX(100%);
+    }
+    100% {
+      transform: translateX(0);
+    }
+  }
+
+  .animate-cart-slide-in {
+    animation: cart-slide-in 0.3s ease-out forwards;
+  }
+  
+  /* Add to cart button animation - slides across */
+  @keyframes slide-across {
+    0% {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+    50% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    100% {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+  }
+
+  .animate-slide-across {
+    animation: slide-across 0.6s ease-in-out forwards;
+  }
+
+  /* Zoom scale for lightbox */
+  .scale-200 {
+    transform: scale(2);
+  }
+
+  /* Marquee animation */
+  @keyframes marquee {
+    0% {
+      transform: translateX(0%);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  .animate-marquee {
+    animation: marquee 30s linear infinite;
+  }
+
+  /* Footer brand text outline */
+  .text-outline {
+    -webkit-text-stroke: 1px hsl(43 74% 52% / 0.3);
+    -webkit-text-fill-color: transparent;
+    paint-order: stroke fill;
+  }
+
+  .text-outline-hover {
+    -webkit-text-stroke: 1px hsl(43 74% 52% / 0.5);
+  }
+
+  .font-engrave-script {
+    font-family: Poppins, Arial, Tahoma, sans-serif;
+    font-weight: 300;
+    font-style: normal;
+  }
+
+  .font-engrave-block {
+    font-family: Poppins, Arial, Tahoma, sans-serif;
+    font-weight: 300;
+    font-style: normal;
+  }
+}
