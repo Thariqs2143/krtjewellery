@@ -33,8 +33,8 @@ export function ProductCard({ product }: ProductCardProps) {
   const images = product.images.length > 0 ? product.images : ['/placeholder.svg'];
   return (
     <>
-      <Link to={`/product/${product.slug}`} className="group block select-none">
-        <div className={`bg-card rounded-2xl overflow-hidden border border-border/50 hover:border-border/80 transition-colors select-none cursor-default ${isOutOfStock ? 'opacity-75' : ''}`}>
+      <Link to={`/product/${product.slug}`} className="group block select-none h-full">
+        <div className={`bg-card rounded-2xl overflow-hidden border border-border/50 hover:border-border/80 transition-colors select-none cursor-default h-full flex flex-col ${isOutOfStock ? 'opacity-75' : ''}`}>
           {/* Image Container with Slider */}
           <div className="relative aspect-[4/5] overflow-hidden bg-white">
             <ProductCardSlider images={images} productName={product.name} />
@@ -49,21 +49,21 @@ export function ProductCard({ product }: ProductCardProps) {
             )}
 
             {/* Status Icons - Minimal */}
-            <div className="absolute top-3 left-3 flex items-center gap-2 z-10">
+            <div className="absolute top-2 left-2 sm:top-3 sm:left-3 flex items-center gap-2 z-10">
               {product.is_new_arrival && (
                 <div
-                  className="w-10 h-10 rounded-full bg-white/90 text-foreground shadow-sm flex items-center justify-center"
+                  className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/90 text-foreground shadow-sm flex items-center justify-center"
                   title="New"
                 >
-                  <Sparkles className="w-4 h-4" />
+                  <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 </div>
               )}
               {product.is_bestseller && (
                 <div
-                  className="w-10 h-10 rounded-full bg-white/90 text-foreground shadow-sm flex items-center justify-center"
+                  className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/90 text-foreground shadow-sm flex items-center justify-center"
                   title="Bestseller"
                 >
-                  <Star className="w-4 h-4" />
+                  <Star className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 </div>
               )}
             </div>
@@ -73,29 +73,29 @@ export function ProductCard({ product }: ProductCardProps) {
               variant="secondary"
               size="icon"
               onClick={handleToggleWishlist}
-              className={`absolute top-3 right-3 w-10 h-10 rounded-full shadow-sm ${
+              className={`absolute top-2 right-2 sm:top-3 sm:right-3 w-8 h-8 sm:w-10 sm:h-10 rounded-full shadow-sm ${
                 inWishlist 
                   ? 'bg-red-500 text-white hover:bg-red-600' 
                   : 'bg-white/90 hover:bg-white text-foreground'
               }`}
             >
               {!isAuthenticated ? (
-                <Lock className="w-4 h-4" />
+                <Lock className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               ) : (
-                <Heart className={`w-4 h-4 ${inWishlist ? 'fill-current' : ''}`} />
+                <Heart className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${inWishlist ? 'fill-current' : ''}`} />
               )}
             </Button>
           </div>
 
           {/* Content - Enhanced */}
-          <div className="p-4 md:p-5 bg-white">
+          <div className="p-4 md:p-5 bg-white flex flex-col flex-1">
             {/* Name */}
             <h3 className="font-serif text-base md:text-lg font-semibold text-foreground line-clamp-2 mb-3 leading-snug">
               {product.name}
             </h3>
 
             {/* Price & Action */}
-            <div>
+            <div className="mt-auto">
               <p className="price-tag text-lg md:text-xl text-foreground font-semibold">
                 {formatPrice(product.calculated_price.total)}
               </p>
