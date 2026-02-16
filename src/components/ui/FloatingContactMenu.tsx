@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Phone, MessageCircle, MapPin, Mail, Share2, X, QrCode } from 'lucide-react';
+import { Phone, MessageCircle, MapPin, Mail, Headphones, X, QrCode } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 export function FloatingContactMenu() {
@@ -121,14 +121,14 @@ export function FloatingContactMenu() {
           className={`w-14 h-14 rounded-full shadow-luxury text-white p-0 transition-all hover:scale-110 flex items-center justify-center ${
             isOpen
               ? 'bg-red-500 hover:bg-red-600'
-              : 'bg-primary hover:bg-gold-dark'
+              : 'bg-gradient-to-br from-[#8B5E3C] via-[#B07B54] to-[#D4A373] hover:from-[#7A4F31] hover:via-[#9E6B46] hover:to-[#C28E5E]'
           }`}
           aria-label="Open contact menu"
         >
           {isOpen ? (
             <X className="w-7 h-7" />
           ) : (
-            <Share2 className="w-7 h-7" />
+            <Headphones className="w-7 h-7" />
           )}
         </Button>
       </div>
