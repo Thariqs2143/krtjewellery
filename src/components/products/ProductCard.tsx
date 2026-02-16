@@ -49,21 +49,21 @@ export function ProductCard({ product }: ProductCardProps) {
             )}
 
             {/* Status Icons - Minimal */}
-            <div className="absolute top-2 left-2 sm:top-3 sm:left-3 flex items-center gap-2 z-10">
+            <div className="absolute top-2 left-2 sm:top-3 sm:left-3 flex items-center gap-1.5 z-10">
               {product.is_new_arrival && (
                 <div
-                  className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/90 text-foreground shadow-sm flex items-center justify-center"
+                  className="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-white/90 text-foreground shadow-sm flex items-center justify-center"
                   title="New"
                 >
-                  <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                  <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                 </div>
               )}
               {product.is_bestseller && (
                 <div
-                  className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/90 text-foreground shadow-sm flex items-center justify-center"
+                  className="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-white/90 text-foreground shadow-sm flex items-center justify-center"
                   title="Bestseller"
                 >
-                  <Star className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                  <Star className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                 </div>
               )}
             </div>
@@ -73,16 +73,16 @@ export function ProductCard({ product }: ProductCardProps) {
               variant="secondary"
               size="icon"
               onClick={handleToggleWishlist}
-              className={`absolute top-2 right-2 sm:top-3 sm:right-3 w-8 h-8 sm:w-10 sm:h-10 rounded-full shadow-sm ${
+              className={`absolute top-2 right-2 sm:top-3 sm:right-3 w-7 h-7 sm:w-9 sm:h-9 rounded-full shadow-sm ${
                 inWishlist 
                   ? 'bg-red-500 text-white hover:bg-red-600' 
                   : 'bg-white/90 hover:bg-white text-foreground'
               }`}
             >
               {!isAuthenticated ? (
-                <Lock className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                <Lock className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
               ) : (
-                <Heart className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${inWishlist ? 'fill-current' : ''}`} />
+                <Heart className={`w-3 h-3 sm:w-3.5 sm:h-3.5 ${inWishlist ? 'fill-current' : ''}`} />
               )}
             </Button>
           </div>
