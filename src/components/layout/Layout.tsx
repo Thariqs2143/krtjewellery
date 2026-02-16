@@ -4,12 +4,14 @@ import { Navbar } from './Navbar';
 import { Footer } from './Footer';
 import { FloatingContactMenu } from '@/components/ui/FloatingContactMenu';
 import { ComparisonBar } from '@/components/products/ComparisonBar';
+import { useAuth } from '@/hooks/useAuth';
 
 interface LayoutProps {
   children: ReactNode;
 }
 
 export function Layout({ children }: LayoutProps) {
+  const { authReady } = useAuth();
   const touchStartY = useRef<number | null>(null);
   const [pullDistance, setPullDistance] = useState(0);
 
@@ -45,6 +47,17 @@ export function Layout({ children }: LayoutProps) {
       window.removeEventListener('touchend', onTouchEnd);
     };
   }, [pullDistance]);
+
+  if (!authReady) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background text-foreground">
+        <div className="flex flex-col items-center gap-3">
+          <div className="h-6 w-6 animate-spin rounded-full border-2 border-gold border-t-transparent" />
+          <div className="text-sm text-muted-foreground">Preparing your session…</div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
