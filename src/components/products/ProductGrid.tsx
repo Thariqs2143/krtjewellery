@@ -42,7 +42,7 @@ export function ProductGrid({ products, isLoading, emptyMessage = 'No products f
   }
 
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-6 select-none">
+    <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-6 select-none items-stretch">
       {products.map((product) => (
         <ProductCard key={product.id} product={product} />
       ))}
