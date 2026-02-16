@@ -143,7 +143,9 @@ export function useAuth() {
   const signOut = useCallback(async () => {
     try {
       const { error } = await supabase.auth.signOut();
-      if (error) throw error;
+      if (error && error.message !== 'Auth session missing!') {
+        throw error;
+      }
 
       setIsAdmin(false);
       adminCache.clear();
