@@ -11,6 +11,7 @@ export function useAuth() {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
+  const [authReady, setAuthReady] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -36,40 +37,41 @@ export function useAuth() {
   useEffect(() => {
     let mounted = true;
 
+    const applySession = async (nextSession: Session | null) => {
+      if (!mounted) return;
+
+      setSession(nextSession);
+      setUser(nextSession?.user ?? null);
+
+      if (nextSession?.user) {
+        const adminStatus = await checkAdminStatus(nextSession.user.id);
+        if (mounted) setIsAdmin(adminStatus);
+      } else {
+        setIsAdmin(false);
+        adminCache.clear();
+      }
+    };
+
+    const finalizeAuthReady = () => {
+      if (!mounted) return;
+      setLoading(false);
+      setAuthReady(true);
+    };
+
     // Get initial session immediately - don't wait for listener
     supabase.auth.getSession().then(async ({ data: { session } }) => {
-      if (!mounted) return;
-      
-      setSession(session);
-      setUser(session?.user ?? null);
-      
-      if (session?.user) {
-        // Check admin status (will be cached for subsequent calls)
-        const adminStatus = await checkAdminStatus(session.user.id);
-        if (mounted) setIsAdmin(adminStatus);
-      }
-      
-      // Set loading false IMMEDIATELY after getting session
-      if (mounted) setLoading(false);
+      await applySession(session);
+      finalizeAuthReady();
     });
 
-    // Set up auth state listener for changes
+    // Set up auth state listener for changes (callback MUST be sync)
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
-        if (!mounted) return;
-        
-        setSession(session);
-        setUser(session?.user ?? null);
-        
-        if (session?.user) {
-          const adminStatus = await checkAdminStatus(session.user.id);
-          if (mounted) setIsAdmin(adminStatus);
-        } else {
-          setIsAdmin(false);
-          adminCache.clear();
+      (event, nextSession) => {
+        void applySession(nextSession);
+
+        if (event === 'INITIAL_SESSION' || event === 'SIGNED_IN' || event === 'SIGNED_OUT') {
+          finalizeAuthReady();
         }
-        
-        if (mounted) setLoading(false);
       }
     );
 
@@ -167,10 +169,11 @@ export function useAuth() {
     user,
     session,
     loading,
+    authReady,
     isAdmin,
     signUp,
     signIn,
     signOut,
     isAuthenticated: !!user,
-  }), [user, session, loading, isAdmin, signUp, signIn, signOut]);
+  }), [user, session, loading, authReady, isAdmin, signUp, signIn, signOut]);
 }
