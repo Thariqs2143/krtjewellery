@@ -1,19 +1,13 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
-import { Heart, Eye, Scale, Lock, ShoppingBag } from 'lucide-react';
+import { Heart, Lock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useWishlist } from '@/hooks/useWishlist';
 import { useAuth } from '@/hooks/useAuth';
-import { useProductComparison } from '@/hooks/useProductComparison';
 import { formatPrice, METAL_TYPE_NAMES } from '@/lib/types';
 import { useGstSettings } from '@/hooks/useSiteSettings';
 import { ProductCardSlider } from './ProductCardSlider';
-import { StockBadge } from '@/components/product/StockBadge';
 import { AuthPromptModal } from '@/components/product/AuthPromptModal';
-import { useToast } from '@/hooks/use-toast';
-import { ProductVariantSelector } from '@/components/product/ProductVariantSelector';
-import { ProductActions } from '@/components/product/ProductActions';
 import type { ProductWithPrice } from '@/lib/types';
 
 interface ProductCardProps {
@@ -23,30 +17,11 @@ interface ProductCardProps {
 export function ProductCard({ product }: ProductCardProps) {
   const { isInWishlist, toggleWishlist } = useWishlist();
   const { isAuthenticated } = useAuth();
-  const { addProduct, removeProduct, isInComparison } = useProductComparison();
-  const { toast } = useToast();
   const [showAuthModal, setShowAuthModal] = useState(false);
-  const [showQuickAdd, setShowQuickAdd] = useState(false);
-  const [variationState, setVariationState] = useState<{
-    metalType: string;
-    size: string | null;
-    priceAdjustment: number;
-    weightAdjustment: number;
-    imageUrl: string | null;
-    selectedOptions?: {
-      gemstoneQuality?: string | string[] | null;
-      caratWeight?: string | string[] | null;
-      certificates?: string[];
-      addOns?: string[];
-      metalType: string;
-      size?: string | null;
-    };
-  } | null>(null);
   const { data: gstSettings } = useGstSettings();
   const gstRate = gstSettings?.rate ?? 3;
   
   const inWishlist = isInWishlist(product.id);
-  const inComparison = isInComparison(product.id);
   const isOutOfStock = (product.stock_quantity ?? 1) <= 0;
 
   const handleToggleWishlist = (e: React.MouseEvent) => {
@@ -59,30 +34,16 @@ export function ProductCard({ product }: ProductCardProps) {
     toggleWishlist(product.id);
   };
 
-  const handleToggleCompare = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (inComparison) {
-      removeProduct(product.id);
-      toast({ title: 'Removed from comparison' });
-    } else {
-      const added = addProduct(product);
-      if (!added) {
-        toast({ title: 'Limit reached', description: 'You can compare up to 3 products', variant: 'destructive' });
-      } else {
-        toast({ title: 'Added to comparison' });
-      }
-    }
-  };
-
   const images = product.images.length > 0 ? product.images : ['/placeholder.svg'];
+  const lowStockCount = product.stock_quantity ?? 0;
+  const showLowStock = !isOutOfStock && lowStockCount > 0 && lowStockCount <= 5;
 
   return (
     <>
       <Link to={`/product/${product.slug}`} className="group block select-none">
-        <div className={`card-luxury bg-card rounded-2xl overflow-hidden border border-border/50 hover:border-primary/30 transition-colors select-none cursor-default ${isOutOfStock ? 'opacity-75' : ''}`}>
+        <div className={`bg-card rounded-2xl overflow-hidden border border-border/50 hover:border-border/80 transition-colors select-none cursor-default ${isOutOfStock ? 'opacity-75' : ''}`}>
           {/* Image Container with Slider */}
-          <div className="relative aspect-[4/5] overflow-hidden bg-gradient-to-br from-secondary/50 to-secondary/20">
+          <div className="relative aspect-[4/5] overflow-hidden bg-white">
             <ProductCardSlider images={images} productName={product.name} />
             
             {/* Out of Stock Overlay */}
@@ -93,76 +54,31 @@ export function ProductCard({ product }: ProductCardProps) {
                 </span>
               </div>
             )}
-            
-            {/* Badges - Premium styling */}
-            <div className="absolute top-3 left-3 flex flex-col gap-2 z-10">
-              {product.is_new_arrival && (
-                <span className="inline-flex items-center px-3 py-1.5 text-xs font-semibold rounded-full bg-gradient-to-r from-primary to-gold-shimmer text-rich-black shadow-md">
-                  ✨ New
-                </span>
-              )}
-              {product.is_bestseller && (
-                <span className="inline-flex items-center px-3 py-1.5 text-xs font-semibold rounded-full bg-accent text-accent-foreground shadow-md">
-                  🔥 Bestseller
-                </span>
-              )}
-              {product.is_bridal && (
-                <span className="inline-flex items-center px-3 py-1.5 text-xs font-semibold rounded-full bg-maroon text-ivory shadow-md">
-                  💍 Bridal
-                </span>
-              )}
-              {/* Low Stock Badge */}
-              {!isOutOfStock && (product.stock_quantity ?? 99) <= 5 && (
-                <StockBadge stockQuantity={product.stock_quantity} showCount />
-              )}
-            </div>
 
-            {/* Quick Actions - Premium styling */}
-            <div className="absolute top-3 right-3 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-x-2 group-hover:translate-x-0 z-10">
-              <Button
-                variant="secondary"
-                size="icon"
-                onClick={handleToggleWishlist}
-                className={`w-10 h-10 rounded-full shadow-lg backdrop-blur-md ${
-                  inWishlist 
-                    ? 'bg-red-500 text-white hover:bg-red-600' 
-                    : 'bg-white/90 hover:bg-white text-foreground'
-                }`}
-              >
-                {!isAuthenticated ? (
-                  <Lock className="w-4 h-4" />
-                ) : (
-                  <Heart className={`w-4 h-4 ${inWishlist ? 'fill-current' : ''}`} />
-                )}
-              </Button>
-              <Button
-                variant="secondary"
-                size="icon"
-                onClick={handleToggleCompare}
-                className={`w-10 h-10 rounded-full shadow-lg backdrop-blur-md ${
-                  inComparison 
-                    ? 'bg-primary text-primary-foreground hover:bg-primary/90' 
-                    : 'bg-white/90 hover:bg-white text-foreground'
-                }`}
-              >
-                <Scale className="w-4 h-4" />
-              </Button>
-            </div>
-
-            {/* View Details Overlay - Enhanced */}
-            <div className="absolute inset-0 bg-gradient-to-t from-rich-black/60 via-rich-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-end justify-center pb-6 pointer-events-none z-[5]">
-              <div className="flex items-center gap-2 text-ivory font-medium bg-primary/90 px-5 py-2.5 rounded-full shadow-lg backdrop-blur-sm transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                <Eye className="w-4 h-4" />
-                <span className="text-sm">View Details</span>
-              </div>
-            </div>
+            {/* Wishlist - Minimal */}
+            <Button
+              variant="secondary"
+              size="icon"
+              onClick={handleToggleWishlist}
+              className={`absolute top-3 right-3 w-10 h-10 rounded-full shadow-sm ${
+                inWishlist 
+                  ? 'bg-red-500 text-white hover:bg-red-600' 
+                  : 'bg-white/90 hover:bg-white text-foreground'
+              }`}
+            >
+              {!isAuthenticated ? (
+                <Lock className="w-4 h-4" />
+              ) : (
+                <Heart className={`w-4 h-4 ${inWishlist ? 'fill-current' : ''}`} />
+              )}
+            </Button>
           </div>
 
           {/* Content - Enhanced */}
-          <div className="p-4 md:p-5">
+          <div className="p-4 md:p-5 bg-white">
             {/* Category & Metal */}
-            <div className="flex items-center gap-2 mb-2">
-              <span className="text-xs text-primary font-medium uppercase tracking-wider">
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-xs text-muted-foreground font-medium uppercase tracking-wider">
                 {METAL_TYPE_NAMES[product.metal_type]}
               </span>
               <span className="w-1 h-1 rounded-full bg-muted-foreground/30" />
@@ -172,9 +88,33 @@ export function ProductCard({ product }: ProductCardProps) {
             </div>
 
             {/* Name */}
-            <h3 className="font-serif text-lg font-semibold text-foreground line-clamp-2 mb-1 group-hover:text-primary transition-colors leading-snug">
+            <h3 className="font-serif text-base md:text-lg font-semibold text-foreground line-clamp-2 mb-2 leading-snug">
               {product.name}
             </h3>
+
+            {/* Tags - Below image to keep visuals clean */}
+            <div className="flex flex-wrap gap-2 mb-3">
+              {product.is_new_arrival && (
+                <span className="px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide rounded-full border border-border text-foreground/80">
+                  New
+                </span>
+              )}
+              {product.is_bestseller && (
+                <span className="px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide rounded-full border border-border text-foreground/80">
+                  Bestseller
+                </span>
+              )}
+              {product.is_bridal && (
+                <span className="px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide rounded-full border border-border text-foreground/80">
+                  Bridal
+                </span>
+              )}
+              {showLowStock && (
+                <span className="px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide rounded-full border border-border text-foreground/80">
+                  Only {lowStockCount} left
+                </span>
+              )}
+            </div>
 
             {/* Short Description */}
             {product.short_description && (
@@ -184,67 +124,19 @@ export function ProductCard({ product }: ProductCardProps) {
             )}
 
             {/* Price & Action */}
-            <div className="flex items-end justify-between pt-3 border-t border-border/50">
+            <div className="pt-3 border-t border-border/50">
               <div>
-                <p className="price-tag text-xl md:text-2xl text-primary font-bold">
+                <p className="price-tag text-lg md:text-xl text-foreground font-semibold">
                   {formatPrice(product.calculated_price.total)}
                 </p>
                 <p className="text-[11px] text-muted-foreground mt-0.5">
                   Incl. {formatPrice(product.calculated_price.gst)} GST ({gstRate}%)
                 </p>
               </div>
-
-              {/* Add to Cart */}
-              {!isOutOfStock && (
-                <>
-                  <Button
-                    size="sm"
-                    className="btn-premium hidden sm:inline-flex"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      setShowQuickAdd(true);
-                    }}
-                  >
-                    Select Options
-                  </Button>
-                  <Button
-                    size="icon"
-                    variant="outline"
-                    className="sm:hidden"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      setShowQuickAdd(true);
-                    }}
-                  >
-                    <ShoppingBag className="w-4 h-4" />
-                  </Button>
-                </>
-              )}
             </div>
           </div>
         </div>
       </Link>
-
-      {/* Quick Add Modal */}
-      <Dialog open={showQuickAdd} onOpenChange={setShowQuickAdd}>
-        <DialogContent className="max-w-2xl">
-          <DialogHeader>
-            <DialogTitle>Select options for {product.name}</DialogTitle>
-          </DialogHeader>
-          <div className="space-y-4">
-            <ProductVariantSelector
-              productId={product.id}
-              category={product.category}
-              baseMetalType={product.metal_type}
-              baseWeightGrams={product.weight_grams}
-              onVariationChange={(state) => setVariationState(state)}
-            />
-            <ProductActions product={product} variationState={variationState} />
-          </div>
-        </DialogContent>
-      </Dialog>
 
       {/* Auth Prompt Modal */}
       <AuthPromptModal
