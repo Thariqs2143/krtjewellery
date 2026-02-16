@@ -53,7 +53,7 @@ export function Layout({ children }: LayoutProps) {
       <div className="min-h-screen flex items-center justify-center bg-background text-foreground">
         <div className="flex flex-col items-center gap-3">
           <div className="h-6 w-6 animate-spin rounded-full border-2 border-gold border-t-transparent" />
-          <div className="text-sm text-muted-foreground">Preparing your session…</div>
+          <div className="text-sm text-muted-foreground">Loading...</div>
         </div>
       </div>
     );
