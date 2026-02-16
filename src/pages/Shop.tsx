@@ -10,11 +10,34 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/co
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
-import { SlidersHorizontal, ChevronDown, ChevronUp, X, Search } from 'lucide-react';
+import { SlidersHorizontal, ChevronDown, ChevronUp, X, Search, Star, Sparkles, Truck } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useSearchParams, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
+
+type ProductCategoryRow = {
+  id: string;
+  name?: string | null;
+  slug?: string | null;
+  is_active?: boolean | null;
+  display_order?: number | null;
+};
+
+type ProductSubcategoryRow = {
+  id: string;
+  name?: string | null;
+  slug?: string | null;
+  product_category_id?: string | null;
+  is_active?: boolean | null;
+  display_order?: number | null;
+};
+
+type MenuAssignmentRow = {
+  id: string;
+  product_category_id?: string | null;
+  product_subcategory_id?: string | null;
+};
 
 
 // Category icons for the filter list
@@ -32,6 +55,7 @@ const categoryIcons: Record<ProductCategory, string> = {
 };
 
 export default function ShopPage() {
+  const supabaseAny = supabase as any;
   const isMobile = useIsMobile();
   const [searchParams] = useSearchParams();
   const { category: categorySlugParam, subcategory: subcategorySlugParam } = useParams();
@@ -64,18 +88,18 @@ export default function ShopPage() {
     parseNumberParam('minWeight', 0),
     parseNumberParam('maxWeight', 200),
   ]);
-  const [tagFilter] = useState<string>(searchParams.get('tag') || '');
-  const [isBestsellerFilter] = useState<boolean>(searchParams.get('isBestseller') === 'true');
-  const [isNewArrivalFilter] = useState<boolean>(searchParams.get('isNewArrival') === 'true');
-  const [isBridalFilter] = useState<boolean>(searchParams.get('isBridal') === 'true');
+  const [tagFilter, setTagFilter] = useState<string>(searchParams.get('tag') || '');
+  const [isBestsellerFilter, setIsBestsellerFilter] = useState<boolean>(searchParams.get('isBestseller') === 'true');
+  const [isNewArrivalFilter, setIsNewArrivalFilter] = useState<boolean>(searchParams.get('isNewArrival') === 'true');
+  const [isBridalFilter, setIsBridalFilter] = useState<boolean>(searchParams.get('isBridal') === 'true');
   const menuCategoryId = searchParams.get('menuCategoryId') || '';
   const menuSubcategoryId = searchParams.get('menuSubcategoryId') || '';
 
-  const { data: categorySlugMatch } = useQuery({
+  const { data: categorySlugMatch } = useQuery<ProductCategoryRow | null>({
     queryKey: ['productCategorySlug', categorySlugParam],
     enabled: !!categorySlugParam,
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data, error } = await supabaseAny
         .from('product_categories')
         .select('id, slug')
         .eq('slug', categorySlugParam)
@@ -86,11 +110,11 @@ export default function ShopPage() {
     },
   });
 
-  const { data: subcategorySlugMatch } = useQuery({
+  const { data: subcategorySlugMatch } = useQuery<ProductSubcategoryRow | null>({
     queryKey: ['productSubcategorySlug', categorySlugParam, subcategorySlugParam],
     enabled: !!categorySlugParam && !!subcategorySlugParam,
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data, error } = await supabaseAny
         .from('product_subcategories')
         .select('id, slug, product_category_id')
         .eq('slug', subcategorySlugParam)
@@ -123,10 +147,10 @@ export default function ShopPage() {
   // Fetch all products (no category filter in hook, we filter client-side)
   const { data: allProducts, isLoading } = useProducts();
 
-  const { data: menuAssignments } = useQuery({
+  const { data: menuAssignments } = useQuery<MenuAssignmentRow[]>({
     queryKey: ['productCategoryAssignments'],
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data, error } = await supabaseAny
         .from('products')
         .select('id, product_category_id, product_subcategory_id');
 
@@ -135,10 +159,10 @@ export default function ShopPage() {
     },
   });
 
-  const { data: productCategoryOptions } = useQuery({
+  const { data: productCategoryOptions } = useQuery<ProductCategoryRow[]>({
     queryKey: ['productCategoryOptions'],
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data, error } = await supabaseAny
         .from('product_categories')
         .select('id, name, slug')
         .eq('is_active', true)
@@ -148,10 +172,10 @@ export default function ShopPage() {
     },
   });
 
-  const { data: productSubcategoryOptions } = useQuery({
+  const { data: productSubcategoryOptions } = useQuery<ProductSubcategoryRow[]>({
     queryKey: ['productSubcategoryOptions'],
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data, error } = await supabaseAny
         .from('product_subcategories')
         .select('id, name, slug, product_category_id')
         .eq('is_active', true)
@@ -301,6 +325,10 @@ export default function ShopPage() {
     setProductSearchTerm('');
     setSelectedProductCategoryId('');
     setSelectedProductSubcategoryId('');
+    setTagFilter('');
+    setIsBestsellerFilter(false);
+    setIsNewArrivalFilter(false);
+    setIsBridalFilter(false);
   };
 
   const hasActiveFilters = selectedCategories.length > 0 || 
@@ -618,6 +646,48 @@ export default function ShopPage() {
                 </div>
               </div>
             </div>
+
+            {/* Mobile Quick Filters */}
+            {isMobile && (
+              <div className="flex items-center gap-2 mb-4 overflow-x-auto pb-1">
+                <button
+                  type="button"
+                  onClick={() => setIsBestsellerFilter((prev) => !prev)}
+                  className={`inline-flex items-center gap-2 px-3 py-2 rounded-full border text-xs font-semibold whitespace-nowrap transition-colors ${
+                    isBestsellerFilter
+                      ? 'bg-rose-100 text-rose-700 border-rose-200'
+                      : 'bg-white text-muted-foreground border-border hover:text-foreground'
+                  }`}
+                >
+                  <Star className="w-4 h-4" />
+                  Bestseller
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setTagFilter((prev) => (prev === 'quick-delivery' ? '' : 'quick-delivery'))}
+                  className={`inline-flex items-center gap-2 px-3 py-2 rounded-full border text-xs font-semibold whitespace-nowrap transition-colors ${
+                    tagFilter === 'quick-delivery'
+                      ? 'bg-amber-100 text-amber-700 border-amber-200'
+                      : 'bg-white text-muted-foreground border-border hover:text-foreground'
+                  }`}
+                >
+                  <Truck className="w-4 h-4" />
+                  Quick Delivery
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setIsNewArrivalFilter((prev) => !prev)}
+                  className={`inline-flex items-center gap-2 px-3 py-2 rounded-full border text-xs font-semibold whitespace-nowrap transition-colors ${
+                    isNewArrivalFilter
+                      ? 'bg-indigo-100 text-indigo-700 border-indigo-200'
+                      : 'bg-white text-muted-foreground border-border hover:text-foreground'
+                  }`}
+                >
+                  <Sparkles className="w-4 h-4" />
+                  New Arrivals
+                </button>
+              </div>
+            )}
 
             {/* Active Filters */}
             {hasActiveFilters && (
