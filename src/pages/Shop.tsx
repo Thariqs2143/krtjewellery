@@ -10,7 +10,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/co
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
-import { SlidersHorizontal, ChevronDown, ChevronUp, X, Search, Star, Sparkles, Truck } from 'lucide-react';
+import { SlidersHorizontal, ChevronDown, ChevronUp, X, Search } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useSearchParams, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
@@ -646,48 +646,6 @@ export default function ShopPage() {
                 </div>
               </div>
             </div>
-
-            {/* Mobile Quick Filters */}
-            {isMobile && (
-              <div className="flex items-center gap-2 mb-4 overflow-x-auto pb-1">
-                <button
-                  type="button"
-                  onClick={() => setIsBestsellerFilter((prev) => !prev)}
-                  className={`inline-flex items-center gap-2 px-3 py-2 rounded-full border text-xs font-semibold whitespace-nowrap transition-colors ${
-                    isBestsellerFilter
-                      ? 'bg-rose-100 text-rose-700 border-rose-200'
-                      : 'bg-white text-muted-foreground border-border hover:text-foreground'
-                  }`}
-                >
-                  <Star className="w-4 h-4" />
-                  Bestseller
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setTagFilter((prev) => (prev === 'quick-delivery' ? '' : 'quick-delivery'))}
-                  className={`inline-flex items-center gap-2 px-3 py-2 rounded-full border text-xs font-semibold whitespace-nowrap transition-colors ${
-                    tagFilter === 'quick-delivery'
-                      ? 'bg-amber-100 text-amber-700 border-amber-200'
-                      : 'bg-white text-muted-foreground border-border hover:text-foreground'
-                  }`}
-                >
-                  <Truck className="w-4 h-4" />
-                  Quick Delivery
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setIsNewArrivalFilter((prev) => !prev)}
-                  className={`inline-flex items-center gap-2 px-3 py-2 rounded-full border text-xs font-semibold whitespace-nowrap transition-colors ${
-                    isNewArrivalFilter
-                      ? 'bg-indigo-100 text-indigo-700 border-indigo-200'
-                      : 'bg-white text-muted-foreground border-border hover:text-foreground'
-                  }`}
-                >
-                  <Sparkles className="w-4 h-4" />
-                  New Arrivals
-                </button>
-              </div>
-            )}
 
             {/* Active Filters */}
             {hasActiveFilters && (
