@@ -1,4 +1,5 @@
 import { ReactNode, useEffect, useRef, useState } from 'react';
+import { hardResetPWA } from '@/lib/pwaRecovery';
 import { Navbar } from './Navbar';
 import { Footer } from './Footer';
 import { FloatingContactMenu } from '@/components/ui/FloatingContactMenu';
@@ -29,7 +30,7 @@ export function Layout({ children }: LayoutProps) {
 
     const onTouchEnd = () => {
       if (pullDistance > 80) {
-        window.location.reload();
+        void hardResetPWA('pull-to-refresh');
       }
       setPullDistance(0);
       touchStartY.current = null;
