@@ -1,11 +1,10 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
-import { Heart, Lock } from 'lucide-react';
+import { Heart, Lock, Sparkles, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useWishlist } from '@/hooks/useWishlist';
 import { useAuth } from '@/hooks/useAuth';
-import { formatPrice, METAL_TYPE_NAMES } from '@/lib/types';
-import { useGstSettings } from '@/hooks/useSiteSettings';
+import { formatPrice } from '@/lib/types';
 import { ProductCardSlider } from './ProductCardSlider';
 import { AuthPromptModal } from '@/components/product/AuthPromptModal';
 import type { ProductWithPrice } from '@/lib/types';
@@ -18,9 +17,6 @@ export function ProductCard({ product }: ProductCardProps) {
   const { isInWishlist, toggleWishlist } = useWishlist();
   const { isAuthenticated } = useAuth();
   const [showAuthModal, setShowAuthModal] = useState(false);
-  const { data: gstSettings } = useGstSettings();
-  const gstRate = gstSettings?.rate ?? 3;
-  
   const inWishlist = isInWishlist(product.id);
   const isOutOfStock = (product.stock_quantity ?? 1) <= 0;
 
@@ -35,9 +31,6 @@ export function ProductCard({ product }: ProductCardProps) {
   };
 
   const images = product.images.length > 0 ? product.images : ['/placeholder.svg'];
-  const lowStockCount = product.stock_quantity ?? 0;
-  const showLowStock = !isOutOfStock && lowStockCount > 0 && lowStockCount <= 5;
-
   return (
     <>
       <Link to={`/product/${product.slug}`} className="group block select-none">
@@ -54,6 +47,26 @@ export function ProductCard({ product }: ProductCardProps) {
                 </span>
               </div>
             )}
+
+            {/* Status Icons - Minimal */}
+            <div className="absolute top-3 left-3 flex items-center gap-2 z-10">
+              {product.is_new_arrival && (
+                <div
+                  className="w-10 h-10 rounded-full bg-white/90 text-foreground shadow-sm flex items-center justify-center"
+                  title="New"
+                >
+                  <Sparkles className="w-4 h-4" />
+                </div>
+              )}
+              {product.is_bestseller && (
+                <div
+                  className="w-10 h-10 rounded-full bg-white/90 text-foreground shadow-sm flex items-center justify-center"
+                  title="Bestseller"
+                >
+                  <Star className="w-4 h-4" />
+                </div>
+              )}
+            </div>
 
             {/* Wishlist - Minimal */}
             <Button
@@ -76,63 +89,16 @@ export function ProductCard({ product }: ProductCardProps) {
 
           {/* Content - Enhanced */}
           <div className="p-4 md:p-5 bg-white">
-            {/* Category & Metal */}
-            <div className="flex items-center gap-2 mb-3">
-              <span className="text-xs text-muted-foreground font-medium uppercase tracking-wider">
-                {METAL_TYPE_NAMES[product.metal_type]}
-              </span>
-              <span className="w-1 h-1 rounded-full bg-muted-foreground/30" />
-              <span className="text-xs text-muted-foreground">
-                {product.weight_grams}g
-              </span>
-            </div>
-
             {/* Name */}
-            <h3 className="font-serif text-base md:text-lg font-semibold text-foreground line-clamp-2 mb-2 leading-snug">
+            <h3 className="font-serif text-base md:text-lg font-semibold text-foreground line-clamp-2 mb-3 leading-snug">
               {product.name}
             </h3>
 
-            {/* Tags - Below image to keep visuals clean */}
-            <div className="flex flex-wrap gap-2 mb-3">
-              {product.is_new_arrival && (
-                <span className="px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide rounded-full border border-border text-foreground/80">
-                  New
-                </span>
-              )}
-              {product.is_bestseller && (
-                <span className="px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide rounded-full border border-border text-foreground/80">
-                  Bestseller
-                </span>
-              )}
-              {product.is_bridal && (
-                <span className="px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide rounded-full border border-border text-foreground/80">
-                  Bridal
-                </span>
-              )}
-              {showLowStock && (
-                <span className="px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide rounded-full border border-border text-foreground/80">
-                  Only {lowStockCount} left
-                </span>
-              )}
-            </div>
-
-            {/* Short Description */}
-            {product.short_description && (
-              <p className="text-sm text-muted-foreground line-clamp-1 mb-4">
-                {product.short_description}
-              </p>
-            )}
-
             {/* Price & Action */}
-            <div className="pt-3 border-t border-border/50">
-              <div>
-                <p className="price-tag text-lg md:text-xl text-foreground font-semibold">
-                  {formatPrice(product.calculated_price.total)}
-                </p>
-                <p className="text-[11px] text-muted-foreground mt-0.5">
-                  Incl. {formatPrice(product.calculated_price.gst)} GST ({gstRate}%)
-                </p>
-              </div>
+            <div>
+              <p className="price-tag text-lg md:text-xl text-foreground font-semibold">
+                {formatPrice(product.calculated_price.total)}
+              </p>
             </div>
           </div>
         </div>
