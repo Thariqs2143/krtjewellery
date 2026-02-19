@@ -90,7 +90,7 @@ export function ProductCard({ product }: ProductCardProps) {
           {/* Content - Enhanced */}
           <div className="p-4 md:p-5 bg-white flex flex-col flex-1">
             {/* Name */}
-            <h3 className="font-serif text-base md:text-lg font-semibold text-foreground line-clamp-2 mb-3 leading-snug">
+            <h3 className="font-serif text-base md:text-lg font-medium text-foreground line-clamp-2 mb-3 leading-snug">
               {product.name}
             </h3>
 
