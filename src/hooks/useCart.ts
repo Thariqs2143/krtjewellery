@@ -11,20 +11,88 @@ interface CartItemWithProduct extends CartItem {
   product: ProductWithPrice;
 }
 
+interface CartItemWithProductRaw extends CartItem {
+  product: Product;
+}
+
+interface GuestCartItem {
+  id: string;
+  product_id: string;
+  quantity: number;
+  created_at: string;
+  selected_variations?: Record<string, any> | null;
+  variation_signature?: string;
+  variation_price_adjustment?: number;
+  variation_weight_adjustment?: number;
+}
+
+const GUEST_CART_KEY = 'krt_guest_cart_v1';
+
+const readGuestCart = (): GuestCartItem[] => {
+  if (typeof window === 'undefined') return [];
+  try {
+    const raw = localStorage.getItem(GUEST_CART_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw) as GuestCartItem[];
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+};
+
+const writeGuestCart = (items: GuestCartItem[]) => {
+  if (typeof window === 'undefined') return;
+  localStorage.setItem(GUEST_CART_KEY, JSON.stringify(items));
+};
+
 export function useCart() {
-  const { user } = useAuth();
+  const { user, authReady } = useAuth();
   const { data: goldRate } = useGoldRate();
   const { data: gstSettings } = useGstSettings();
   const gstRate = gstSettings?.rate ?? 3;
   const queryClient = useQueryClient();
   const { toast } = useToast();
+  const supabaseAny = supabase as any;
 
   const cartQuery = useQuery({
-    queryKey: ['cart', user?.id, gstRate],
+    queryKey: ['cart', user?.id ?? 'guest', gstRate],
     queryFn: async (): Promise<CartItemWithProduct[]> => {
-      if (!user) return [];
+      if (!user) {
+        const guestItems = readGuestCart();
+        if (guestItems.length === 0) return [];
 
-      const { data, error } = await supabase
+        const productIds = Array.from(new Set(guestItems.map((item) => item.product_id)));
+        const { data: products, error } = await supabaseAny
+          .from('products')
+          .select('*')
+          .in('id', productIds);
+
+        if (error) {
+          console.error('Error fetching guest cart products:', error);
+          throw error;
+        }
+
+        const typedProducts = (products || []) as Product[];
+        const productMap = new Map(typedProducts.map((product) => [product.id, product]));
+
+        return guestItems
+          .map((item) => {
+            const product = productMap.get(item.product_id);
+            if (!product) return null;
+
+            return {
+              ...item,
+              user_id: 'guest',
+              product: {
+                ...product,
+                calculated_price: calculateProductPrice(product, goldRate || null, undefined, gstRate),
+              },
+            };
+          })
+          .filter(Boolean) as CartItemWithProduct[];
+      }
+
+      const { data, error } = await supabaseAny
         .from('cart_items')
         .select(`
           *,
@@ -38,7 +106,8 @@ export function useCart() {
       }
 
       // Calculate prices for each product
-      return (data || []).map((item: CartItemWithProduct) => ({
+      const typedData = (data || []) as CartItemWithProductRaw[];
+      return typedData.map((item) => ({
         ...item,
         product: {
           ...item.product,
@@ -46,7 +115,7 @@ export function useCart() {
         },
       }));
     },
-    enabled: !!user && !!goldRate,
+    enabled: authReady && !!goldRate,
   });
 
   const addToCartMutation = useMutation({
@@ -64,8 +133,6 @@ export function useCart() {
         selectedOptions?: Record<string, any> | null;
       };
     }) => {
-      if (!user) throw new Error('Please sign in to add items to cart');
-
       const selectedVariations = variation?.selectedOptions || {};
       const variationSignature = JSON.stringify({
         ...selectedVariations,
@@ -73,8 +140,56 @@ export function useCart() {
         weightAdjustment: variation?.weightAdjustment || 0,
       });
 
+      if (!user) {
+        // Guest cart (localStorage)
+        const guestItems = readGuestCart();
+
+        // Check product stock before adding
+        const { data: product } = await supabaseAny
+          .from('products')
+          .select('stock_quantity, name')
+          .eq('id', productId)
+          .single();
+
+        if (!product) throw new Error('Product not found');
+
+        const availableStock = product.stock_quantity ?? 99;
+        const existingIndex = guestItems.findIndex(
+          (item) =>
+            item.product_id === productId &&
+            item.variation_signature === variationSignature
+        );
+        const currentCartQty = existingIndex >= 0 ? guestItems[existingIndex].quantity : 0;
+        const totalRequestedQty = currentCartQty + quantity;
+
+        if (totalRequestedQty > availableStock) {
+          throw new Error(`Only ${availableStock} items available. You already have ${currentCartQty} in your cart.`);
+        }
+
+        if (existingIndex >= 0) {
+          guestItems[existingIndex] = {
+            ...guestItems[existingIndex],
+            quantity: guestItems[existingIndex].quantity + quantity,
+          };
+        } else {
+          guestItems.push({
+            id: `guest_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
+            product_id: productId,
+            quantity,
+            created_at: new Date().toISOString(),
+            selected_variations: selectedVariations,
+            variation_signature: variationSignature,
+            variation_price_adjustment: variation?.priceAdjustment || 0,
+            variation_weight_adjustment: variation?.weightAdjustment || 0,
+          });
+        }
+
+        writeGuestCart(guestItems);
+        return;
+      }
+
       // Check product stock before adding
-      const { data: product } = await supabase
+      const { data: product } = await supabaseAny
         .from('products')
         .select('stock_quantity, name')
         .eq('id', productId)
@@ -85,7 +200,7 @@ export function useCart() {
       const availableStock = product.stock_quantity ?? 99;
       
       // Check if item already exists in cart
-      const { data: existing } = await supabase
+      const { data: existing } = await supabaseAny
         .from('cart_items')
         .select('id, quantity')
         .eq('user_id', user.id)
@@ -103,7 +218,7 @@ export function useCart() {
 
       if (existing) {
         // Update quantity
-        const { error } = await supabase
+        const { error } = await supabaseAny
           .from('cart_items')
           .update({ quantity: existing.quantity + quantity })
           .eq('id', existing.id);
@@ -111,7 +226,7 @@ export function useCart() {
         if (error) throw error;
       } else {
         // Insert new item
-        const { error } = await supabase
+        const { error } = await supabaseAny
           .from('cart_items')
           .insert({
             user_id: user.id,
@@ -144,16 +259,28 @@ export function useCart() {
 
   const updateQuantityMutation = useMutation({
     mutationFn: async ({ itemId, quantity }: { itemId: string; quantity: number }) => {
+      if (!user) {
+        const guestItems = readGuestCart();
+        const nextItems = guestItems
+          .map((item) =>
+            item.id === itemId ? { ...item, quantity } : item
+          )
+          .filter((item) => item.quantity > 0);
+
+        writeGuestCart(nextItems);
+        return;
+      }
+
       if (quantity < 1) {
         // Remove item if quantity is 0
-        const { error } = await supabase
+        const { error } = await supabaseAny
           .from('cart_items')
           .delete()
           .eq('id', itemId);
         
         if (error) throw error;
       } else {
-        const { error } = await supabase
+        const { error } = await supabaseAny
           .from('cart_items')
           .update({ quantity })
           .eq('id', itemId);
@@ -168,7 +295,13 @@ export function useCart() {
 
   const removeFromCartMutation = useMutation({
     mutationFn: async (itemId: string) => {
-      const { error } = await supabase
+      if (!user) {
+        const guestItems = readGuestCart().filter((item) => item.id !== itemId);
+        writeGuestCart(guestItems);
+        return;
+      }
+
+      const { error } = await supabaseAny
         .from('cart_items')
         .delete()
         .eq('id', itemId);
@@ -186,9 +319,12 @@ export function useCart() {
 
   const clearCartMutation = useMutation({
     mutationFn: async () => {
-      if (!user) throw new Error('Not authenticated');
+      if (!user) {
+        writeGuestCart([]);
+        return;
+      }
 
-      const { error } = await supabase
+      const { error } = await supabaseAny
         .from('cart_items')
         .delete()
         .eq('user_id', user.id);
