@@ -36,7 +36,7 @@ export function CategoryCarousel() {
   const { data: categories = defaultCategories } = useQuery({
     queryKey: ['carouselCategories'],
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as unknown as { from: (table: string) => any })
         .from('carousel_categories')
         .select('*')
         .eq('is_active', true)
@@ -165,7 +165,7 @@ export function CategoryCarousel() {
                 <div className="flex flex-col items-center gap-2">
                   {/* Circular Image Container */}
                   {category.is_view_all ? (
-                    <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 xl:w-24 xl:h-24 rounded-full border-2 border-rich-black bg-rich-black flex items-center justify-center text-center px-2 font-semibold text-[10px] sm:text-xs md:text-sm uppercase tracking-wide text-ivory group-hover:border-primary group-hover:bg-primary group-hover:text-rich-black transition-all select-none">
+                    <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 xl:w-24 xl:h-24 rounded-full border-2 border-rich-black bg-rich-black flex items-center justify-center text-center px-2 font-medium text-[10px] sm:text-xs md:text-sm uppercase tracking-wide text-ivory group-hover:border-primary group-hover:bg-primary group-hover:text-rich-black transition-all select-none">
                       View All
                     </div>
                   ) : (
