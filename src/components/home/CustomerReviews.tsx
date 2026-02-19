@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { Star, Quote } from 'lucide-react';
 import {
   Carousel,
@@ -5,6 +6,7 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
+  type CarouselApi,
 } from '@/components/ui/carousel';
 
 interface Review {
@@ -99,8 +101,35 @@ function StarRating({ rating }: { rating: number }) {
 }
 
 export function CustomerReviews() {
+  const [api, setApi] = useState<CarouselApi | null>(null);
+  const [direction, setDirection] = useState<'next' | 'prev'>('next');
   const averageRating = 5.0;
   const totalReviews = 286;
+
+  useEffect(() => {
+    if (!api) return;
+
+    const interval = setInterval(() => {
+      if (direction === 'next') {
+        if (!api.canScrollNext()) {
+          setDirection('prev');
+          api.scrollPrev();
+          return;
+        }
+        api.scrollNext();
+        return;
+      }
+
+      if (!api.canScrollPrev()) {
+        setDirection('next');
+        api.scrollNext();
+        return;
+      }
+      api.scrollPrev();
+    }, 4000);
+
+    return () => clearInterval(interval);
+  }, [api, direction]);
 
   return (
     <section className="py-16 md:py-24 bg-gradient-to-b from-secondary/20 to-secondary/40 relative">
@@ -133,6 +162,7 @@ export function CustomerReviews() {
 
         {/* Reviews Carousel */}
         <Carousel
+          setApi={setApi}
           opts={{
             align: 'start',
             loop: true,
