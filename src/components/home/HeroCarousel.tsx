@@ -100,7 +100,7 @@ export function HeroCarousel() {
           
           <h1 
             key={`title-${currentSlide}`}
-            className="font-serif text-4xl md:text-6xl lg:text-7xl text-ivory font-semibold mb-6 animate-fade-in-up leading-tight"
+            className="font-serif text-4xl md:text-6xl lg:text-7xl text-ivory font-medium mb-6 animate-fade-in-up leading-tight"
             style={{ animationDelay: '100ms' }}
           >
             <span className="text-glow">{slide.title}</span>
