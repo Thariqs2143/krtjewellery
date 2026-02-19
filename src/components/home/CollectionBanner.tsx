@@ -24,7 +24,7 @@ export function CollectionBanner() {
                 <Sparkles className="w-4 h-4" />
                 Premium Collection
               </span>
-              <h3 className="font-serif text-3xl md:text-4xl lg:text-5xl font-semibold text-ivory mb-4">
+              <h3 className="font-serif text-3xl md:text-4xl lg:text-5xl font-medium text-ivory mb-4">
                 22K Gold<br />Masterpieces
               </h3>
               <p className="text-ivory/80 mb-6 max-w-md">
@@ -55,7 +55,7 @@ export function CollectionBanner() {
                 <span className="text-primary text-xs uppercase tracking-widest font-medium mb-2">
                   Brilliance Redefined
                 </span>
-                <h3 className="font-serif text-2xl md:text-3xl font-semibold text-ivory mb-2">
+                <h3 className="font-serif text-2xl md:text-3xl font-medium text-ivory mb-2">
                   Diamond Collection
                 </h3>
                 <span className="text-ivory/70 text-sm group-hover:text-primary transition-colors flex items-center gap-1">
@@ -80,7 +80,7 @@ export function CollectionBanner() {
                 <span className="text-gold-light text-xs uppercase tracking-widest font-medium mb-2">
                   Bridal 2025
                 </span>
-                <h3 className="font-serif text-2xl md:text-3xl font-semibold text-ivory mb-2">
+                <h3 className="font-serif text-2xl md:text-3xl font-medium text-ivory mb-2">
                   Wedding Collection
                 </h3>
                 <span className="text-ivory/70 text-sm group-hover:text-primary transition-colors flex items-center gap-1">
