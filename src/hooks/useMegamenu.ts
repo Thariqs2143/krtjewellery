@@ -57,7 +57,7 @@ export const useMegamenu = () => {
   return useQuery({
     queryKey: ['megamenu'],
     queryFn: async () => {
-      const { data: settings, error: settingsError } = await supabase
+      const { data: settings, error: settingsError } = await (supabase as any)
         .from('megamenu_settings')
         .select('is_enabled')
         .order('created_at', { ascending: true })
@@ -70,7 +70,7 @@ export const useMegamenu = () => {
       }
 
       // Fetch categories
-      const { data: categories, error: catError } = await supabase
+      const { data: categories, error: catError } = await (supabase as any)
         .from('megamenu_categories')
         .select('*')
         .eq('is_active', true)
@@ -79,7 +79,7 @@ export const useMegamenu = () => {
       if (catError) throw catError;
 
       // Fetch all sections
-      const { data: sections, error: secError } = await supabase
+      const { data: sections, error: secError } = await (supabase as any)
         .from('megamenu_sections')
         .select('*')
         .order('section_order', { ascending: true });
@@ -87,7 +87,7 @@ export const useMegamenu = () => {
       if (secError) throw secError;
 
       // Fetch all items
-      const { data: items, error: itemError } = await supabase
+      const { data: items, error: itemError } = await (supabase as any)
         .from('megamenu_items')
         .select('*')
         .eq('is_active', true)
@@ -96,7 +96,7 @@ export const useMegamenu = () => {
       if (itemError) throw itemError;
 
       // Fetch all item rules
-      const { data: rules, error: ruleError } = await supabase
+      const { data: rules, error: ruleError } = await (supabase as any)
         .from('megamenu_item_rules')
         .select('*')
         .order('rule_order', { ascending: true });
@@ -104,7 +104,7 @@ export const useMegamenu = () => {
       if (ruleError) throw ruleError;
 
       // Fetch all item products
-      const { data: itemProducts, error: itemProductError } = await supabase
+      const { data: itemProducts, error: itemProductError } = await (supabase as any)
         .from('megamenu_item_products')
         .select('*')
         .order('product_order', { ascending: true });
@@ -112,7 +112,7 @@ export const useMegamenu = () => {
       if (itemProductError) throw itemProductError;
 
       // Fetch featured products
-      const { data: products, error: prodError } = await supabase
+      const { data: products, error: prodError } = await (supabase as any)
         .from('megamenu_featured_products')
         .select('*')
         .order('product_order', { ascending: true });
@@ -120,7 +120,7 @@ export const useMegamenu = () => {
       if (prodError) throw prodError;
 
       // Fetch product categories for megamenu (new simplified flow)
-      const { data: menuCategories, error: menuCatError } = await supabase
+      const { data: menuCategories, error: menuCatError } = await (supabase as any)
         .from('product_categories')
         .select('*')
         .eq('is_active', true)
@@ -128,7 +128,7 @@ export const useMegamenu = () => {
 
       if (menuCatError) throw menuCatError;
 
-      const { data: menuSubcategories, error: menuSubError } = await supabase
+      const { data: menuSubcategories, error: menuSubError } = await (supabase as any)
         .from('product_subcategories')
         .select('*')
         .eq('is_active', true)
@@ -320,7 +320,7 @@ export const useMegamenuSettings = () => {
   return useQuery({
     queryKey: ['megamenuSettings'],
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('megamenu_settings')
         .select('id, is_enabled')
         .order('created_at', { ascending: true })
@@ -338,7 +338,7 @@ export const useMegamenuCategory = (categorySlug: string) => {
   return useQuery({
     queryKey: ['megamenu', categorySlug],
     queryFn: async () => {
-      const { data: categories, error: catError } = await supabase
+      const { data: categories, error: catError } = await (supabase as any)
         .from('megamenu_categories')
         .select('id')
         .eq('category_slug', categorySlug)
@@ -349,7 +349,7 @@ export const useMegamenuCategory = (categorySlug: string) => {
       const categoryId = categories.id;
 
       // Fetch sections for this category
-      const { data: sections, error: secError } = await supabase
+      const { data: sections, error: secError } = await (supabase as any)
         .from('megamenu_sections')
         .select(
           `*,
@@ -361,7 +361,7 @@ export const useMegamenuCategory = (categorySlug: string) => {
       if (secError) throw secError;
 
       // Fetch featured products
-      const { data: products, error: prodError } = await supabase
+      const { data: products, error: prodError } = await (supabase as any)
         .from('megamenu_featured_products')
         .select('*')
         .eq('megamenu_category_id', categoryId)
