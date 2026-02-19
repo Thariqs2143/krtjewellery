@@ -21,7 +21,7 @@ export function FeaturedProducts() {
               Curated Selection
               <span className="w-8 h-px bg-primary hidden md:block" />
             </span>
-            <h2 className="font-serif text-4xl md:text-5xl font-semibold section-heading">
+            <h2 className="font-serif text-4xl md:text-5xl font-medium section-heading">
               Featured Pieces
             </h2>
           </div>
