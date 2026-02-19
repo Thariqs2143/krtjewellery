@@ -48,7 +48,7 @@ export function TrustBadges() {
                   <feature.icon className="w-7 h-7 text-rich-black" />
                 </div>
               </div>
-              <h3 className="font-serif text-lg text-ivory font-semibold mb-2 group-hover:text-primary transition-colors">
+              <h3 className="font-serif text-lg text-ivory font-medium mb-2 group-hover:text-primary transition-colors">
                 {feature.title}
               </h3>
               <p className="text-ivory/50 text-sm leading-relaxed max-w-[200px] mx-auto">
