@@ -48,7 +48,7 @@ export function CategoryShowcase() {
             Explore
             <span className="w-8 h-px bg-primary" />
           </span>
-          <h2 className="font-serif text-4xl md:text-5xl font-semibold section-heading">
+          <h2 className="font-serif text-4xl md:text-5xl font-medium section-heading">
             Our Collections
           </h2>
         </div>
@@ -78,7 +78,7 @@ export function CategoryShowcase() {
 
               {/* Label */}
               <div className="absolute bottom-0 left-0 right-0 p-4 text-center">
-                <h3 className="font-serif text-lg md:text-xl text-ivory font-semibold group-hover:text-gold-light transition-colors">
+                <h3 className="font-serif text-lg md:text-xl text-ivory font-medium group-hover:text-gold-light transition-colors">
                   {category.name}
                 </h3>
                 <span className="text-ivory/60 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">
