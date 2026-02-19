@@ -51,7 +51,7 @@ export function GoldRateWidget() {
               <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
               <span className="text-green-400 text-xs font-medium uppercase tracking-wider">Live</span>
             </div>
-            <h3 className="font-serif text-2xl md:text-3xl text-ivory font-semibold">Today's Gold Rate</h3>
+            <h3 className="font-serif text-2xl md:text-3xl text-ivory font-medium">Today's Gold Rate</h3>
             <p className="text-ivory/50 text-sm mt-1">
               Updated: {new Date(goldRate.effective_date).toLocaleDateString('en-IN', { 
                 weekday: 'long', 
