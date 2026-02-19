@@ -107,7 +107,7 @@ export function RotatingCardsSection() {
           Our Showcase
           <span className="w-8 h-px bg-primary" />
         </span>
-        <h2 className="font-serif text-4xl md:text-5xl font-semibold section-heading mb-6">
+        <h2 className="font-serif text-4xl md:text-5xl font-medium section-heading mb-6">
           Exquisite Artistry
         </h2>
         <p className="text-muted-foreground max-w-xl mx-auto">
@@ -136,7 +136,7 @@ export function RotatingCardsSection() {
                   <p className="text-primary text-xs uppercase tracking-wider mb-1">
                     {item.subtitle}
                   </p>
-                  <h3 className="font-serif text-lg md:text-xl font-semibold">
+                  <h3 className="font-serif text-lg md:text-xl font-medium">
                     {item.title}
                   </h3>
                 </div>
