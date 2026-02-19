@@ -47,7 +47,7 @@ export function WhyChooseUs() {
             Our Promise
             <span className="w-8 h-px bg-primary" />
           </span>
-          <h2 className="font-serif text-4xl md:text-5xl font-semibold section-heading mb-6 select-none cursor-default">
+          <h2 className="font-serif text-4xl md:text-5xl font-medium section-heading mb-6 select-none cursor-default">
             Why Choose KRT Jewels
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto select-text">
@@ -65,7 +65,7 @@ export function WhyChooseUs() {
               <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors duration-300">
                 <feature.icon className="w-8 h-8 text-primary" />
               </div>
-              <h3 className="font-serif text-xl font-semibold mb-3 group-hover:text-primary transition-colors select-none">
+              <h3 className="font-serif text-xl font-medium mb-3 group-hover:text-primary transition-colors select-none">
                 {feature.title}
               </h3>
               <p className="text-muted-foreground leading-relaxed select-text">
