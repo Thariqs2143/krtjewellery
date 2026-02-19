@@ -40,7 +40,7 @@ export function NewsletterSection() {
             <Mail className="w-10 h-10 text-primary" />
           </div>
           
-          <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl font-semibold text-ivory mb-6">
+          <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl font-medium text-ivory mb-6">
             Stay Connected with <span className="text-gold-gradient">Elegance</span>
           </h2>
           
