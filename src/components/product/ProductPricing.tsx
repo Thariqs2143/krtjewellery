@@ -1,5 +1,5 @@
 import { formatPrice } from '@/lib/types';
-import { Tag, Percent } from 'lucide-react';
+import { Tag } from 'lucide-react';
 import type { CalculatedPrice } from '@/lib/types';
 
 interface ProductPricingProps {
@@ -28,11 +28,6 @@ export function ProductPricing({ calculatedPrice, quantity }: ProductPricingProp
         </span>
       </div>
 
-      {/* EMI */}
-      <div className="flex items-center gap-2 text-xs text-muted-foreground">
-        <Percent className="w-3.5 h-3.5" />
-        <span>EMI from ₹{Math.round(totalPrice / 12).toLocaleString('en-IN')}/month</span>
-      </div>
     </div>
   );
 }
