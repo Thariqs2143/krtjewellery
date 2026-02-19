@@ -1,4 +1,5 @@
 // Type definitions for the Jewellery E-Commerce Platform
+import type { Json } from '@/integrations/supabase/types';
 
 export type MetalType = 'gold_22k' | 'gold_24k' | 'gold_18k' | 'silver' | 'platinum';
 
@@ -75,7 +76,7 @@ export interface Product {
   stock_quantity: number;
   sku: string | null;
   tags: string[];
-  specifications: Record<string, any> | null;
+  specifications: Record<string, any> | Json | null;
   created_at: string;
   updated_at: string;
   video_url?: string | null;
