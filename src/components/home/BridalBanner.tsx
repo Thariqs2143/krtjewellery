@@ -26,7 +26,7 @@ export function BridalBanner() {
               Exclusive Collection
             </span>
           </div>
-          <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-ivory font-semibold mb-6 leading-tight">
+          <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-ivory font-medium mb-6 leading-tight">
             <span className="text-glow">Wedding & Bridal</span>
           </h2>
           <p className="text-ivory/85 text-lg md:text-xl mb-10 max-w-md leading-relaxed">
