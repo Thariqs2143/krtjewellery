@@ -54,7 +54,7 @@ export function InstagramFeed() {
             Follow Us
             <span className="w-8 h-px bg-primary" />
           </span>
-          <h2 className="font-serif text-4xl md:text-5xl font-semibold section-heading mb-6">
+          <h2 className="font-serif text-4xl md:text-5xl font-medium section-heading mb-6">
             @krtjewellers
           </h2>
           <p className="text-muted-foreground max-w-xl mx-auto">
