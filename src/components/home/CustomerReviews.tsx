@@ -115,7 +115,7 @@ export function CustomerReviews() {
             Testimonials
             <span className="w-8 h-px bg-primary" />
           </span>
-          <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-semibold mb-6 section-heading">
+          <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-medium mb-6 section-heading">
             What Our Customers Say
           </h2>
           <div className="flex items-center justify-center gap-3 mt-8 mb-2">
