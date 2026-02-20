@@ -23,13 +23,14 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import type { Json } from '@/integrations/supabase/types';
 
 interface ProductVariantSelectorProps {
   productId: string;
   category: ProductCategory;
   baseMetalType: MetalType;
   baseWeightGrams: number;
-  specifications: Record<string, any> | null;
+  specifications: Record<string, any> | Json | null;
   onVariationChange?: (variation: { 
     metalType: string; 
     size: string | null;
@@ -41,6 +42,7 @@ interface ProductVariantSelectorProps {
       caratWeight?: string | string[] | null;
       certificates?: string[];
       addOns?: string[];
+      engraving?: { text: string; font: 'script' | 'block' };
       metalType: string;
       size?: string | null;
     };
@@ -881,7 +883,7 @@ export function ProductVariantSelector({
         <span className="text-sm text-muted-foreground">Net Weight</span>
         <span className="font-semibold">
           {(baseWeightGrams + 
-            (availableMetals.find(m => m.type === selectedMetal)?.weightAdjustment || 0) +
+            (availableMetals.find(m => m.value === selectedMetal)?.weightAdjustment || 0) +
             (sizeOptions.find(s => s.value === selectedSize)?.weightAdjustment || 0)
           ).toFixed(2)} grams
         </span>
