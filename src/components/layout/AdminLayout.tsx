@@ -20,6 +20,7 @@ import {
   RefreshCw,
   Truck,
   Mail,
+  BarChart3,
   Grid2X2,
   ListTree,
   Circle,
@@ -50,7 +51,7 @@ const menuItems = [
   { name: 'Coupons', href: '/admin/coupons', icon: Tag },
   { name: 'Shipping', href: '/admin/shipping', icon: Truck },
   { name: 'Tax Settings', href: '/admin/tax-settings', icon: Settings },
-  { name: 'Chit Funds', href: '/admin/chit-funds', icon: Wallet },
+  { name: 'Analytics', href: '/admin/analytics', icon: BarChart3 },
   { name: 'Admin Users', href: '/admin/users', icon: Users },
 ];
 
