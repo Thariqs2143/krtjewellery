@@ -175,11 +175,9 @@ export function ProductImageGallery({
             setTouchStartX(null);
           }}
         >
-          <img
+          <LensImage
             src={displayImages[selectedImage] || '/placeholder.svg'}
             alt={`${productName} - Image ${selectedImage + 1}`}
-            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-            onClick={() => onOpenLightbox(selectedImage)}
           />
           <div className="absolute inset-0 bg-rich-black/0 group-hover:bg-rich-black/10 transition-colors flex items-center justify-center pointer-events-none">
             <div className="opacity-0 group-hover:opacity-100 transition-opacity bg-white/90 rounded-full p-3 shadow-lg">
@@ -225,73 +223,108 @@ export function ProductImageGallery({
         )}
       </div>
 
-      {/* Desktop: two-column grid */}
-      <div className="hidden md:grid grid-cols-1 sm:grid-cols-2 gap-3">
-        {mediaItems.map((item, idx) => {
-          if (item.type === 'video') {
+      {/* Desktop: grid or single image */}
+      {mediaItems.length === 1 && mediaItems[0]?.type === 'image' ? (
+        <button
+          type="button"
+          className="hidden md:block relative aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-secondary/50 to-secondary/20 group"
+          onClick={() => onOpenLightbox(mediaItems[0]?.index ?? 0)}
+        >
+          <LensImage
+            src={mediaItems[0]?.url || '/placeholder.svg'}
+            alt={`${productName} - Image 1`}
+          />
+          <div className="absolute inset-0 bg-rich-black/0 group-hover:bg-rich-black/10 transition-colors flex items-center justify-center pointer-events-none">
+            <div className="opacity-0 group-hover:opacity-100 transition-opacity bg-white/90 rounded-full p-3 shadow-lg">
+              <ZoomIn className="w-5 h-5 text-foreground" />
+            </div>
+          </div>
+          <div className="absolute top-3 left-3 flex items-center gap-2">
+            {badges?.isNewArrival && (
+              <Badge className="badge-luxury w-8 h-8 p-0 rounded-full flex items-center justify-center" title="New Arrival">
+                <Sparkles className="w-4 h-4" />
+              </Badge>
+            )}
+            {badges?.isBestseller && (
+              <Badge className="bg-accent text-accent-foreground w-8 h-8 p-0 rounded-full flex items-center justify-center" title="Bestseller">
+                <Star className="w-4 h-4" />
+              </Badge>
+            )}
+            {badges?.isBridal && (
+              <Badge className="bg-maroon text-ivory w-8 h-8 p-0 rounded-full flex items-center justify-center" title="Bridal">
+                <Gem className="w-4 h-4" />
+              </Badge>
+            )}
+          </div>
+        </button>
+      ) : (
+        <div className="hidden md:grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {mediaItems.map((item, idx) => {
+            if (item.type === 'video') {
+              return (
+                <div
+                  key={`video-${idx}`}
+                  className="relative aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-secondary/50 to-secondary/20"
+                >
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/10 z-10 pointer-events-none">
+                    <div className="bg-white/90 rounded-full p-3 shadow-lg">
+                      <Play className="w-5 h-5 text-foreground" />
+                    </div>
+                  </div>
+                  <video
+                    src={item.url}
+                    className="w-full h-full object-contain"
+                    controls
+                    playsInline
+                  />
+                </div>
+              );
+            }
+
+            const imageIndex = item.index ?? 0;
             return (
-              <div
-                key={`video-${idx}`}
-                className="relative aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-secondary/50 to-secondary/20"
+              <button
+                key={`image-${imageIndex}`}
+                type="button"
+                className="relative aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-secondary/50 to-secondary/20 group"
+                onClick={() => {
+                  setSelectedImage(imageIndex);
+                  onOpenLightbox(imageIndex);
+                }}
               >
-                <div className="absolute inset-0 flex items-center justify-center bg-black/10 z-10 pointer-events-none">
-                  <div className="bg-white/90 rounded-full p-3 shadow-lg">
-                    <Play className="w-5 h-5 text-foreground" />
+                <LensImage
+                  src={item.url || '/placeholder.svg'}
+                  alt={`${productName} - Image ${imageIndex + 1}`}
+                />
+                <div className="absolute inset-0 bg-rich-black/0 group-hover:bg-rich-black/10 transition-colors flex items-center justify-center pointer-events-none">
+                  <div className="opacity-0 group-hover:opacity-100 transition-opacity bg-white/90 rounded-full p-3 shadow-lg">
+                    <ZoomIn className="w-5 h-5 text-foreground" />
                   </div>
                 </div>
-                <video
-                  src={item.url}
-                  className="w-full h-full object-contain"
-                  controls
-                  playsInline
-                />
-              </div>
+                {imageIndex === 0 && (
+                  <div className="absolute top-3 left-3 flex items-center gap-2">
+                    {badges?.isNewArrival && (
+                      <Badge className="badge-luxury w-8 h-8 p-0 rounded-full flex items-center justify-center" title="New Arrival">
+                        <Sparkles className="w-4 h-4" />
+                      </Badge>
+                    )}
+                    {badges?.isBestseller && (
+                      <Badge className="bg-accent text-accent-foreground w-8 h-8 p-0 rounded-full flex items-center justify-center" title="Bestseller">
+                        <Star className="w-4 h-4" />
+                      </Badge>
+                    )}
+                    {badges?.isBridal && (
+                      <Badge className="bg-maroon text-ivory w-8 h-8 p-0 rounded-full flex items-center justify-center" title="Bridal">
+                        <Gem className="w-4 h-4" />
+                      </Badge>
+                    )}
+                  </div>
+                )}
+              </button>
             );
-          }
-
-          const imageIndex = item.index ?? 0;
-          return (
-            <button
-              key={`image-${imageIndex}`}
-              type="button"
-              className="relative aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-secondary/50 to-secondary/20 group"
-              onClick={() => {
-                setSelectedImage(imageIndex);
-                onOpenLightbox(imageIndex);
-              }}
-            >
-              <LensImage
-                src={item.url || '/placeholder.svg'}
-                alt={`${productName} - Image ${imageIndex + 1}`}
-              />
-              <div className="absolute inset-0 bg-rich-black/0 group-hover:bg-rich-black/10 transition-colors flex items-center justify-center pointer-events-none">
-                <div className="opacity-0 group-hover:opacity-100 transition-opacity bg-white/90 rounded-full p-3 shadow-lg">
-                  <ZoomIn className="w-5 h-5 text-foreground" />
-                </div>
-              </div>
-              {imageIndex === 0 && (
-                <div className="absolute top-3 left-3 flex items-center gap-2">
-                  {badges?.isNewArrival && (
-                    <Badge className="badge-luxury w-8 h-8 p-0 rounded-full flex items-center justify-center" title="New Arrival">
-                      <Sparkles className="w-4 h-4" />
-                    </Badge>
-                  )}
-                  {badges?.isBestseller && (
-                    <Badge className="bg-accent text-accent-foreground w-8 h-8 p-0 rounded-full flex items-center justify-center" title="Bestseller">
-                      <Star className="w-4 h-4" />
-                    </Badge>
-                  )}
-                  {badges?.isBridal && (
-                    <Badge className="bg-maroon text-ivory w-8 h-8 p-0 rounded-full flex items-center justify-center" title="Bridal">
-                      <Gem className="w-4 h-4" />
-                    </Badge>
-                  )}
-                </div>
-              )}
-            </button>
-          );
-        })}
-      </div>
+          })}
+        </div>
+      )}
     </div>
   );
 }
