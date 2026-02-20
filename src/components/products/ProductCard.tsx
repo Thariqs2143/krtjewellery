@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
-import { Heart, Lock, Sparkles, Star } from 'lucide-react';
+import { Heart, Lock, Sparkles, Star, Gem } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useWishlist } from '@/hooks/useWishlist';
 import { useAuth } from '@/hooks/useAuth';
@@ -64,6 +64,14 @@ export function ProductCard({ product }: ProductCardProps) {
                   title="Bestseller"
                 >
                   <Star className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                </div>
+              )}
+              {product.is_bridal && (
+                <div
+                  className="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-white/90 text-foreground shadow-sm flex items-center justify-center"
+                  title="Bridal"
+                >
+                  <Gem className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                 </div>
               )}
             </div>
