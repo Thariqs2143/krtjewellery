@@ -15,7 +15,6 @@ import {
   DollarSign,
   Edit,
   ArrowRight,
-  Wallet,
   Users
 } from 'lucide-react';
 
@@ -31,18 +30,6 @@ export default function AdminDashboard() {
         .select('*')
         .order('created_at', { ascending: false })
         .limit(10);
-      if (error) throw error;
-      return data;
-    },
-  });
-
-  const { data: chitFunds } = useQuery({
-    queryKey: ['chitFundsCount'],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('chit_funds')
-        .select('id, status')
-        .eq('status', 'active');
       if (error) throw error;
       return data;
     },
@@ -73,14 +60,6 @@ export default function AdminDashboard() {
       color: 'text-yellow-600',
       bgColor: 'bg-yellow-100',
     },
-    {
-      title: 'Active Chit Funds',
-      value: chitFunds?.length || 0,
-      icon: Wallet,
-      href: '/admin/chit-funds',
-      color: 'text-green-600',
-      bgColor: 'bg-green-100',
-    },
   ];
 
   const quickActions = [
@@ -101,12 +80,6 @@ export default function AdminDashboard() {
       description: 'Manage customer orders',
       icon: ShoppingCart,
       href: '/admin/orders',
-    },
-    {
-      title: 'Chit Funds',
-      description: 'Digital gold savings schemes',
-      icon: Wallet,
-      href: '/admin/chit-funds',
     },
   ];
 
