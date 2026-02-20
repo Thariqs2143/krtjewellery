@@ -54,6 +54,7 @@ import AdminMegamenu from "./pages/admin/Megamenu";
 import AdminMenuCategories from "./pages/admin/MenuCategories";
 import AdminCarouselCategories from "./pages/admin/CarouselCategories";
 import AdminAttributes from "./pages/admin/Attributes";
+import AdminAnalytics from "./pages/admin/Analytics";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -157,6 +158,7 @@ const App = () => {
             <Route path="/admin/menu-categories" element={<AdminMenuCategories />} />
             <Route path="/admin/carousel-categories" element={<AdminCarouselCategories />} />
             <Route path="/admin/attributes" element={<AdminAttributes />} />
+            <Route path="/admin/analytics" element={<AdminAnalytics />} />
             
             <Route path="*" element={<NotFound />} />
           </Routes>
