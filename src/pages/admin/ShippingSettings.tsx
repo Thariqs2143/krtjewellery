@@ -5,16 +5,20 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
 import { Truck, Loader2 } from 'lucide-react';
-import { useFreeShippingSettings, useUpdateFreeShippingSettings } from '@/hooks/useSiteSettings';
+import { useDeliveryPincodes, useFreeShippingSettings, useUpdateDeliveryPincodes, useUpdateFreeShippingSettings } from '@/hooks/useSiteSettings';
 import { formatPrice } from '@/lib/types';
 
 export default function ShippingSettings() {
   const { data: settings, isLoading } = useFreeShippingSettings();
   const updateSettings = useUpdateFreeShippingSettings();
+  const { data: deliverySettings, isLoading: isLoadingDelivery } = useDeliveryPincodes();
+  const updateDeliverySettings = useUpdateDeliveryPincodes();
   
   const [amount, setAmount] = useState<number>(50000);
   const [enabled, setEnabled] = useState<boolean>(true);
+  const [pincodeText, setPincodeText] = useState<string>('');
 
   useEffect(() => {
     if (settings) {
@@ -23,12 +27,28 @@ export default function ShippingSettings() {
     }
   }, [settings]);
 
+  useEffect(() => {
+    if (deliverySettings) {
+      setPincodeText(deliverySettings.pincodes.join('\n'));
+    }
+  }, [deliverySettings]);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     updateSettings.mutate({ amount, enabled });
   };
 
-  if (isLoading) {
+  const handlePincodeSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const pincodes = pincodeText
+      .split(/[\s,]+/)
+      .map((value) => value.replace(/\D/g, ''))
+      .filter((value) => value.length === 6);
+    const uniquePincodes = Array.from(new Set(pincodes));
+    updateDeliverySettings.mutate({ pincodes: uniquePincodes });
+  };
+
+  if (isLoading || isLoadingDelivery) {
     return (
       <AdminLayout>
         <div className="flex items-center justify-center min-h-[400px]">
@@ -101,6 +121,50 @@ export default function ShippingSettings() {
                   </>
                 ) : (
                   'Save Settings'
+                )}
+              </Button>
+            </form>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Truck className="w-5 h-5 text-primary" />
+              Delivery Pincode Checker
+            </CardTitle>
+            <CardDescription>
+              Add pincodes where delivery is available. Customers can check delivery availability on product pages.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handlePincodeSubmit} className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="delivery-pincodes">Serviceable Pincodes</Label>
+                <Textarea
+                  id="delivery-pincodes"
+                  value={pincodeText}
+                  onChange={(e) => setPincodeText(e.target.value)}
+                  placeholder="Enter one pincode per line or separate with commas"
+                  rows={6}
+                />
+                <p className="text-sm text-muted-foreground">
+                  Only 6-digit pincodes will be saved. Duplicate entries are removed automatically.
+                </p>
+              </div>
+
+              <Button
+                type="submit"
+                className="btn-premium"
+                disabled={updateDeliverySettings.isPending}
+              >
+                {updateDeliverySettings.isPending ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    Saving...
+                  </>
+                ) : (
+                  'Save Pincodes'
                 )}
               </Button>
             </form>
