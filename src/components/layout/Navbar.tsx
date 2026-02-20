@@ -83,7 +83,7 @@ export function Navbar() {
             {/* Center – Logo */}
             <Link to="/" className="absolute left-1/2 -translate-x-1/2">
               <h1 className="font-serif text-2xl md:text-3xl font-medium tracking-[0.15em] text-foreground whitespace-nowrap">
-                KRT JEWELS
+                KRT JEWELLERS
               </h1>
             </Link>
 
@@ -223,7 +223,7 @@ export function Navbar() {
             </Button>
             <Link to="/">
               <h1 className="font-serif text-lg font-medium tracking-[0.15em] text-foreground whitespace-nowrap">
-                KRT JEWELS
+                KRT JEWELLERS
               </h1>
             </Link>
           </div>
