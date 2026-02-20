@@ -5,7 +5,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Package, Heart, MapPin, User, Tag, ChevronRight, Coins } from 'lucide-react';
+import { Package, Heart, MapPin, User, Tag, ChevronRight } from 'lucide-react';
 import { formatPrice } from '@/lib/types';
 import { AccountLayout } from '@/components/account/AccountLayout';
 
@@ -231,13 +231,6 @@ export default function AccountDashboard() {
                   <span className="text-sm">My Wishlist</span>
                 </div>
                 <ChevronRight className="w-4 h-4 text-muted-foreground" />
-              </Link>
-              <Link to="/chit-fund" className="flex items-center justify-between p-3 rounded-lg bg-primary/10 hover:bg-primary/20 transition-colors border border-primary/30">
-                <div className="flex items-center gap-3">
-                  <Coins className="w-5 h-5 text-primary" />
-                  <span className="text-sm font-medium">Digital Gold Scheme</span>
-                </div>
-                <ChevronRight className="w-4 h-4 text-primary" />
               </Link>
             </CardContent>
           </Card>
