@@ -37,7 +37,7 @@ export function Footer() {
           <div className="lg:col-span-2">
             <Link to="/" className="inline-block mb-6">
               <h2 className="font-serif text-2xl font-bold">
-                <span className="text-primary">KRT</span> Jewels
+                <span className="text-primary">KRT</span> JEWELLERS
               </h2>
               <p className="text-xs text-ivory/50 tracking-widest uppercase mt-1">Trusted Since 30+ Years</p>
             </Link>
@@ -124,7 +124,7 @@ export function Footer() {
               letterSpacing: '-0.02em',
             }}
           >
-            KRT JEWELS
+            KRT JEWELLERS
           </h2>
           {/* Mobile - Stacked */}
           <div className="md:hidden flex flex-col items-center">
@@ -142,7 +142,7 @@ export function Footer() {
                 letterSpacing: '-0.02em',
               }}
             >
-              JEWELS
+              JEWELLERS
             </h2>
           </div>
         </div>
@@ -153,7 +153,7 @@ export function Footer() {
         <div className="container mx-auto px-4 py-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <p className="text-ivory/40 text-sm">
-              © {new Date().getFullYear()} KRT Jewels. All rights reserved.
+              © {new Date().getFullYear()} KRT JEWELLERS. All rights reserved.
             </p>
             
             {/* Social Links */}
