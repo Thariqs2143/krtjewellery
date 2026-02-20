@@ -674,10 +674,11 @@ export default function ShopPage() {
                 {isMobile && (
                   <Sheet>
                     <SheetTrigger asChild>
-                      <Button variant="outline" size="icon" className="h-10 w-10">
+                      <Button variant="outline" className="gap-2 h-10 px-4">
                         <SlidersHorizontal className="w-4 h-4" />
+                        <span>Filters</span>
                         {hasActiveFilters && (
-                          <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-primary text-primary-foreground text-[10px] flex items-center justify-center">
+                          <span className="w-5 h-5 rounded-full bg-primary text-primary-foreground text-[10px] flex items-center justify-center">
                             {selectedCategories.length +
                               selectedMetalTypes.length +
                               (priceRange[0] > 0 || priceRange[1] < 2000000 ? 1 : 0) +
