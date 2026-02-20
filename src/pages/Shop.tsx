@@ -10,7 +10,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/co
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
-import { SlidersHorizontal, ChevronDown, ChevronUp, X, Search } from 'lucide-react';
+import { SlidersHorizontal, ChevronDown, ChevronUp, X, Search, ArrowUpDown } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useSearchParams, useParams, Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
@@ -640,8 +640,8 @@ export default function ShopPage() {
           <main className="flex-1 min-w-0">
             {/* Toolbar */}
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
-              <p className="text-muted-foreground">
-                <span className="font-semibold text-foreground">{sortedProducts.length}</span> Products
+              <p className="text-muted-foreground text-sm font-medium">
+                {sortedProducts.length} Products
               </p>
 
               <div className="flex items-center gap-3 w-full sm:w-auto flex-wrap">
@@ -674,11 +674,10 @@ export default function ShopPage() {
                 {isMobile && (
                   <Sheet>
                     <SheetTrigger asChild>
-                      <Button variant="outline" className="gap-2">
+                      <Button variant="outline" size="icon" className="h-10 w-10">
                         <SlidersHorizontal className="w-4 h-4" />
-                        Filters
                         {hasActiveFilters && (
-                          <span className="ml-1 w-5 h-5 rounded-full bg-primary text-primary-foreground text-xs flex items-center justify-center">
+                          <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-primary text-primary-foreground text-[10px] flex items-center justify-center">
                             {selectedCategories.length +
                               selectedMetalTypes.length +
                               (priceRange[0] > 0 || priceRange[1] < 2000000 ? 1 : 0) +
@@ -701,12 +700,11 @@ export default function ShopPage() {
                   </Sheet>
                 )}
 
-                {/* Sort Dropdown */}
+                {/* Sort Dropdown - Icon Only */}
                 <div className="flex items-center gap-2 ml-auto">
-                  <span className="text-sm text-muted-foreground whitespace-nowrap">Sort by:</span>
                   <Select value={sortBy} onValueChange={setSortBy}>
-                    <SelectTrigger className="w-[160px]">
-                      <SelectValue placeholder="Sort by" />
+                    <SelectTrigger className="w-10 h-10 px-0 justify-center">
+                      <ArrowUpDown className="w-4 h-4 text-muted-foreground" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="bestseller">Best Seller</SelectItem>
@@ -727,7 +725,7 @@ export default function ShopPage() {
                 {selectedCategories.map(category => (
                   <span 
                     key={category}
-                    className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-secondary text-sm"
+                    className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm"
                   >
                     {CATEGORY_NAMES[category]}
                     <button onClick={() => toggleCategory(category)}>
@@ -738,7 +736,7 @@ export default function ShopPage() {
                 {selectedMetalTypes.map(metalType => (
                   <span 
                     key={metalType}
-                    className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-secondary text-sm"
+                    className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-amber-100 text-amber-800 text-sm"
                   >
                     {METAL_TYPE_NAMES[metalType]}
                     <button onClick={() => toggleMetalType(metalType)}>
