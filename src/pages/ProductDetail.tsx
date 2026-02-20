@@ -12,6 +12,7 @@ import { ProductImageGallery } from '@/components/product/ProductImageGallery';
 import { ProductVariantSelector } from '@/components/product/ProductVariantSelector';
 import { ProductPricing } from '@/components/product/ProductPricing';
 import { ProductActions } from '@/components/product/ProductActions';
+import { PincodeChecker } from '@/components/product/PincodeChecker';
 import { ProductTabs } from '@/components/product/ProductTabs';
 import { TrustPromise } from '@/components/product/TrustPromise';
 import { StockBadge } from '@/components/product/StockBadge';
@@ -167,6 +168,8 @@ export default function ProductDetail() {
               product={product}
               variationState={variationState}
             />
+
+            <PincodeChecker />
 
             {/* Why Shop With Us — Angara horizontal trust strip */}
             <div className="border border-border rounded-xl p-4">
