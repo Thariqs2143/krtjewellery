@@ -12,7 +12,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { SlidersHorizontal, ChevronDown, ChevronUp, X, Search } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { useSearchParams, useParams } from 'react-router-dom';
+import { useSearchParams, useParams, Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -188,6 +188,14 @@ export default function ShopPage() {
   const filteredProductSubcategoryOptions = (productSubcategoryOptions || []).filter((sub) =>
     selectedProductCategoryId ? sub.product_category_id === selectedProductCategoryId : true
   );
+
+  const searchSuggestions = useMemo(() => {
+    const query = productSearchTerm.trim().toLowerCase();
+    if (!query || !allProducts) return [];
+    return allProducts
+      .filter((product) => product.name.toLowerCase().includes(query))
+      .slice(0, 8);
+  }, [allProducts, productSearchTerm]);
 
   // Get category counts
   const categoryCounts = useMemo(() => {
@@ -548,6 +556,72 @@ export default function ShopPage() {
         <div className="container mx-auto px-4 py-8">
           <h1 className="font-serif text-3xl md:text-4xl font-semibold">Shop All Jewellery</h1>
           <p className="text-muted-foreground mt-2">Discover our exquisite collection of handcrafted gold jewellery</p>
+        </div>
+      </section>
+
+      {/* Shop Search */}
+      <section className="border-b bg-background">
+        <div className="container mx-auto px-4 py-5">
+          <div className="max-w-3xl relative">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Search jewellery, styles, or product names"
+                value={productSearchTerm}
+                onChange={(e) => setProductSearchTerm(e.target.value)}
+                className="pl-9 pr-10 h-11 rounded-lg bg-secondary/20 focus-visible:bg-background transition-colors"
+              />
+              {productSearchTerm.trim() && (
+                <button
+                  type="button"
+                  onClick={() => setProductSearchTerm('')}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                  aria-label="Clear search"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              )}
+            </div>
+
+            {productSearchTerm.trim() && (
+              <div className="absolute left-0 right-0 mt-2 bg-background border border-border rounded-xl shadow-lg z-20 overflow-hidden">
+                <div className="px-4 py-2 border-b bg-secondary/30">
+                  <p className="text-xs text-muted-foreground">
+                    Suggested Searches
+                  </p>
+                </div>
+                {searchSuggestions.length > 0 ? (
+                  <div className="max-h-80 overflow-y-auto">
+                    {searchSuggestions.map((product) => (
+                      <Link
+                        key={product.id}
+                        to={`/product/${product.slug}`}
+                        className="flex items-center gap-3 px-4 py-3 hover:bg-secondary/40 transition-colors"
+                      >
+                        <div className="w-10 h-10 rounded-md overflow-hidden bg-secondary">
+                          <img
+                            src={product.images[0] || '/placeholder.svg'}
+                            alt={product.name}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                        <div className="min-w-0">
+                          <p className="text-sm font-medium truncate">{product.name}</p>
+                          <p className="text-xs text-muted-foreground">
+                            {CATEGORY_NAMES[product.category]}
+                          </p>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="px-4 py-4 text-sm text-muted-foreground">
+                    No matches found. Try a different keyword.
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
         </div>
       </section>
 
