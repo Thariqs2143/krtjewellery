@@ -12,6 +12,10 @@ interface GstSettings {
   rate: number;
 }
 
+interface DeliveryPincodeSettings {
+  pincodes: string[];
+}
+
 export function useFreeShippingSettings() {
   return useQuery({
     queryKey: ['site-settings', 'free_shipping_threshold'],
@@ -165,6 +169,83 @@ export function useUpdateGstSettings() {
       toast({
         title: 'Error',
         description: error.message || 'Failed to update GST settings',
+        variant: 'destructive',
+      });
+    },
+  });
+}
+
+export function useDeliveryPincodes() {
+  return useQuery({
+    queryKey: ['site-settings', 'delivery_pincodes'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('site_settings')
+        .select('value')
+        .eq('key', 'delivery_pincodes')
+        .single();
+
+      if (error) {
+        return { pincodes: [] } as DeliveryPincodeSettings;
+      }
+
+      const value = data.value as { pincodes?: string[] };
+      return {
+        pincodes: Array.isArray(value.pincodes) ? value.pincodes : [],
+      } as DeliveryPincodeSettings;
+    },
+  });
+}
+
+export function useUpdateDeliveryPincodes() {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: async (settings: DeliveryPincodeSettings) => {
+      const { data: existing } = await supabase
+        .from('site_settings')
+        .select('id')
+        .eq('key', 'delivery_pincodes')
+        .single();
+
+      const jsonValue: Json = {
+        pincodes: settings.pincodes,
+      };
+
+      if (existing) {
+        const { error } = await supabase
+          .from('site_settings')
+          .update({
+            value: jsonValue,
+            updated_at: new Date().toISOString(),
+          })
+          .eq('key', 'delivery_pincodes');
+
+        if (error) throw error;
+      } else {
+        const { error } = await supabase
+          .from('site_settings')
+          .insert([{
+            key: 'delivery_pincodes',
+            value: jsonValue,
+            description: 'Pincodes where delivery is available',
+          }]);
+
+        if (error) throw error;
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['site-settings', 'delivery_pincodes'] });
+      toast({
+        title: 'Settings Updated',
+        description: 'Delivery pincodes have been saved.',
+      });
+    },
+    onError: (error: Error) => {
+      toast({
+        title: 'Error',
+        description: error.message || 'Failed to update delivery pincodes',
         variant: 'destructive',
       });
     },
