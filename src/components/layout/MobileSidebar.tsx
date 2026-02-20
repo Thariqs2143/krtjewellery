@@ -58,8 +58,8 @@ export function MobileSidebar({ isOpen, onClose }: MobileSidebarProps) {
       <div className="fixed inset-y-0 left-0 z-50 w-[85%] max-w-sm bg-background shadow-luxury animate-slide-in-left overflow-y-auto">
         {/* Header */}
         <div className="sticky top-0 bg-background z-10 flex items-center justify-between p-4 border-b">
-          <Link to="/" onClick={onClose} className="font-serif text-2xl font-bold text-primary">
-            KRT Jewels
+          <Link to="/" onClick={onClose} className="font-serif text-lg font-medium tracking-[0.15em] text-foreground whitespace-nowrap">
+            KRT JEWELLERS
           </Link>
           <Button variant="ghost" size="icon" onClick={onClose}>
             <X className="w-5 h-5" />
