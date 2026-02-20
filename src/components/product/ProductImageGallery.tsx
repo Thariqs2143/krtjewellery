@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { ZoomIn, Play } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { ZoomIn, Play, Sparkles, Star, Gem } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 
@@ -51,6 +51,104 @@ export function ProductImageGallery({
     ...displayImages.map((url, index) => ({ type: 'image' as const, url, index })),
   ];
 
+  const LensImage = ({
+    src,
+    alt,
+  }: {
+    src: string;
+    alt: string;
+  }) => {
+    const containerRef = useRef<HTMLDivElement | null>(null);
+    const [lens, setLens] = useState({ x: 0, y: 0, visible: false });
+    const [zoom, setZoom] = useState(3.2);
+    const [lensSize, setLensSize] = useState(160);
+    const pinchDistanceRef = useRef<number | null>(null);
+
+    const handleMove = (event: React.MouseEvent<HTMLDivElement>) => {
+      const rect = containerRef.current?.getBoundingClientRect();
+      if (!rect) return;
+      const x = Math.min(Math.max(event.clientX - rect.left, 0), rect.width);
+      const y = Math.min(Math.max(event.clientY - rect.top, 0), rect.height);
+      const xPercent = (x / rect.width) * 100;
+      const yPercent = (y / rect.height) * 100;
+      setLens({ x: xPercent, y: yPercent, visible: true });
+    };
+
+    const handleTouchMove = (event: React.TouchEvent<HTMLDivElement>) => {
+      const rect = containerRef.current?.getBoundingClientRect();
+      if (!rect) return;
+      const touch = event.touches[0];
+      if (!touch) return;
+      const x = Math.min(Math.max(touch.clientX - rect.left, 0), rect.width);
+      const y = Math.min(Math.max(touch.clientY - rect.top, 0), rect.height);
+      const xPercent = (x / rect.width) * 100;
+      const yPercent = (y / rect.height) * 100;
+      setLens({ x: xPercent, y: yPercent, visible: true });
+
+      if (event.touches.length >= 2) {
+        const t1 = event.touches[0];
+        const t2 = event.touches[1];
+        const dx = t1.clientX - t2.clientX;
+        const dy = t1.clientY - t2.clientY;
+        const distance = Math.hypot(dx, dy);
+        if (pinchDistanceRef.current) {
+          const delta = distance - pinchDistanceRef.current;
+          const nextZoom = Math.min(Math.max(2.6, zoom + delta * 0.005), 5.5);
+          setZoom(nextZoom);
+        }
+        pinchDistanceRef.current = distance;
+      }
+    };
+
+    const handleTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
+      if (event.touches.length >= 2) {
+        const t1 = event.touches[0];
+        const t2 = event.touches[1];
+        const dx = t1.clientX - t2.clientX;
+        const dy = t1.clientY - t2.clientY;
+        pinchDistanceRef.current = Math.hypot(dx, dy);
+      }
+    };
+
+    const handleTouchEnd = () => {
+      pinchDistanceRef.current = null;
+      setLens((prev) => ({ ...prev, visible: false }));
+    };
+
+    return (
+      <div
+        ref={containerRef}
+        className="relative w-full h-full"
+        onMouseMove={handleMove}
+        onMouseLeave={() => setLens((prev) => ({ ...prev, visible: false }))}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
+        <img
+          src={src}
+          alt={alt}
+          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+        />
+        {lens.visible && (
+          <div
+            className="absolute rounded-full border border-white/80 shadow-xl bg-white pointer-events-none"
+            style={{
+              width: `${lensSize}px`,
+              height: `${lensSize}px`,
+              left: `calc(${lens.x}% - ${lensSize / 2}px)`,
+              top: `calc(${lens.y}% - ${lensSize / 2}px)`,
+              backgroundImage: `url(${src})`,
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: `${lens.x}% ${lens.y}%`,
+              backgroundSize: `${zoom * 100}%`,
+            }}
+          />
+        )}
+      </div>
+    );
+  };
+
   return (
     <div className="space-y-4">
       {/* Mobile: single image with dots */}
@@ -89,15 +187,21 @@ export function ProductImageGallery({
             </div>
           </div>
           {selectedImage === 0 && (
-            <div className="absolute top-3 left-3 flex flex-col gap-2">
+            <div className="absolute top-3 left-3 flex items-center gap-2">
               {badges?.isNewArrival && (
-                <Badge className="badge-luxury">✨ New Arrival</Badge>
+                <Badge className="badge-luxury w-8 h-8 p-0 rounded-full flex items-center justify-center" title="New Arrival">
+                  <Sparkles className="w-4 h-4" />
+                </Badge>
               )}
               {badges?.isBestseller && (
-                <Badge className="bg-accent text-accent-foreground">🔥 Bestseller</Badge>
+                <Badge className="bg-accent text-accent-foreground w-8 h-8 p-0 rounded-full flex items-center justify-center" title="Bestseller">
+                  <Star className="w-4 h-4" />
+                </Badge>
               )}
               {badges?.isBridal && (
-                <Badge className="bg-maroon text-ivory">💍 Bridal</Badge>
+                <Badge className="bg-maroon text-ivory w-8 h-8 p-0 rounded-full flex items-center justify-center" title="Bridal">
+                  <Gem className="w-4 h-4" />
+                </Badge>
               )}
             </div>
           )}
@@ -156,10 +260,9 @@ export function ProductImageGallery({
                 onOpenLightbox(imageIndex);
               }}
             >
-              <img
+              <LensImage
                 src={item.url || '/placeholder.svg'}
                 alt={`${productName} - Image ${imageIndex + 1}`}
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-rich-black/0 group-hover:bg-rich-black/10 transition-colors flex items-center justify-center pointer-events-none">
                 <div className="opacity-0 group-hover:opacity-100 transition-opacity bg-white/90 rounded-full p-3 shadow-lg">
@@ -167,15 +270,21 @@ export function ProductImageGallery({
                 </div>
               </div>
               {imageIndex === 0 && (
-                <div className="absolute top-3 left-3 flex flex-col gap-2">
+                <div className="absolute top-3 left-3 flex items-center gap-2">
                   {badges?.isNewArrival && (
-                    <Badge className="badge-luxury">✨ New Arrival</Badge>
+                    <Badge className="badge-luxury w-8 h-8 p-0 rounded-full flex items-center justify-center" title="New Arrival">
+                      <Sparkles className="w-4 h-4" />
+                    </Badge>
                   )}
                   {badges?.isBestseller && (
-                    <Badge className="bg-accent text-accent-foreground">🔥 Bestseller</Badge>
+                    <Badge className="bg-accent text-accent-foreground w-8 h-8 p-0 rounded-full flex items-center justify-center" title="Bestseller">
+                      <Star className="w-4 h-4" />
+                    </Badge>
                   )}
                   {badges?.isBridal && (
-                    <Badge className="bg-maroon text-ivory">💍 Bridal</Badge>
+                    <Badge className="bg-maroon text-ivory w-8 h-8 p-0 rounded-full flex items-center justify-center" title="Bridal">
+                      <Gem className="w-4 h-4" />
+                    </Badge>
                   )}
                 </div>
               )}
