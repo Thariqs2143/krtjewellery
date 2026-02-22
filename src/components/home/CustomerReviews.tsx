@@ -147,6 +147,9 @@ export function CustomerReviews() {
           <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-medium mb-6 section-heading">
             What Our Customers Say
           </h2>
+          <p className="text-muted-foreground max-w-2xl mx-auto">
+            Real stories from families who trust KRT for every milestone.
+          </p>
           <div className="flex items-center justify-center gap-3 mt-8 mb-2">
             <div className="flex gap-1">
               {[...Array(5)].map((_, i) => (
