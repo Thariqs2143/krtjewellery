@@ -39,7 +39,11 @@ export function Navbar() {
   const activeMegamenuCategory = megamenuData.find(
     (category) => category.category_slug === hoveredCategory
   );
-  const desktopCategories: typeof megamenuData = [];
+  const desktopCategories: typeof megamenuData = megamenuData.filter(
+    (category) =>
+      (category.megamenu_sections && category.megamenu_sections.length > 0) ||
+      (category.featured_products && category.featured_products.length > 0)
+  );
 
   return (
     <>
