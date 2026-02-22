@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Phone, MessageCircle, MapPin, Mail, Headphones, X, QrCode } from 'lucide-react';
+import { Phone, MessageCircle, MapPin, Mail, Headset, X, QrCode } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 export function FloatingContactMenu() {
@@ -128,7 +128,7 @@ export function FloatingContactMenu() {
           {isOpen ? (
             <X className="w-7 h-7" />
           ) : (
-            <Headphones className="w-7 h-7" />
+            <Headset className="w-7 h-7" />
           )}
         </Button>
       </div>
