@@ -17,6 +17,7 @@ interface ProductActionsProps {
     priceAdjustment: number;
     weightAdjustment: number;
     imageUrl: string | null;
+    isComplete?: boolean;
     selectedOptions?: {
       gemstoneQuality?: string | string[] | null;
       caratWeight?: string | string[] | null;
@@ -43,6 +44,14 @@ export function ProductActions({ product, variationState }: ProductActionsProps)
 
   const handleAddToCart = () => {
     if (isOutOfStock) return;
+    if (variationState && variationState.isComplete === false) {
+      toast({
+        title: 'Select all options',
+        description: 'Please choose metal type and required options before adding to cart.',
+        variant: 'destructive',
+      });
+      return;
+    }
     addToCart({
       productId: product.id,
       quantity,
