@@ -36,6 +36,7 @@ export default function ProductDetail() {
     priceAdjustment: number;
     weightAdjustment: number;
     imageUrl: string | null;
+    isComplete?: boolean;
     selectedOptions?: {
       gemstoneQuality?: string | string[] | null;
       caratWeight?: string | string[] | null;
