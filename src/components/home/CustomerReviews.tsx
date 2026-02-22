@@ -138,13 +138,13 @@ export function CustomerReviews() {
       
       <div className="container mx-auto px-4">
         {/* Header */}
-        <div className="text-center mb-14">
-          <span className="inline-flex items-center gap-2 text-primary text-sm uppercase tracking-[0.3em] font-medium mb-3">
+        <div className="flex flex-col items-center gap-4 text-center mb-14">
+          <span className="inline-flex items-center gap-2 text-primary text-sm uppercase tracking-[0.3em] font-medium">
             <span className="w-8 h-px bg-primary" />
             Testimonials
             <span className="w-8 h-px bg-primary" />
           </span>
-          <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-medium mb-6 section-heading">
+          <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-medium section-heading">
             What Our Customers Say
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
