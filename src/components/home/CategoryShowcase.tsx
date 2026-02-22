@@ -42,13 +42,13 @@ export function CategoryShowcase() {
       
       <div className="container mx-auto px-4 relative">
         {/* Header */}
-        <div className="text-center mb-14">
-          <span className="inline-flex items-center gap-2 text-primary text-sm uppercase tracking-[0.3em] font-medium mb-3">
+        <div className="flex flex-col items-center gap-4 text-center mb-14">
+          <span className="inline-flex items-center gap-2 text-primary text-sm uppercase tracking-[0.3em] font-medium">
             <span className="w-8 h-px bg-primary" />
             Explore
             <span className="w-8 h-px bg-primary" />
           </span>
-          <h2 className="font-serif text-4xl md:text-5xl font-medium section-heading mb-4">
+          <h2 className="font-serif text-4xl md:text-5xl font-medium section-heading">
             Our Collections
           </h2>
           <p className="text-muted-foreground max-w-xl mx-auto">
