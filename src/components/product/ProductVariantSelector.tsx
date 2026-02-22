@@ -37,6 +37,7 @@ interface ProductVariantSelectorProps {
     priceAdjustment: number;
     weightAdjustment: number;
     imageUrl: string | null;
+    isComplete?: boolean;
     selectedOptions?: {
       gemstoneQuality?: string | string[] | null;
       caratWeight?: string | string[] | null;
@@ -70,7 +71,7 @@ export function ProductVariantSelector({
 
   // (debug logs moved below after computed options)
   
-  const [selectedMetal, setSelectedMetal] = useState<string>(baseMetalType);
+  const [selectedMetal, setSelectedMetal] = useState<string>('');
   const [selectedSize, setSelectedSize] = useState<string>('');
   const [selectedGemstone, setSelectedGemstone] = useState<string>('');
   const [selectedCarat, setSelectedCarat] = useState<string>('');
@@ -234,48 +235,38 @@ export function ProductVariantSelector({
     console.debug('ProductVariantSelector debug', { productId, variations, sizeOptions, availableMetals });
   }
 
-  // Set default selections
+  // Set default selections only when there's a single option
   useEffect(() => {
-    if (availableMetals.length > 0 && !selectedMetal) {
-      const defaultMetal = availableMetals.find(m => m.isDefault) || availableMetals[0];
-      if (defaultMetal) {
-        setSelectedMetal(defaultMetal.value);
-      }
+    if (availableMetals.length === 1 && !selectedMetal) {
+      setSelectedMetal(availableMetals[0].value);
     }
   }, [availableMetals, selectedMetal]);
 
   useEffect(() => {
-    if (sizeOptions.length > 0 && !selectedSize) {
-      const defaultSize = sizeOptions.find(s => s.isDefault) || sizeOptions[0];
-      if (defaultSize) {
-        setSelectedSize(defaultSize.value);
-      }
+    if (sizeOptions.length === 1 && !selectedSize) {
+      setSelectedSize(sizeOptions[0].value);
     }
-  }, [sizeOptions]);
+  }, [sizeOptions, selectedSize]);
 
   useEffect(() => {
-    if (gemstoneOptions.length > 0 && !selectedGemstone) {
-      const defaultGem = gemstoneOptions.find(g => g.isDefault) || gemstoneOptions[0];
-      if (defaultGem) {
-        setSelectedGemstone(defaultGem.value);
-        if (defaultGem.selectionMode === 'multi') {
-          setSelectedGemstones([defaultGem.value]);
-        }
+    if (gemstoneOptions.length === 1 && !selectedGemstone) {
+      const defaultGem = gemstoneOptions[0];
+      setSelectedGemstone(defaultGem.value);
+      if (defaultGem.selectionMode === 'multi') {
+        setSelectedGemstones([defaultGem.value]);
       }
     }
-  }, [gemstoneOptions]);
+  }, [gemstoneOptions, selectedGemstone]);
 
   useEffect(() => {
-    if (caratOptions.length > 0 && !selectedCarat) {
-      const defaultCarat = caratOptions.find(c => c.isDefault) || caratOptions[0];
-      if (defaultCarat) {
-        setSelectedCarat(defaultCarat.value);
-        if (defaultCarat.selectionMode === 'multi') {
-          setSelectedCarats([defaultCarat.value]);
-        }
+    if (caratOptions.length === 1 && !selectedCarat) {
+      const defaultCarat = caratOptions[0];
+      setSelectedCarat(defaultCarat.value);
+      if (defaultCarat.selectionMode === 'multi') {
+        setSelectedCarats([defaultCarat.value]);
       }
     }
-  }, [caratOptions]);
+  }, [caratOptions, selectedCarat]);
 
   useEffect(() => {
     if (certificateOptions.length > 0 && selectedCertificates.length === 0) {
@@ -326,6 +317,16 @@ export function ProductVariantSelector({
       selectedSizeOption?.imageUrl ||
       null;
 
+    const gemstoneComplete = gemstoneOptions.length === 0 || (gemstoneIsMulti
+      ? selectedGemstones.length > 0
+      : !!selectedGemstone);
+    const caratComplete = caratOptions.length === 0 || (caratIsMulti
+      ? selectedCarats.length > 0
+      : !!selectedCarat);
+    const metalComplete = availableMetals.length === 0 || !!selectedMetal;
+    const sizeComplete = sizeOptions.length === 0 || !!selectedSize;
+    const isComplete = metalComplete && sizeComplete && gemstoneComplete && caratComplete;
+
     const certificatePrice = selectedCertOptions.reduce((sum, cert) => sum + (cert.priceAdjustment || 0), 0);
     const customPrice = selectedCustomOptions.reduce((sum, opt) => sum + (opt.priceAdjustment || 0), 0);
     const gemstonePrice = selectedGemOptions.reduce((sum, g) => sum + (g.priceAdjustment || 0), 0);
@@ -346,6 +347,7 @@ export function ProductVariantSelector({
         customPrice,
       weightAdjustment: (selectedMetalOption?.weightAdjustment || 0) + (selectedSizeOption?.weightAdjustment || 0),
       imageUrl,
+      isComplete,
       selectedOptions: {
         gemstoneQuality: gemstoneIsMulti
           ? gemstoneSelectionLabels
@@ -529,7 +531,7 @@ export function ProductVariantSelector({
             <label className="text-xs font-medium text-foreground">
               Metal Type:{' '}
               <span className="text-primary font-semibold">
-                {selectedMetalOption?.label || METAL_TYPE_NAMES[baseMetalType]}
+                {selectedMetalOption?.label || 'Select Metal Type'}
               </span>
             </label>
           </div>
