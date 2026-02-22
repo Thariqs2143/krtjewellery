@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { X, ChevronLeft, ChevronRight, ZoomIn, ZoomOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -14,6 +14,10 @@ export function ImageLightbox({ images, initialIndex, isOpen, onClose }: ImageLi
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
   const [isZoomed, setIsZoomed] = useState(false);
   const [zoomPosition, setZoomPosition] = useState({ x: 50, y: 50 });
+  const [panOffset, setPanOffset] = useState({ x: 0, y: 0 });
+  const isPanningRef = useRef(false);
+  const lastPointerRef = useRef<{ x: number; y: number } | null>(null);
+  const imageWrapperRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     setCurrentIndex(initialIndex);
@@ -54,11 +58,13 @@ export function ImageLightbox({ images, initialIndex, isOpen, onClose }: ImageLi
   const goToPrevious = () => {
     setCurrentIndex((prev) => (prev > 0 ? prev - 1 : images.length - 1));
     setIsZoomed(false);
+    setPanOffset({ x: 0, y: 0 });
   };
 
   const goToNext = () => {
     setCurrentIndex((prev) => (prev < images.length - 1 ? prev + 1 : 0));
     setIsZoomed(false);
+    setPanOffset({ x: 0, y: 0 });
   };
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -70,7 +76,44 @@ export function ImageLightbox({ images, initialIndex, isOpen, onClose }: ImageLi
   };
 
   const toggleZoom = () => {
-    setIsZoomed(!isZoomed);
+    setIsZoomed((prev) => !prev);
+    setPanOffset({ x: 0, y: 0 });
+  };
+
+  const clampPan = (x: number, y: number) => {
+    const wrapper = imageWrapperRef.current;
+    if (!wrapper) return { x, y };
+    const rect = wrapper.getBoundingClientRect();
+    const scale = 2;
+    const maxX = Math.max(0, (rect.width * (scale - 1)) / 2);
+    const maxY = Math.max(0, (rect.height * (scale - 1)) / 2);
+    return {
+      x: Math.min(maxX, Math.max(-maxX, x)),
+      y: Math.min(maxY, Math.max(-maxY, y)),
+    };
+  };
+
+  const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!isZoomed) return;
+    e.preventDefault();
+    isPanningRef.current = true;
+    lastPointerRef.current = { x: e.clientX, y: e.clientY };
+    e.currentTarget.setPointerCapture(e.pointerId);
+  };
+
+  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!isZoomed || !isPanningRef.current || !lastPointerRef.current) return;
+    const dx = e.clientX - lastPointerRef.current.x;
+    const dy = e.clientY - lastPointerRef.current.y;
+    lastPointerRef.current = { x: e.clientX, y: e.clientY };
+    setPanOffset((prev) => clampPan(prev.x + dx, prev.y + dy));
+  };
+
+  const handlePointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!isZoomed) return;
+    isPanningRef.current = false;
+    lastPointerRef.current = null;
+    e.currentTarget.releasePointerCapture(e.pointerId);
   };
 
   if (!isOpen) return null;
@@ -125,22 +168,29 @@ export function ImageLightbox({ images, initialIndex, isOpen, onClose }: ImageLi
         onClick={(e) => e.target === e.currentTarget && onClose()}
       >
         <div
+          ref={imageWrapperRef}
           className={cn(
             'relative max-w-full max-h-full overflow-hidden rounded-lg',
             isZoomed ? 'cursor-zoom-out' : 'cursor-zoom-in'
           )}
           onClick={toggleZoom}
           onMouseMove={handleMouseMove}
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
+          onPointerUp={handlePointerUp}
+          onPointerCancel={handlePointerUp}
+          style={isZoomed ? { touchAction: 'none' } : undefined}
         >
           <img
             src={images[currentIndex]}
             alt={`Product image ${currentIndex + 1}`}
             className={cn(
               'max-w-[90vw] max-h-[80vh] object-contain transition-transform duration-300',
-              isZoomed && 'scale-200'
+              isZoomed && 'will-change-transform'
             )}
             style={isZoomed ? {
               transformOrigin: `${zoomPosition.x}% ${zoomPosition.y}%`,
+              transform: `translate3d(${panOffset.x}px, ${panOffset.y}px, 0) scale(2)`,
             } : undefined}
             draggable={false}
           />
