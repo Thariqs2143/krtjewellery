@@ -118,7 +118,7 @@ export function FloatingContactMenu() {
         {/* Main Toggle Button */}
         <Button
           onClick={() => setIsOpen(!isOpen)}
-          className={`w-16 h-16 rounded-full shadow-luxury text-white p-0 transition-all hover:scale-110 flex items-center justify-center ${
+          className={`w-18 h-18 rounded-full shadow-luxury text-white p-0 transition-all hover:scale-110 flex items-center justify-center ${
             isOpen
               ? 'bg-red-500 hover:bg-red-600'
               : 'bg-gradient-to-br from-[#8B5E3C] via-[#B07B54] to-[#D4A373] hover:from-[#7A4F31] hover:via-[#9E6B46] hover:to-[#C28E5E]'
@@ -131,7 +131,7 @@ export function FloatingContactMenu() {
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 16 16"
-              className="w-11 h-11"
+              className="w-12 h-12"
               aria-hidden="true"
             >
               <path
