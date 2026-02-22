@@ -59,23 +59,6 @@ export function Footer() {
               </div>
             </div>
 
-            {/* Map */}
-            <div className="mt-6">
-              <div className="group relative overflow-hidden rounded-2xl border border-white/10 shadow-soft">
-                <iframe
-                  title="KRT Jewellers Location"
-                  src="https://www.google.com/maps?q=1154%2C%20Big%20Bazaar%20St%2C%20Prakasam%2C%20Town%20Hall%2C%20Coimbatore%2C%20Tamil%20Nadu%20641001&output=embed"
-                  className="h-52 w-full grayscale-[10%] contrast-[1.05] transition-transform duration-300 group-hover:scale-[1.02]"
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                />
-                <div className="pointer-events-none absolute inset-0 flex items-end justify-center bg-gradient-to-t from-rich-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                  <span className="mb-3 rounded-full bg-rich-black/70 px-3 py-1 text-xs font-semibold tracking-widest text-ivory">
-                    KRT JEWELLERS
-                  </span>
-                </div>
-              </div>
-            </div>
           </div>
 
           {/* Collections */}
@@ -133,7 +116,7 @@ export function Footer() {
 
       {/* Full-width Map */}
       <div className="relative overflow-hidden border-t border-charcoal/50">
-        <div className="group relative">
+        <div className="group relative overflow-hidden rounded-3xl">
           <iframe
             title="KRT Jewellers Location"
             src="https://www.google.com/maps?q=1154%2C%20Big%20Bazaar%20St%2C%20Prakasam%2C%20Town%20Hall%2C%20Coimbatore%2C%20Tamil%20Nadu%20641001&output=embed"
@@ -141,7 +124,7 @@ export function Footer() {
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
           />
-          <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-rich-black/30 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+          <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-rich-black/70 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
             <span
               className="font-serif text-4xl md:text-6xl lg:text-7xl font-bold text-outline select-none"
               style={{ letterSpacing: '-0.02em' }}
