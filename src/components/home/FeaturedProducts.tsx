@@ -14,17 +14,15 @@ export function FeaturedProducts() {
       
       <div className="container mx-auto px-4 relative">
         {/* Header */}
-        <div className="flex flex-col items-center gap-6 mb-14">
-          <div className="text-center">
-            <span className="inline-flex items-center justify-center gap-2 text-primary text-sm uppercase tracking-[0.3em] font-medium mb-3">
-              <span className="w-8 h-px bg-primary" />
-              Curated Selection
-              <span className="w-8 h-px bg-primary" />
-            </span>
-            <h2 className="font-serif text-4xl md:text-5xl font-medium section-heading">
-              Featured Pieces
-            </h2>
-          </div>
+        <div className="flex flex-col items-center gap-4 mb-14 text-center">
+          <span className="inline-flex items-center justify-center gap-2 text-primary text-sm uppercase tracking-[0.3em] font-medium">
+            <span className="w-8 h-px bg-primary" />
+            Curated Selection
+            <span className="w-8 h-px bg-primary" />
+          </span>
+          <h2 className="font-serif text-4xl md:text-5xl font-medium section-heading">
+            Featured Pieces
+          </h2>
           <Link to="/shop">
             <Button
               variant="outline"
