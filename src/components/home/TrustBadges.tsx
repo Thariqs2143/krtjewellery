@@ -38,14 +38,14 @@ export function TrustBadges() {
               className="text-center group"
               style={{ animationDelay: `${index * 100}ms` }}
             >
-              <div className="relative w-18 h-18 mx-auto mb-5">
+              <div className="relative w-16 h-16 md:w-20 md:h-20 mx-auto mb-5">
                 {/* Outer ring */}
                 <div className="absolute inset-0 rounded-full border border-primary/30 group-hover:border-primary/60 transition-colors" />
                 {/* Inner glow */}
                 <div className="absolute inset-1 rounded-full bg-gradient-to-br from-primary/20 to-primary/5 group-hover:from-primary/30 group-hover:to-primary/10 transition-all" />
                 {/* Icon container */}
                 <div className="absolute inset-2 rounded-full bg-gradient-to-br from-primary via-gold-shimmer to-primary flex items-center justify-center shadow-gold group-hover:shadow-lg group-hover:scale-105 transition-all duration-300">
-                  <feature.icon className="w-7 h-7 text-rich-black" />
+                  <feature.icon className="w-6 h-6 md:w-7 md:h-7 text-rich-black" />
                 </div>
               </div>
               <h3 className="font-serif text-lg text-ivory font-medium mb-2 group-hover:text-primary transition-colors">
