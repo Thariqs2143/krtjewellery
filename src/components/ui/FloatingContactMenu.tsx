@@ -131,7 +131,7 @@ export function FloatingContactMenu() {
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 16 16"
-              className="w-9 h-9"
+              className="w-12 h-12"
               aria-hidden="true"
             >
               <path
