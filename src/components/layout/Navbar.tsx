@@ -171,7 +171,7 @@ export function Navbar() {
         </div>
 
         {/* Row 2: Category Navigation with Megamenu */}
-        {desktopCategories.length > 0 && (
+        {isMegamenuEnabled && desktopCategories.length > 0 && (
           <div
             className="border-t border-border bg-white relative"
             onMouseLeave={() => setHoveredCategory(null)}
