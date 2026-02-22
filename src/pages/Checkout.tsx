@@ -6,7 +6,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useGoldRate } from '@/hooks/useGoldRate';
 import { supabase } from '@/integrations/supabase/client';
 import type { Json } from '@/integrations/supabase/types';
-import { formatPrice, type Address } from '@/lib/types';
+import { formatPrice } from '@/lib/types';
 import { useGstSettings } from '@/hooks/useSiteSettings';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -315,7 +315,7 @@ export default function CheckoutPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!user || !goldRate) return;
+    if (!goldRate) return;
 
     // Validate address
     if (!address.full_name || !address.phone || !address.address_line1 || !address.city || !address.pincode) {
