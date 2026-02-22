@@ -101,13 +101,13 @@ export function RotatingCardsSection() {
       className="py-20 md:py-32 bg-gradient-to-b from-secondary/20 via-background to-secondary/30 overflow-hidden"
     >
       {/* Header */}
-      <div className="text-center mb-16 container mx-auto px-4">
-        <span className="inline-flex items-center gap-2 text-primary text-sm uppercase tracking-[0.3em] font-medium mb-3">
+      <div className="flex flex-col items-center gap-4 text-center mb-16 container mx-auto px-4">
+        <span className="inline-flex items-center gap-2 text-primary text-sm uppercase tracking-[0.3em] font-medium">
           <span className="w-8 h-px bg-primary" />
           Our Showcase
           <span className="w-8 h-px bg-primary" />
         </span>
-        <h2 className="font-serif text-4xl md:text-5xl font-medium section-heading mb-6">
+        <h2 className="font-serif text-4xl md:text-5xl font-medium section-heading">
           Exquisite Artistry
         </h2>
         <p className="text-muted-foreground max-w-xl mx-auto">
