@@ -5,6 +5,7 @@ import { useCart } from '@/hooks/useCart';
 import { useAuth } from '@/hooks/useAuth';
 import { useGoldRate } from '@/hooks/useGoldRate';
 import { supabase } from '@/integrations/supabase/client';
+import type { Json } from '@/integrations/supabase/types';
 import { formatPrice, type Address } from '@/lib/types';
 import { useGstSettings } from '@/hooks/useSiteSettings';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -16,9 +17,13 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { useToast } from '@/hooks/use-toast';
 import { ShoppingBag, MapPin, CreditCard, Truck, Shield, Loader2 } from 'lucide-react';
 
-  interface Window {
-    Razorpay: new (options: unknown) => unknown;
-  }
+type RazorpayResponse = {
+  razorpay_order_id: string;
+  razorpay_payment_id: string;
+  razorpay_signature: string;
+};
+
+type RazorpayCtor = new (options: Record<string, unknown>) => { open: () => void };
 
 interface AddressForm {
   full_name: string;
@@ -35,7 +40,7 @@ export default function CheckoutPage() {
   const { items, subtotal, gstTotal, total, clearCart, isLoading: cartLoading } = useCart();
   const { data: gstSettings } = useGstSettings();
   const gstRate = gstSettings?.rate ?? 3;
-  const { user, isAuthenticated, loading: authLoading } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const { data: goldRate } = useGoldRate();
   const { toast } = useToast();
   
@@ -106,11 +111,6 @@ export default function CheckoutPage() {
     );
   }
 
-  // Redirect to auth AFTER auth loading is complete
-  if (!isAuthenticated) {
-    return <Navigate to="/auth?redirect=/checkout" replace />;
-  }
-
   if (items.length === 0) {
     return <Navigate to="/cart" replace />;
   }
@@ -124,9 +124,48 @@ export default function CheckoutPage() {
   };
 
   const createOrder = async (orderNumber: string, paymentId?: string) => {
-    if (!user || !goldRate) return null;
+    if (!goldRate) return null;
 
     // Create order
+    if (!user) {
+      const orderItems = items.map((item) => ({
+        product_id: item.product.id,
+        product_name: item.product.name,
+        product_image: item.product.images[0] || null,
+        weight_grams: item.product.weight_grams + (item.variation_weight_adjustment || 0),
+        gold_rate_applied: item.product.calculated_price.gold_rate_applied,
+        making_charges: item.product.calculated_price.making_charges,
+        diamond_cost: item.product.diamond_cost || 0,
+        stone_cost: item.product.stone_cost || 0,
+        quantity: item.quantity,
+        unit_price: item.product.calculated_price.total + (item.variation_price_adjustment || 0),
+        total_price:
+          (item.product.calculated_price.total + (item.variation_price_adjustment || 0)) *
+          item.quantity,
+        selected_variations: item.selected_variations || {},
+        variation_price_adjustment: item.variation_price_adjustment || 0,
+        variation_weight_adjustment: item.variation_weight_adjustment || 0,
+      }));
+
+      const { data: guestData, error: guestError } = await supabase.functions.invoke('create-guest-order', {
+        body: {
+          order_number: orderNumber,
+          subtotal,
+          gst_amount: gstTotal,
+          total_amount: total,
+          gold_rate_at_order: goldRate.rate_22k,
+          shipping_address: address as unknown as Json,
+          payment_method: paymentMethod,
+          payment_id: paymentId || null,
+          notes: notes || null,
+          items: orderItems,
+        },
+      });
+
+      if (guestError) throw new Error(guestError.message);
+      return guestData;
+    }
+
     const { data: order, error: orderError } = await supabase
       .from('orders')
       .insert([{
@@ -137,7 +176,7 @@ export default function CheckoutPage() {
         subtotal: subtotal,
         gst_amount: gstTotal,
         total_amount: total,
-        shipping_address: address as Address,
+        shipping_address: address as unknown as Json,
         payment_method: paymentMethod,
         payment_id: paymentId || null,
         notes: notes || null,
@@ -212,10 +251,10 @@ export default function CheckoutPage() {
         name: 'KRT Jewels',
         description: `Order #${orderNumber}`,
         order_id: data.orderId,
-        handler: async (response: unknown) => {
+        handler: async (response: RazorpayResponse) => {
           try {
             // Verify payment
-            const { data: verifyData, error: verifyError } = await supabase.functions.invoke('verify-razorpay-payment', {
+            const { error: verifyError } = await supabase.functions.invoke('verify-razorpay-payment', {
               body: {
                 razorpay_order_id: response.razorpay_order_id,
                 razorpay_payment_id: response.razorpay_payment_id,
@@ -258,7 +297,8 @@ export default function CheckoutPage() {
         },
       };
 
-      const razorpay = new window.Razorpay(options);
+      const Razorpay = (window as unknown as { Razorpay: RazorpayCtor }).Razorpay;
+      const razorpay = new Razorpay(options as Record<string, unknown>);
       razorpay.open();
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : 'Something went wrong. Please try again.';
