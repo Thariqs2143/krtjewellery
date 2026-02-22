@@ -26,7 +26,6 @@ export function MobileSidebar({ isOpen, onClose }: MobileSidebarProps) {
   const navigate = useNavigate();
   const { data: megamenu } = useMegamenu();
   const { data: megamenuSettings } = useMegamenuSettings();
-  const [expandedCategories, setExpandedCategories] = useState<string[]>([]);
   const isMegamenuEnabled = megamenuSettings?.is_enabled !== false;
   const megamenuData =
     megamenu && megamenu.length > 0 ? megamenu : buildFallbackMegamenu();
@@ -34,14 +33,6 @@ export function MobileSidebar({ isOpen, onClose }: MobileSidebarProps) {
   const handleNavigation = (href: string) => {
     navigate(href);
     onClose();
-  };
-
-  const toggleCategory = (categorySlug: string) => {
-    setExpandedCategories((prev) =>
-      prev.includes(categorySlug)
-        ? prev.filter((slug) => slug !== categorySlug)
-        : [...prev, categorySlug]
-    );
   };
 
   if (!isOpen) return null;
@@ -75,101 +66,27 @@ export function MobileSidebar({ isOpen, onClose }: MobileSidebarProps) {
         ) : null}
 
         {/* Categories from Megamenu */}
-        {isMegamenuEnabled && (
-          <div className="py-4">
-            <nav className="space-y-0">
+        <div className="py-4">
+          <nav className="space-y-0">
+            <button
+              onClick={() => handleNavigation('/shop')}
+              className="flex items-center justify-between w-full px-4 py-3 hover:bg-secondary/50 transition-colors"
+            >
+              <span className="font-medium text-sm">Shop All</span>
+              <ChevronRight className="w-4 h-4 text-muted-foreground" />
+            </button>
+            {megamenuData.map((category) => (
               <button
-                onClick={() => handleNavigation('/shop')}
-                className="flex items-center justify-between w-full px-4 py-3 hover:bg-secondary/50 transition-colors"
+                key={category.id}
+                onClick={() => handleNavigation(getCategoryHref(category.category_slug))}
+                className="flex items-center justify-between w-full px-4 py-3 hover:bg-secondary/50 transition-colors group"
               >
-                <span className="font-medium text-sm">Shop All</span>
-                <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                <span className="font-medium text-sm">{category.category_name}</span>
+                <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-colors" />
               </button>
-              {megamenuData.map((category) => (
-                <div key={category.id}>
-                  <button
-                    onClick={() => toggleCategory(category.category_slug)}
-                    className="flex items-center justify-between w-full px-4 py-3 hover:bg-secondary/50 transition-colors group"
-                  >
-                    <span className="font-medium text-sm">{category.category_name}</span>
-                    {expandedCategories.includes(category.category_slug) ? (
-                      <ChevronDown className="w-4 h-4 text-muted-foreground" />
-                    ) : (
-                      <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-colors" />
-                    )}
-                  </button>
-
-                  {/* Expandable Submenu */}
-                  {expandedCategories.includes(category.category_slug) && (
-                    <div className="bg-secondary/20 border-y border-border/50">
-                      {/* Sections */}
-                      {category.megamenu_sections?.map((section) => (
-                        <div key={section.id}>
-                          <div className="px-6 py-2 mt-2 text-xs font-semibold uppercase text-muted-foreground tracking-wide">
-                            {section.section_name}
-                          </div>
-                          <nav className="space-y-0 pl-4">
-                            {section.megamenu_items?.map((item) => (
-                              <button
-                                key={item.id}
-                                onClick={() => {
-                                  const ruleLink = buildShopLinkFromRules(item.rules);
-                                  if (ruleLink) {
-                                    handleNavigation(ruleLink);
-                                    return;
-                                  }
-                                  if (item.item_slug) {
-                                    handleNavigation(`/collections/${item.item_slug}`);
-                                    return;
-                                  }
-
-                                  handleNavigation(getCategoryHref(category.category_slug));
-                                }}
-                                className="flex items-center gap-2 w-full px-4 py-2 hover:bg-secondary/50 transition-colors text-left text-sm"
-                              >
-                                {item.icon_emoji && <span>{item.icon_emoji}</span>}
-                                <span className="text-muted-foreground hover:text-foreground transition-colors">
-                                  {item.item_name}
-                                </span>
-                              </button>
-                            ))}
-                          </nav>
-                        </div>
-                      ))}
-
-                      {/* Featured Products */}
-                      {category.featured_products && category.featured_products.length > 0 && (
-                        <div className="px-4 py-3 mt-2 border-t border-border/50">
-                          <p className="text-xs font-semibold uppercase text-muted-foreground mb-2">Featured</p>
-                          <div className="space-y-2">
-                            {category.featured_products.slice(0, 2).map((product) => (
-                              <button
-                                key={product.id}
-                                onClick={() => handleNavigation(`/product/${product.id}`)}
-                                className="flex gap-2 w-full text-left text-xs hover:opacity-70 transition-opacity"
-                              >
-                                {product.product_image_url && (
-                                  <img
-                                    src={product.product_image_url}
-                                    alt={product.product_title}
-                                    className="w-12 h-12 object-cover rounded"
-                                  />
-                                )}
-                                <span className="line-clamp-2 flex items-center text-muted-foreground hover:text-foreground">
-                                  {product.product_title}
-                                </span>
-                              </button>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  )}
-                </div>
-              ))}
-            </nav>
-          </div>
-        )}
+            ))}
+          </nav>
+        </div>
 
         <div className="h-px bg-border mx-4" />
 
