@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
 import { Phone, Mail, MapPin, Facebook, Instagram, Twitter, Youtube } from 'lucide-react';
 
 const collections = [
@@ -27,6 +28,28 @@ const policies = [
 ];
 
 export function Footer() {
+  const mapContainerRef = useRef<HTMLDivElement | null>(null);
+  const [shouldLoadMap, setShouldLoadMap] = useState(false);
+
+  useEffect(() => {
+    if (shouldLoadMap) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          setShouldLoadMap(true);
+        }
+      },
+      { rootMargin: '200px' }
+    );
+
+    if (mapContainerRef.current) {
+      observer.observe(mapContainerRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [shouldLoadMap]);
+
   return (
     <footer className="bg-rich-black text-ivory">
       {/* Main Footer */}
@@ -116,14 +139,19 @@ export function Footer() {
 
       {/* Full-width Map */}
       <div className="relative overflow-hidden border-t border-charcoal/50">
-        <div className="group relative overflow-hidden rounded-3xl">
-          <iframe
-            title="KRT Jewellers Location"
-            src="https://www.google.com/maps?q=1154%2C%20Big%20Bazaar%20St%2C%20Prakasam%2C%20Town%20Hall%2C%20Coimbatore%2C%20Tamil%20Nadu%20641001&output=embed"
-            className="h-64 md:h-80 w-full grayscale-[10%] contrast-[1.05] transition-transform duration-300 group-hover:scale-[1.01]"
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-          />
+        <div ref={mapContainerRef} className="group relative overflow-hidden rounded-3xl">
+          {shouldLoadMap ? (
+            <iframe
+              title="KRT Jewellers Location"
+              src="https://www.google.com/maps?q=1154%2C%20Big%20Bazaar%20St%2C%20Prakasam%2C%20Town%20Hall%2C%20Coimbatore%2C%20Tamil%20Nadu%20641001&output=embed"
+              className="h-64 md:h-80 w-full saturate-[1.15] contrast-[1.1] brightness-[0.95] hue-rotate-[-8deg] transition-transform duration-300 group-hover:scale-[1.01]"
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            />
+          ) : (
+            <div className="h-64 md:h-80 w-full bg-rich-black/60" />
+          )}
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-rich-black/40 via-transparent to-primary/25 mix-blend-multiply opacity-80" />
           <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-rich-black/70 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
             <span
               className="font-serif text-4xl md:text-6xl lg:text-7xl font-bold text-outline select-none"
