@@ -85,7 +85,7 @@ export function FloatingContactMenu() {
   return (
     <>
       {/* Floating Menu */}
-      <div ref={menuRef} className="fixed bottom-[65px] md:bottom-6 right-6 z-50">
+      <div ref={menuRef} className="fixed bottom-[65px] md:bottom-6 right-4 z-50">
         {/* Menu Items */}
         {isOpen && (
           <div className="absolute bottom-20 right-0 flex flex-col gap-3 mb-4">
@@ -131,7 +131,7 @@ export function FloatingContactMenu() {
             <img
               src="https://www.grtjewels.com/_next/image/?url=%2Fassests%2Fimages%2Ficon-livechat.png&w=96&q=75"
               alt="Live chat"
-              className="w-[36px] h-[36px] object-contain"
+              className="w-[30px] h-[30px] object-contain"
               loading="lazy"
               decoding="async"
               referrerPolicy="no-referrer"
