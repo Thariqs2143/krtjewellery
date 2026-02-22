@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { ZoomIn, Play, Sparkles, Star, Gem } from 'lucide-react';
+import { Play, Sparkles, Star, Gem } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 
@@ -193,11 +193,6 @@ export function ProductImageGallery({
             src={displayImages[selectedImage] || '/placeholder.svg'}
             alt={`${productName} - Image ${selectedImage + 1}`}
           />
-          <div className="absolute inset-0 bg-rich-black/0 group-hover:bg-rich-black/10 transition-colors flex items-center justify-center pointer-events-none">
-            <div className="opacity-0 group-hover:opacity-100 transition-opacity bg-white/90 rounded-full p-3 shadow-lg">
-              <ZoomIn className="w-5 h-5 text-foreground" />
-            </div>
-          </div>
           {selectedImage === 0 && (
             <div className="absolute top-3 left-3 flex items-center gap-2">
               {badges?.isNewArrival && (
@@ -248,11 +243,6 @@ export function ProductImageGallery({
             src={mediaItems[0]?.url || '/placeholder.svg'}
             alt={`${productName} - Image 1`}
           />
-          <div className="absolute inset-0 bg-rich-black/0 group-hover:bg-rich-black/10 transition-colors flex items-center justify-center pointer-events-none">
-            <div className="opacity-0 group-hover:opacity-100 transition-opacity bg-white/90 rounded-full p-3 shadow-lg">
-              <ZoomIn className="w-5 h-5 text-foreground" />
-            </div>
-          </div>
           <div className="absolute top-3 left-3 flex items-center gap-2">
             {badges?.isNewArrival && (
               <Badge className="badge-luxury w-8 h-8 p-0 rounded-full flex items-center justify-center" title="New Arrival">
@@ -310,11 +300,6 @@ export function ProductImageGallery({
                   src={item.url || '/placeholder.svg'}
                   alt={`${productName} - Image ${imageIndex + 1}`}
                 />
-                <div className="absolute inset-0 bg-rich-black/0 group-hover:bg-rich-black/10 transition-colors flex items-center justify-center pointer-events-none">
-                  <div className="opacity-0 group-hover:opacity-100 transition-opacity bg-white/90 rounded-full p-3 shadow-lg">
-                    <ZoomIn className="w-5 h-5 text-foreground" />
-                  </div>
-                </div>
                 {imageIndex === 0 && (
                   <div className="absolute top-3 left-3 flex items-center gap-2">
                     {badges?.isNewArrival && (
