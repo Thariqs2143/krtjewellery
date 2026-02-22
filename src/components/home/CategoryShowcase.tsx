@@ -48,9 +48,12 @@ export function CategoryShowcase() {
             Explore
             <span className="w-8 h-px bg-primary" />
           </span>
-          <h2 className="font-serif text-4xl md:text-5xl font-medium section-heading">
+          <h2 className="font-serif text-4xl md:text-5xl font-medium section-heading mb-4">
             Our Collections
           </h2>
+          <p className="text-muted-foreground max-w-xl mx-auto">
+            Curated categories to match every celebration and style.
+          </p>
         </div>
 
         {/* Grid */}
