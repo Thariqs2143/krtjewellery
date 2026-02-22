@@ -118,7 +118,7 @@ export function FloatingContactMenu() {
         {/* Main Toggle Button */}
         <Button
           onClick={() => setIsOpen(!isOpen)}
-          className={`w-[72px] h-[72px] rounded-full shadow-luxury text-white p-0 transition-all hover:scale-110 flex items-center justify-center ${
+          className={`w-[64px] h-[64px] rounded-full shadow-luxury text-white p-0 transition-all hover:scale-110 flex items-center justify-center ${
             isOpen
               ? 'bg-red-500 hover:bg-red-600'
               : 'bg-gradient-to-br from-[#8B5E3C] via-[#B07B54] to-[#D4A373] hover:from-[#7A4F31] hover:via-[#9E6B46] hover:to-[#C28E5E]'
@@ -128,17 +128,14 @@ export function FloatingContactMenu() {
           {isOpen ? (
             <X className="w-7 h-7" />
           ) : (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 16 16"
-              className="w-[52px] h-[52px]"
-              aria-hidden="true"
-            >
-              <path
-                fill="currentColor"
-                d="M8 1a5 5 0 0 0-5 5v1h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a6 6 0 1 1 12 0v6a2.5 2.5 0 0 1-2.5 2.5H9.366a1 1 0 0 1-.866.5h-1a1 1 0 1 1 0-2h1a1 1 0 0 1 .866.5H11.5A1.5 1.5 0 0 0 13 12h-1a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h1V6a5 5 0 0 0-5-5"
-              />
-            </svg>
+            <img
+              src="https://www.grtjewels.com/_next/image/?url=%2Fassests%2Fimages%2Ficon-livechat.png&w=96&q=75"
+              alt="Live chat"
+              className="w-[36px] h-[36px] object-contain"
+              loading="lazy"
+              decoding="async"
+              referrerPolicy="no-referrer"
+            />
           )}
         </Button>
       </div>
