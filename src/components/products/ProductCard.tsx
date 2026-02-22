@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
-import { Heart, Lock, Sparkles, Star, Gem } from 'lucide-react';
+import { Heart, Sparkles, Star, Gem } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useWishlist } from '@/hooks/useWishlist';
 import { useAuth } from '@/hooks/useAuth';
@@ -87,11 +87,7 @@ export function ProductCard({ product }: ProductCardProps) {
                   : 'bg-white/90 hover:bg-white text-foreground'
               }`}
             >
-              {!isAuthenticated ? (
-                <Lock className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-              ) : (
-                <Heart className={`w-3 h-3 sm:w-3.5 sm:h-3.5 ${inWishlist ? 'fill-current' : ''}`} />
-              )}
+              <Heart className={`w-3 h-3 sm:w-3.5 sm:h-3.5 ${inWishlist ? 'fill-current' : ''}`} />
             </Button>
           </div>
 
