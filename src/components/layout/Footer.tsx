@@ -140,7 +140,7 @@ export function Footer() {
       {/* Full-width Map */}
       <div className="relative overflow-hidden border-t border-charcoal/50">
         <div className="container mx-auto px-4 py-10">
-          <div className="rounded-3xl border-2 border-primary/40 p-2 md:p-3 shadow-gold/40">
+          <div className="rounded-3xl border-2 border-primary/75 p-2 md:p-3 shadow-gold/50 bg-gradient-to-br from-primary/10 via-transparent to-transparent">
             <div ref={mapContainerRef} className="group relative overflow-hidden rounded-2xl">
           {shouldLoadMap ? (
             <iframe
