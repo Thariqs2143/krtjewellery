@@ -139,7 +139,9 @@ export function Footer() {
 
       {/* Full-width Map */}
       <div className="relative overflow-hidden border-t border-charcoal/50">
-        <div ref={mapContainerRef} className="group relative overflow-hidden rounded-3xl">
+        <div className="container mx-auto px-4 py-10">
+          <div className="rounded-3xl border-2 border-primary/40 p-2 md:p-3 shadow-gold/40">
+            <div ref={mapContainerRef} className="group relative overflow-hidden rounded-2xl">
           {shouldLoadMap ? (
             <iframe
               title="KRT Jewellers Location"
@@ -151,14 +153,16 @@ export function Footer() {
           ) : (
             <div className="h-64 md:h-80 w-full bg-rich-black/60" />
           )}
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-rich-black/40 via-transparent to-primary/25 mix-blend-multiply opacity-80" />
-          <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-rich-black/70 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-            <span
-              className="font-serif text-4xl md:text-6xl lg:text-7xl font-bold text-outline select-none"
-              style={{ letterSpacing: '-0.02em' }}
-            >
-              KRT JEWELLERS
-            </span>
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-rich-black/40 via-transparent to-primary/25 mix-blend-multiply opacity-80" />
+              <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-rich-black/70 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                <span
+                  className="font-serif text-4xl md:text-6xl lg:text-7xl font-bold text-outline select-none"
+                  style={{ letterSpacing: '-0.02em' }}
+                >
+                  KRT JEWELLERS
+                </span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
