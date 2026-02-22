@@ -63,15 +63,20 @@ export function ProductImageGallery({
     const [zoom, setZoom] = useState(3.2);
     const [lensSize, setLensSize] = useState(160);
     const pinchDistanceRef = useRef<number | null>(null);
+    const [isDragging, setIsDragging] = useState(false);
 
-    const handleMove = (event: React.MouseEvent<HTMLDivElement>) => {
+    const updateLensFromPoint = (clientX: number, clientY: number) => {
       const rect = containerRef.current?.getBoundingClientRect();
       if (!rect) return;
-      const x = Math.min(Math.max(event.clientX - rect.left, 0), rect.width);
-      const y = Math.min(Math.max(event.clientY - rect.top, 0), rect.height);
+      const x = Math.min(Math.max(clientX - rect.left, 0), rect.width);
+      const y = Math.min(Math.max(clientY - rect.top, 0), rect.height);
       const xPercent = (x / rect.width) * 100;
       const yPercent = (y / rect.height) * 100;
       setLens({ x: xPercent, y: yPercent, visible: true });
+    };
+
+    const handleMove = (event: React.MouseEvent<HTMLDivElement>) => {
+      updateLensFromPoint(event.clientX, event.clientY);
     };
 
     const handleTouchMove = (event: React.TouchEvent<HTMLDivElement>) => {
@@ -79,11 +84,7 @@ export function ProductImageGallery({
       if (!rect) return;
       const touch = event.touches[0];
       if (!touch) return;
-      const x = Math.min(Math.max(touch.clientX - rect.left, 0), rect.width);
-      const y = Math.min(Math.max(touch.clientY - rect.top, 0), rect.height);
-      const xPercent = (x / rect.width) * 100;
-      const yPercent = (y / rect.height) * 100;
-      setLens({ x: xPercent, y: yPercent, visible: true });
+      updateLensFromPoint(touch.clientX, touch.clientY);
 
       if (event.touches.length >= 2) {
         const t1 = event.touches[0];
@@ -118,9 +119,22 @@ export function ProductImageGallery({
     return (
       <div
         ref={containerRef}
-        className="relative w-full h-full"
+        className={cn(
+          "relative w-full h-full select-none",
+          isDragging ? "cursor-grabbing" : "cursor-crosshair"
+        )}
+        onMouseEnter={(e) => updateLensFromPoint(e.clientX, e.clientY)}
         onMouseMove={handleMove}
-        onMouseLeave={() => setLens((prev) => ({ ...prev, visible: false }))}
+        onMouseDown={(e) => {
+          e.preventDefault();
+          setIsDragging(true);
+          updateLensFromPoint(e.clientX, e.clientY);
+        }}
+        onMouseUp={() => setIsDragging(false)}
+        onMouseLeave={() => {
+          setIsDragging(false);
+          setLens((prev) => ({ ...prev, visible: false }));
+        }}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
