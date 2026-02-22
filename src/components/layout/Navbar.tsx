@@ -54,7 +54,7 @@ export function Navbar() {
             <div className="flex items-center justify-center gap-4 md:gap-8 h-8 text-xs">
               <div className="flex items-center gap-1.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-                <span className="text-ivory/60 hidden sm:inline">Live</span>
+                <span className="text-ivory/60">Live</span>
               </div>
               <div className="flex items-center gap-1">
                 <span className="text-primary font-semibold">22K Gold:</span>
@@ -62,8 +62,12 @@ export function Navbar() {
               </div>
               <span className="text-ivory/30">|</span>
               <div className="flex items-center gap-1">
-                <span className="text-primary font-semibold">24K Gold:</span>
-                <span className="text-ivory font-bold">₹{goldRate.rate_24k.toLocaleString('en-IN')}/g</span>
+                <span className="text-primary font-semibold">Silver:</span>
+                <span className="text-ivory font-bold">
+                  {goldRate.silver_rate != null
+                    ? `₹${goldRate.silver_rate.toLocaleString('en-IN')}/g`
+                    : '—'}
+                </span>
               </div>
               <Link to="/gold-rate" className="text-primary hover:underline hidden sm:inline">
                 View History →
