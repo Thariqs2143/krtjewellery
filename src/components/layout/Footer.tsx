@@ -131,36 +131,23 @@ export function Footer() {
         </div>
       </div>
 
-      {/* Large Brand Name - Blufacade Style */}
-      <div className="relative overflow-hidden py-8 border-t border-charcoal/50">
-        <div className="container mx-auto px-4">
-          {/* Desktop - Single Line */}
-          <h2 
-            className="hidden md:block font-serif text-[6rem] md:text-[9rem] lg:text-[12rem] font-bold leading-none text-center text-outline select-none"
-            style={{ 
-              letterSpacing: '-0.02em',
-            }}
-          >
-            KRT JEWELLERS
-          </h2>
-          {/* Mobile - Stacked */}
-          <div className="md:hidden flex flex-col items-center">
-            <h2 
-              className="font-serif text-[6rem] font-bold leading-none text-center text-outline select-none"
-              style={{ 
-                letterSpacing: '-0.02em',
-              }}
+      {/* Full-width Map */}
+      <div className="relative overflow-hidden border-t border-charcoal/50">
+        <div className="group relative">
+          <iframe
+            title="KRT Jewellers Location"
+            src="https://www.google.com/maps?q=1154%2C%20Big%20Bazaar%20St%2C%20Prakasam%2C%20Town%20Hall%2C%20Coimbatore%2C%20Tamil%20Nadu%20641001&output=embed"
+            className="h-64 md:h-80 w-full grayscale-[10%] contrast-[1.05] transition-transform duration-300 group-hover:scale-[1.01]"
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          />
+          <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-rich-black/30 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+            <span
+              className="font-serif text-4xl md:text-6xl lg:text-7xl font-bold text-outline select-none"
+              style={{ letterSpacing: '-0.02em' }}
             >
-              KRT
-            </h2>
-            <h2 
-              className="font-serif text-[4rem] font-bold leading-none text-center text-outline select-none"
-              style={{ 
-                letterSpacing: '-0.02em',
-              }}
-            >
-              JEWELLERS
-            </h2>
+              KRT JEWELLERS
+            </span>
           </div>
         </div>
       </div>
