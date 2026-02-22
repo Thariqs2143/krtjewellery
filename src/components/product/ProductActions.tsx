@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { useCart } from '@/hooks/useCart';
 import { useWishlist } from '@/hooks/useWishlist';
 import { useAuth } from '@/hooks/useAuth';
-import { AuthPromptModal } from './AuthPromptModal';
+import { useToast } from '@/hooks/use-toast';
 import { formatPrice } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import type { ProductWithPrice } from '@/lib/types';
@@ -32,10 +32,9 @@ export function ProductActions({ product, variationState }: ProductActionsProps)
   const { isAuthenticated } = useAuth();
   const { addToCart, isAdding } = useCart();
   const { isInWishlist, toggleWishlist, isToggling } = useWishlist();
+  const { toast } = useToast();
   
   const [quantity, setQuantity] = useState(1);
-  const [showAuthModal, setShowAuthModal] = useState(false);
-  const [authAction, setAuthAction] = useState('');
   const [isAdded, setIsAdded] = useState(false);
   
   const inWishlist = isInWishlist(product.id);
@@ -43,11 +42,6 @@ export function ProductActions({ product, variationState }: ProductActionsProps)
   const maxQuantity = product.stock_quantity ?? 99;
 
   const handleAddToCart = () => {
-    if (!isAuthenticated) {
-      setAuthAction('add items to your cart');
-      setShowAuthModal(true);
-      return;
-    }
     if (isOutOfStock) return;
     addToCart({
       productId: product.id,
@@ -65,8 +59,10 @@ export function ProductActions({ product, variationState }: ProductActionsProps)
 
   const handleToggleWishlist = () => {
     if (!isAuthenticated) {
-      setAuthAction('save items to your wishlist');
-      setShowAuthModal(true);
+      toast({
+        title: 'Login required',
+        description: 'Please sign in to use your wishlist.',
+      });
       return;
     }
     toggleWishlist(product.id);
@@ -231,11 +227,6 @@ export function ProductActions({ product, variationState }: ProductActionsProps)
         </Button>
       </div>
 
-      <AuthPromptModal
-        isOpen={showAuthModal}
-        onClose={() => setShowAuthModal(false)}
-        action={authAction}
-      />
     </>
   );
 }
