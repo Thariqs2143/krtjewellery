@@ -36,8 +36,6 @@ export function ProductImageGallery({
 }: ProductImageGalleryProps) {
   const [selectedImage, setSelectedImage] = useState(0);
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
-  const [lastTapAt, setLastTapAt] = useState<number | null>(null);
-  const tapTimeoutRef = useRef<number | null>(null);
 
   // When a variation image is provided, show it first in the grid
   const displayImages = variationImageUrl
@@ -183,23 +181,6 @@ export function ProductImageGallery({
             const endX = e.changedTouches[0]?.clientX ?? touchStartX;
             const delta = touchStartX - endX;
             const threshold = 40;
-            const now = Date.now();
-            if (Math.abs(delta) <= threshold) {
-              if (lastTapAt && now - lastTapAt < 280) {
-                if (tapTimeoutRef.current) {
-                  window.clearTimeout(tapTimeoutRef.current);
-                  tapTimeoutRef.current = null;
-                }
-                setLastTapAt(null);
-                onOpenLightbox(selectedImage);
-                return;
-              }
-              setLastTapAt(now);
-              tapTimeoutRef.current = window.setTimeout(() => {
-                setLastTapAt(null);
-                tapTimeoutRef.current = null;
-              }, 300);
-            }
             if (Math.abs(delta) > threshold) {
               if (delta > 0) {
                 setSelectedImage((prev) =>
@@ -210,13 +191,18 @@ export function ProductImageGallery({
                   prev === 0 ? displayImages.length - 1 : prev - 1
                 );
               }
+            } else {
+              onOpenLightbox(selectedImage);
             }
             setTouchStartX(null);
           }}
+          onClick={() => onOpenLightbox(selectedImage)}
         >
-          <LensImage
+          <img
             src={displayImages[selectedImage] || '/placeholder.svg'}
             alt={`${productName} - Image ${selectedImage + 1}`}
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+            draggable={false}
           />
           {selectedImage === 0 && (
             <div className="absolute top-3 left-3 flex items-center gap-2">
