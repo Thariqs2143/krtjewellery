@@ -49,7 +49,7 @@ export function FlyingCart({ isOpen, onClose }: FlyingCartProps) {
         <div className="flex items-center justify-between p-4 border-b">
           <div className="flex items-center gap-2">
             <ShoppingBag className="w-5 h-5 text-primary" />
-            <span className="font-serif text-lg font-semibold">Shopping Cart</span>
+            <span className="font-serif text-lg font-medium">Shopping Cart</span>
             <span className="text-sm text-muted-foreground">({itemCount} items)</span>
           </div>
           <Button variant="ghost" size="icon" onClick={onClose}>
@@ -141,7 +141,7 @@ export function FlyingCart({ isOpen, onClose }: FlyingCartProps) {
           <div className="border-t p-4 space-y-4">
             <div className="flex justify-between items-center">
               <span className="font-medium">Subtotal</span>
-              <span className="font-serif text-xl font-bold text-primary">
+              <span className="font-serif text-xl font-medium text-primary">
                 {formatPrice(total)}
               </span>
             </div>
