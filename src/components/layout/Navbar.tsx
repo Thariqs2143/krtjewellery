@@ -22,10 +22,14 @@ import {
 import { cn } from '@/lib/utils';
 
 // Category route slugs for the navigation bar
-export function Navbar() {
+interface NavbarProps {
+  isCartOpen: boolean;
+  onCartOpenChange: (isOpen: boolean) => void;
+}
+
+export function Navbar({ isCartOpen, onCartOpenChange }: NavbarProps) {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isCartOpen, setIsCartOpen] = useState(false);
   const [hoveredCategory, setHoveredCategory] = useState<string | null>(null);
   const { isAuthenticated, user, signOut, isAdmin } = useAuth();
   const { itemCount } = useCart();
@@ -161,7 +165,7 @@ export function Navbar() {
                 variant="ghost"
                 size="icon"
                 className="h-9 w-9 relative"
-                onClick={() => setIsCartOpen(true)}
+                onClick={() => onCartOpenChange(true)}
               >
                 <ShoppingBag className="w-5 h-5" />
                 {itemCount > 0 && (
@@ -250,7 +254,7 @@ export function Navbar() {
               variant="ghost"
               size="icon"
               className="h-9 w-9 relative"
-              onClick={() => setIsCartOpen(true)}
+              onClick={() => onCartOpenChange(true)}
             >
               <ShoppingBag className="w-5 h-5" />
               {itemCount > 0 && (
@@ -271,7 +275,7 @@ export function Navbar() {
       <MobileSidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
 
       {/* Flying Cart Sidebar */}
-      <FlyingCart isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
+      <FlyingCart isOpen={isCartOpen} onClose={() => onCartOpenChange(false)} />
     </>
   );
 }
