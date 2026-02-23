@@ -24,7 +24,7 @@ export default function CartPage() {
     return (
       <Layout>
         <div className="container mx-auto px-4 py-12">
-          <h1 className="font-serif text-3xl mb-8">Shopping Cart</h1>
+        <h1 className="font-serif text-3xl font-medium mb-8">Shopping Cart</h1>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2 space-y-4">
               {[1, 2, 3].map((i) => (
@@ -43,7 +43,7 @@ export default function CartPage() {
       <Layout>
         <div className="container mx-auto px-4 py-20 text-center">
           <ShoppingBag className="w-16 h-16 mx-auto mb-4 text-muted-foreground" />
-          <h1 className="font-serif text-3xl mb-4">Your Cart is Empty</h1>
+          <h1 className="font-serif text-3xl font-medium mb-4">Your Cart is Empty</h1>
           <p className="text-muted-foreground mb-8">Add some beautiful jewellery to get started</p>
           <Link to="/collections/necklaces">
             <Button className="btn-premium">Browse Collections</Button>
@@ -56,7 +56,7 @@ export default function CartPage() {
   return (
     <Layout>
       <div className="container mx-auto px-4 py-12">
-        <h1 className="font-serif text-3xl mb-8">Shopping Cart ({itemCount} items)</h1>
+        <h1 className="font-serif text-3xl font-medium mb-8">Shopping Cart ({itemCount} items)</h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Cart Items */}
@@ -79,7 +79,7 @@ export default function CartPage() {
                   <div className="flex-1 p-4 flex flex-col justify-between">
                     <div>
                       <Link to={`/product/${item.product.slug}`} className="hover:text-primary">
-                        <h3 className="font-serif text-lg font-semibold line-clamp-1">
+                        <h3 className="font-serif text-lg font-medium line-clamp-1">
                           {item.product.name}
                         </h3>
                       </Link>
@@ -149,7 +149,7 @@ export default function CartPage() {
           <div>
             <Card className="sticky top-24">
               <CardHeader>
-                <CardTitle className="font-serif">Order Summary</CardTitle>
+                <CardTitle className="font-serif font-medium">Order Summary</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex justify-between">
@@ -165,7 +165,7 @@ export default function CartPage() {
                   <span className="text-green-600">Free</span>
                 </div>
                 <div className="divider-gold" />
-                <div className="flex justify-between text-lg font-semibold">
+                <div className="flex justify-between text-lg font-medium">
                   <span>Total</span>
                   <span className="price-tag text-primary text-xl">{formatPrice(total)}</span>
                 </div>
