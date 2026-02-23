@@ -1,4 +1,5 @@
 import { ReactNode, useEffect, useRef, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { hardResetPWA } from '@/lib/pwaRecovery';
 import { Navbar } from './Navbar';
 import { Footer } from './Footer';
@@ -14,6 +15,8 @@ export function Layout({ children }: LayoutProps) {
   const { authReady } = useAuth();
   const touchStartY = useRef<number | null>(null);
   const [pullDistance, setPullDistance] = useState(0);
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const onTouchStart = (e: TouchEvent) => {
@@ -71,10 +74,13 @@ export function Layout({ children }: LayoutProps) {
           </div>
         )}
       </div>
-      <Navbar />
+      <Navbar isCartOpen={isCartOpen} onCartOpenChange={setIsCartOpen} />
       <main className="flex-1">{children}</main>
       <Footer />
-      <FloatingContactMenu />
+      {!isCartOpen &&
+        location.pathname !== '/cart' &&
+        location.pathname !== '/checkout' &&
+        !location.pathname.startsWith('/product/') && <FloatingContactMenu />}
       <ComparisonBar />
     </div>
   );
