@@ -38,7 +38,7 @@ export function Footer() {
           {/* Brand */}
           <div className="lg:col-span-2">
             <Link to="/" className="inline-block mb-6">
-              <h2 className="font-serif text-2xl font-bold">
+              <h2 className="font-serif text-2xl font-medium">
                 <span className="text-primary">KRT</span> JEWELLERS
               </h2>
               <p className="text-xs text-ivory/50 tracking-widest uppercase mt-1">Trusted Since 30+ Years</p>
@@ -66,7 +66,7 @@ export function Footer() {
 
           {/* Collections */}
           <div>
-            <h4 className="font-serif text-lg font-semibold mb-6 text-gold-light">Collections</h4>
+            <h4 className="font-serif text-lg font-medium mb-6 text-gold-light">Collections</h4>
             <ul className="space-y-3">
               {collections.map((item) => (
                 <li key={item.name}>
@@ -83,7 +83,7 @@ export function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="font-serif text-lg font-semibold mb-6 text-gold-light">Quick Links</h4>
+            <h4 className="font-serif text-lg font-medium mb-6 text-gold-light">Quick Links</h4>
             <ul className="space-y-3">
               {quickLinks.map((item) => (
                 <li key={item.name}>
@@ -100,7 +100,7 @@ export function Footer() {
 
           {/* Policies */}
           <div>
-            <h4 className="font-serif text-lg font-semibold mb-6 text-gold-light">Policies</h4>
+            <h4 className="font-serif text-lg font-medium mb-6 text-gold-light">Policies</h4>
             <ul className="space-y-3">
               {policies.map((item) => (
                 <li key={item.name}>
