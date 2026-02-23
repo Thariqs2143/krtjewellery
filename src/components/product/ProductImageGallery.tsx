@@ -36,6 +36,11 @@ export function ProductImageGallery({
 }: ProductImageGalleryProps) {
   const [selectedImage, setSelectedImage] = useState(0);
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
+  const [mobileScale, setMobileScale] = useState(1);
+  const [mobileTranslate, setMobileTranslate] = useState({ x: 0, y: 0 });
+  const pinchStartRef = useRef<{ distance: number; scale: number } | null>(null);
+  const panStartRef = useRef<{ x: number; y: number; startX: number; startY: number } | null>(null);
+  const isGestureRef = useRef(false);
 
   // When a variation image is provided, show it first in the grid
   const displayImages = variationImageUrl
@@ -44,7 +49,14 @@ export function ProductImageGallery({
 
   useEffect(() => {
     setSelectedImage(0);
+    setMobileScale(1);
+    setMobileTranslate({ x: 0, y: 0 });
   }, [variationImageUrl]);
+
+  useEffect(() => {
+    setMobileScale(1);
+    setMobileTranslate({ x: 0, y: 0 });
+  }, [selectedImage]);
 
   const mediaItems: Array<{ type: 'image' | 'video'; url: string; index?: number }> = [
     ...(videoUrl ? [{ type: 'video' as const, url: videoUrl }] : []),
@@ -175,8 +187,64 @@ export function ProductImageGallery({
       <div className="block md:hidden">
         <div
           className="relative aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-secondary/50 to-secondary/20 group"
-          onTouchStart={(e) => setTouchStartX(e.touches[0]?.clientX ?? null)}
+          style={{ touchAction: 'none' }}
+          onTouchStart={(e) => {
+            if (e.touches.length === 2) {
+              const t1 = e.touches[0];
+              const t2 = e.touches[1];
+              const dx = t1.clientX - t2.clientX;
+              const dy = t1.clientY - t2.clientY;
+              pinchStartRef.current = { distance: Math.hypot(dx, dy), scale: mobileScale };
+              panStartRef.current = null;
+              isGestureRef.current = true;
+              return;
+            }
+            if (e.touches.length === 1) {
+              setTouchStartX(e.touches[0]?.clientX ?? null);
+              if (mobileScale > 1) {
+                panStartRef.current = {
+                  x: e.touches[0].clientX,
+                  y: e.touches[0].clientY,
+                  startX: mobileTranslate.x,
+                  startY: mobileTranslate.y,
+                };
+                isGestureRef.current = true;
+              } else {
+                isGestureRef.current = false;
+              }
+            }
+          }}
+          onTouchMove={(e) => {
+            if (e.touches.length === 2 && pinchStartRef.current) {
+              e.preventDefault();
+              const t1 = e.touches[0];
+              const t2 = e.touches[1];
+              const dx = t1.clientX - t2.clientX;
+              const dy = t1.clientY - t2.clientY;
+              const distance = Math.hypot(dx, dy);
+              const nextScale = Math.min(3, Math.max(1, (distance / pinchStartRef.current.distance) * pinchStartRef.current.scale));
+              setMobileScale(nextScale);
+              return;
+            }
+            if (e.touches.length === 1 && panStartRef.current && mobileScale > 1) {
+              e.preventDefault();
+              const touch = e.touches[0];
+              const dx = touch.clientX - panStartRef.current.x;
+              const dy = touch.clientY - panStartRef.current.y;
+              setMobileTranslate({
+                x: panStartRef.current.startX + dx,
+                y: panStartRef.current.startY + dy,
+              });
+            }
+          }}
           onTouchEnd={(e) => {
+            pinchStartRef.current = null;
+            panStartRef.current = null;
+            if (mobileScale > 1 || isGestureRef.current) {
+              setTouchStartX(null);
+              isGestureRef.current = false;
+              return;
+            }
             if (touchStartX == null) return;
             const endX = e.changedTouches[0]?.clientX ?? touchStartX;
             const delta = touchStartX - endX;
@@ -196,12 +264,23 @@ export function ProductImageGallery({
             }
             setTouchStartX(null);
           }}
+          onTouchCancel={() => {
+            pinchStartRef.current = null;
+            panStartRef.current = null;
+            setTouchStartX(null);
+            isGestureRef.current = false;
+          }}
           onClick={() => onOpenLightbox(selectedImage)}
         >
           <img
             src={displayImages[selectedImage] || '/placeholder.svg'}
             alt={`${productName} - Image ${selectedImage + 1}`}
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+            style={{
+              transform: `translate3d(${mobileTranslate.x}px, ${mobileTranslate.y}px, 0) scale(${mobileScale})`,
+              transformOrigin: 'center',
+              transition: isGestureRef.current ? 'none' : undefined,
+            }}
             draggable={false}
           />
           {selectedImage === 0 && (
