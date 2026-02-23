@@ -362,7 +362,7 @@ export default function CheckoutPage() {
   return (
     <Layout>
       <div className="container mx-auto px-4 py-8">
-        <h1 className="font-serif text-3xl md:text-4xl font-semibold mb-8">Checkout</h1>
+        <h1 className="font-serif text-3xl md:text-4xl font-medium mb-8">Checkout</h1>
 
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -371,7 +371,7 @@ export default function CheckoutPage() {
               {/* Shipping Address */}
               <Card>
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
+                  <CardTitle className="flex items-center gap-2 font-medium">
                     <MapPin className="w-5 h-5 text-primary" />
                     Shipping Address
                   </CardTitle>
@@ -452,7 +452,7 @@ export default function CheckoutPage() {
               {/* Payment Method */}
               <Card>
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
+                  <CardTitle className="flex items-center gap-2 font-medium">
                     <CreditCard className="w-5 h-5 text-primary" />
                     Payment Method
                   </CardTitle>
@@ -487,7 +487,7 @@ export default function CheckoutPage() {
               {/* Order Notes */}
               <Card>
                 <CardHeader>
-                  <CardTitle>Order Notes (Optional)</CardTitle>
+                  <CardTitle className="font-medium">Order Notes (Optional)</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <Textarea
@@ -504,7 +504,7 @@ export default function CheckoutPage() {
             <div className="lg:col-span-1">
               <Card className="sticky top-24">
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
+                  <CardTitle className="flex items-center gap-2 font-medium">
                     <ShoppingBag className="w-5 h-5 text-primary" />
                     Order Summary
                   </CardTitle>
@@ -543,7 +543,7 @@ export default function CheckoutPage() {
                       <span>Shipping</span>
                       <span className="text-green-600">Free</span>
                     </div>
-                    <div className="flex justify-between font-serif text-lg font-bold pt-2 border-t">
+                    <div className="flex justify-between font-serif text-lg font-medium pt-2 border-t">
                       <span>Total</span>
                       <span className="text-primary">{formatPrice(total)}</span>
                     </div>
