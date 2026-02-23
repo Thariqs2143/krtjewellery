@@ -87,6 +87,12 @@ export function GoldRateWidget() {
                 </span>
                 <span className="text-ivory/40 text-xs">/gram</span>
               </div>
+              <div className="mt-3 text-xs text-ivory/60">
+                Silver:{' '}
+                <span className="text-ivory font-semibold">
+                  {goldRate.silver_rate != null ? `${formatPrice(goldRate.silver_rate)}/g` : '—'}
+                </span>
+              </div>
             </div>
           </div>
 
