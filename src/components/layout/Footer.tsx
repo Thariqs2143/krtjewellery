@@ -154,7 +154,7 @@ export function Footer() {
                   aria-label="Open KRT Jewellers location in Google Maps"
                 >
                   <img
-                    src="/google_maps.png"
+                    src={`${import.meta.env.BASE_URL}google_maps.png`}
                     alt="KRT Jewellers map"
                     loading="lazy"
                     className="h-64 md:h-80 w-full object-cover saturate-[1.2] contrast-[1.15] brightness-[0.9] transition-transform duration-300 group-hover:scale-[1.01]"
