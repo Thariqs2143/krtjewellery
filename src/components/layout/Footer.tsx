@@ -180,11 +180,6 @@ export function Footer() {
               <div className="pointer-events-none absolute left-1/2 top-0 h-full w-px bg-primary/20" />
               <div className="pointer-events-none absolute top-1/2 left-0 h-px w-full bg-primary/20" />
 
-              <div className="pointer-events-none absolute left-1/2 top-1/2 h-12 w-12 -translate-x-1/2 -translate-y-1/2">
-                <div className="absolute inset-0 rounded-full border border-primary/60 shadow-[0_0_18px_rgba(212,175,55,0.5)]" />
-                <div className="absolute left-1/2 top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rotate-45 rounded-[6px] bg-primary shadow-[0_0_12px_rgba(212,175,55,0.9)]" />
-              </div>
-
               <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-rich-black/75 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                 <span
                   className="font-serif text-4xl md:text-6xl lg:text-7xl font-bold text-outline select-none"
