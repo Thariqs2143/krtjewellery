@@ -146,13 +146,20 @@ export function Footer() {
               className="group relative overflow-hidden rounded-2xl border border-primary/40 bg-rich-black"
             >
               {shouldLoadMap ? (
-                <iframe
-                  title="KRT Jewellers Location"
-                  src="https://www.google.com/maps?q=1154%2C%20Big%20Bazaar%20St%2C%20Prakasam%2C%20Town%20Hall%2C%20Coimbatore%2C%20Tamil%20Nadu%20641001&output=embed"
-                  className="h-64 md:h-80 w-full saturate-[1.2] contrast-[1.15] brightness-[0.9] hue-rotate-[-8deg] transition-transform duration-300 group-hover:scale-[1.01]"
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                />
+                <a
+                  href="https://www.google.com/maps?q=1154%2C%20Big%20Bazaar%20St%2C%20Prakasam%2C%20Town%20Hall%2C%20Coimbatore%2C%20Tamil%20Nadu%20641001"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block"
+                  aria-label="Open KRT Jewellers location in Google Maps"
+                >
+                  <img
+                    src="/google_maps.png"
+                    alt="KRT Jewellers map"
+                    loading="lazy"
+                    className="h-64 md:h-80 w-full object-cover saturate-[1.2] contrast-[1.15] brightness-[0.9] transition-transform duration-300 group-hover:scale-[1.01]"
+                  />
+                </a>
               ) : (
                 <div className="h-64 md:h-80 w-full bg-rich-black/60" />
               )}
