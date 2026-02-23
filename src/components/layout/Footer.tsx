@@ -140,27 +140,61 @@ export function Footer() {
       {/* Full-width Map */}
       <div className="relative overflow-hidden border-t border-charcoal/50">
         <div className="container mx-auto px-4 py-10">
-          <div className="rounded-3xl border-2 border-primary/75 p-2 md:p-3 shadow-gold/50 bg-gradient-to-br from-primary/10 via-transparent to-transparent">
-            <div ref={mapContainerRef} className="group relative overflow-hidden rounded-2xl">
-          {shouldLoadMap ? (
-            <iframe
-              title="KRT Jewellers Location"
-              src="https://www.google.com/maps?q=1154%2C%20Big%20Bazaar%20St%2C%20Prakasam%2C%20Town%20Hall%2C%20Coimbatore%2C%20Tamil%20Nadu%20641001&output=embed"
-              className="h-64 md:h-80 w-full saturate-[1.15] contrast-[1.1] brightness-[0.95] hue-rotate-[-8deg] transition-transform duration-300 group-hover:scale-[1.01]"
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            />
-          ) : (
-            <div className="h-64 md:h-80 w-full bg-rich-black/60" />
-          )}
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-rich-black/40 via-transparent to-primary/25 mix-blend-multiply opacity-80" />
-              <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-rich-black/70 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+          <div className="rounded-3xl border border-primary/60 bg-gradient-to-br from-rich-black via-rich-black/80 to-black/90 p-2 md:p-3 shadow-[0_0_25px_rgba(212,175,55,0.25)]">
+            <div
+              ref={mapContainerRef}
+              className="group relative overflow-hidden rounded-2xl border border-primary/40 bg-rich-black"
+            >
+              {shouldLoadMap ? (
+                <iframe
+                  title="KRT Jewellers Location"
+                  src="https://www.google.com/maps?q=1154%2C%20Big%20Bazaar%20St%2C%20Prakasam%2C%20Town%20Hall%2C%20Coimbatore%2C%20Tamil%20Nadu%20641001&output=embed"
+                  className="h-64 md:h-80 w-full saturate-[1.2] contrast-[1.15] brightness-[0.9] hue-rotate-[-8deg] transition-transform duration-300 group-hover:scale-[1.01]"
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                />
+              ) : (
+                <div className="h-64 md:h-80 w-full bg-rich-black/60" />
+              )}
+
+              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(212,175,55,0.18),transparent_55%),radial-gradient(circle_at_70%_70%,rgba(255,255,255,0.07),transparent_50%)]" />
+              <div
+                className="pointer-events-none absolute inset-0 opacity-35"
+                style={{
+                  backgroundImage:
+                    'linear-gradient(rgba(212,175,55,0.18) 1px, transparent 1px), linear-gradient(90deg, rgba(212,175,55,0.18) 1px, transparent 1px)',
+                  backgroundSize: '80px 80px',
+                  backgroundPosition: 'center',
+                }}
+              />
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-rich-black/55 via-transparent to-primary/25 mix-blend-multiply opacity-90" />
+
+              <div className="pointer-events-none absolute left-1/2 top-0 h-full w-px bg-primary/20" />
+              <div className="pointer-events-none absolute top-1/2 left-0 h-px w-full bg-primary/20" />
+
+              <div className="pointer-events-none absolute left-1/2 top-1/2 h-12 w-12 -translate-x-1/2 -translate-y-1/2">
+                <div className="absolute inset-0 rounded-full border border-primary/60 shadow-[0_0_18px_rgba(212,175,55,0.5)]" />
+                <div className="absolute left-1/2 top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rotate-45 rounded-[6px] bg-primary shadow-[0_0_12px_rgba(212,175,55,0.9)]" />
+              </div>
+
+              <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-rich-black/75 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                 <span
                   className="font-serif text-4xl md:text-6xl lg:text-7xl font-bold text-outline select-none"
                   style={{ letterSpacing: '-0.02em' }}
                 >
                   KRT JEWELLERS
                 </span>
+              </div>
+
+              <div className="absolute bottom-4 right-4">
+                <a
+                  href="https://www.google.com/maps?q=1154%2C%20Big%20Bazaar%20St%2C%20Prakasam%2C%20Town%20Hall%2C%20Coimbatore%2C%20Tamil%20Nadu%20641001"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 rounded-full border border-primary/60 bg-rich-black/80 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-primary shadow-[0_0_18px_rgba(212,175,55,0.25)] transition hover:border-primary hover:text-gold-light"
+                >
+                  Open in Maps
+                </a>
               </div>
             </div>
           </div>
