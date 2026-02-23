@@ -1,6 +1,5 @@
 import { Layout } from '@/components/layout/Layout';
 import { useCart } from '@/hooks/useCart';
-import { useAuth } from '@/hooks/useAuth';
 import { formatPrice } from '@/lib/types';
 import { useGstSettings } from '@/hooks/useSiteSettings';
 import { Link } from 'react-router-dom';
@@ -13,7 +12,6 @@ export default function CartPage() {
   const { items, subtotal, gstTotal, total, isLoading, updateQuantity, removeFromCart, itemCount } = useCart();
   const { data: gstSettings } = useGstSettings();
   const gstRate = gstSettings?.rate ?? 3;
-  const { isAuthenticated } = useAuth();
   const formatSelectedValue = (value: any) => {
     if (value && typeof value === 'object' && 'text' in value && 'font' in value) {
       return `${value.text} (${value.font})`;
@@ -21,21 +19,6 @@ export default function CartPage() {
     if (Array.isArray(value)) return value.join(', ');
     return String(value);
   };
-
-  if (!isAuthenticated) {
-    return (
-      <Layout>
-        <div className="container mx-auto px-4 py-20 text-center">
-          <ShoppingBag className="w-16 h-16 mx-auto mb-4 text-muted-foreground" />
-          <h1 className="font-serif text-3xl mb-4">Your Cart is Empty</h1>
-          <p className="text-muted-foreground mb-8">Please sign in to view your cart</p>
-          <Link to="/auth">
-            <Button className="btn-premium">Sign In</Button>
-          </Link>
-        </div>
-      </Layout>
-    );
-  }
 
   if (isLoading) {
     return (
@@ -116,7 +99,7 @@ export default function CartPage() {
                       )}
                     </div>
 
-                    <div className="flex items-center justify-between">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                       {/* Quantity */}
                       <div className="flex items-center border rounded-lg">
                         <Button
@@ -139,7 +122,7 @@ export default function CartPage() {
                       </div>
 
                       {/* Price */}
-                      <p className="price-tag text-lg font-semibold text-primary">
+                      <p className="price-tag text-lg font-semibold text-primary sm:text-right">
                         {formatPrice(
                           (item.product.calculated_price.total + (item.variation_price_adjustment || 0)) *
                             item.quantity
