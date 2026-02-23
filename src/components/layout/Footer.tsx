@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 import { Phone, Mail, MapPin, Facebook, Instagram, Twitter, Youtube } from 'lucide-react';
+import googleMapsImage from '@/assets/google-maps.png';
 
 const collections = [
   { name: 'Necklaces', href: '/collections/necklaces' },
@@ -154,7 +155,7 @@ export function Footer() {
                   aria-label="Open KRT Jewellers location in Google Maps"
                 >
                   <img
-                    src={`${import.meta.env.BASE_URL}google_maps.png`}
+                    src={googleMapsImage}
                     alt="KRT Jewellers map"
                     loading="lazy"
                     className="h-64 md:h-80 w-full object-cover saturate-[1.2] contrast-[1.15] brightness-[0.9] transition-transform duration-300 group-hover:scale-[1.01]"
