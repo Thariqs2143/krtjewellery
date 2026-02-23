@@ -41,6 +41,7 @@ export default function GoldRatePage() {
     date: new Date(rate.effective_date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }),
     '22K': rate.rate_22k,
     '24K': rate.rate_24k,
+    Silver: rate.silver_rate ?? null,
   }));
 
   return (
@@ -65,7 +66,7 @@ export default function GoldRatePage() {
       <section className="py-12">
         <div className="container mx-auto px-4">
           {/* Current Rates */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
             <Card className="card-luxury border-primary/20 bg-rich-black">
               <CardHeader className="pb-2">
                 <CardTitle className="flex items-center gap-2 text-ivory/70 text-sm font-normal">
@@ -96,6 +97,23 @@ export default function GoldRatePage() {
                 </p>
                 <p className="text-ivory/50 text-sm mt-1">
                   Pure gold, coins & bars
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="card-luxury border-accent/20 bg-rich-black">
+              <CardHeader className="pb-2">
+                <CardTitle className="flex items-center gap-2 text-ivory/70 text-sm font-normal">
+                  <div className="w-3 h-3 rounded-full bg-slate-300" />
+                  Silver (Per Gram)
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="font-serif text-4xl text-ivory font-bold">
+                  {isLoading ? '...' : currentRate?.silver_rate != null ? formatPrice(currentRate.silver_rate) : '—'}
+                </p>
+                <p className="text-ivory/50 text-sm mt-1">
+                  Sterling & daily trade
                 </p>
               </CardContent>
             </Card>
