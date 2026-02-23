@@ -170,7 +170,7 @@ export function ImageLightbox({ images, initialIndex, isOpen, onClose }: ImageLi
         <div
           ref={imageWrapperRef}
           className={cn(
-            'relative max-w-full max-h-full overflow-hidden rounded-lg',
+            'relative overflow-hidden rounded-lg',
             isZoomed ? 'cursor-zoom-out' : 'cursor-zoom-in'
           )}
           onClick={toggleZoom}
@@ -179,13 +179,17 @@ export function ImageLightbox({ images, initialIndex, isOpen, onClose }: ImageLi
           onPointerMove={handlePointerMove}
           onPointerUp={handlePointerUp}
           onPointerCancel={handlePointerUp}
-          style={isZoomed ? { touchAction: 'none' } : undefined}
+          style={{
+            width: 'min(90vw, 80vh)',
+            height: 'min(90vw, 80vh)',
+            ...(isZoomed ? { touchAction: 'none' } : {}),
+          }}
         >
           <img
             src={images[currentIndex]}
             alt={`Product image ${currentIndex + 1}`}
             className={cn(
-              'max-w-[90vw] max-h-[80vh] object-contain transition-transform duration-300',
+              'w-full h-full object-contain transition-transform duration-300',
               isZoomed && 'will-change-transform'
             )}
             style={isZoomed ? {
