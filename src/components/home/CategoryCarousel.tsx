@@ -159,7 +159,7 @@ export function CategoryCarousel() {
             onPointerMove={handlePointerMove}
             onPointerUp={handlePointerUp}
             onPointerLeave={handlePointerUp}
-            className="flex gap-3 sm:gap-3 overflow-x-auto scrollbar-hide px-4 md:px-6 snap-x snap-mandatory lg:flex-nowrap lg:justify-start lg:gap-4 lg:overflow-x-auto cursor-grab active:cursor-grabbing touch-pan-x"
+            className="flex gap-4 sm:gap-3 overflow-x-auto scrollbar-hide px-4 md:px-6 snap-x snap-mandatory lg:flex-nowrap lg:justify-start lg:gap-4 lg:overflow-x-auto cursor-grab active:cursor-grabbing touch-pan-x"
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
             {categories.filter((category) => !category.is_view_all).map((category) => (
@@ -178,7 +178,7 @@ export function CategoryCarousel() {
               >
                 <div className="flex flex-col items-center gap-2">
                   {/* Circular Image Container */}
-                  <div className="w-20 h-20 sm:w-20 sm:h-20 md:w-24 md:h-24 lg:w-28 lg:h-28 xl:w-32 xl:h-32 rounded-2xl border-2 border-transparent group-hover:border-primary overflow-hidden transition-all duration-300 group-hover:shadow-gold group-hover:scale-105">
+                  <div className="w-24 h-24 sm:w-20 sm:h-20 md:w-24 md:h-24 lg:w-28 lg:h-28 xl:w-32 xl:h-32 rounded-2xl border-2 border-transparent group-hover:border-primary overflow-hidden transition-all duration-300 group-hover:shadow-gold group-hover:scale-105">
                     <img 
                       src={category.image_url || '/placeholder.svg'} 
                       alt={category.name}
@@ -187,7 +187,7 @@ export function CategoryCarousel() {
                     />
                   </div>
                   {/* Category Name */}
-                  <span className="text-[10px] sm:text-xs md:text-sm font-medium text-center whitespace-nowrap group-hover:text-primary transition-colors select-none">
+                  <span className="text-xs sm:text-xs md:text-sm font-medium text-center whitespace-nowrap group-hover:text-primary transition-colors select-none">
                     {category.name}
                   </span>
                 </div>
