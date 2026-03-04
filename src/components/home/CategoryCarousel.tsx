@@ -116,35 +116,6 @@ export function CategoryCarousel() {
       <div className="container mx-auto px-2 md:px-4">
         <div className="relative">
           {/* Scroll Buttons - Only show if content overflows */}
-          {showArrows && (
-            <>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => {
-                  handleInteractionStart();
-                  scroll('left');
-                  handleInteractionEnd();
-                }}
-                className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-background/90 backdrop-blur-sm shadow-md hidden md:flex hover:bg-background h-8 w-8"
-              >
-                <ChevronLeft className="w-4 h-4" />
-              </Button>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => {
-                  handleInteractionStart();
-                  scroll('right');
-                  handleInteractionEnd();
-                }}
-                className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-background/90 backdrop-blur-sm shadow-md hidden md:flex hover:bg-background h-8 w-8"
-              >
-                <ChevronRight className="w-4 h-4" />
-              </Button>
-            </>
-          )}
-
           {/* Categories Container - Spread evenly on large screens */}
           <div
             ref={scrollRef}
@@ -152,7 +123,7 @@ export function CategoryCarousel() {
             onMouseLeave={handleInteractionEnd}
             onTouchStart={handleInteractionStart}
             onTouchEnd={handleInteractionEnd}
-            className="flex gap-2 sm:gap-3 overflow-x-auto scrollbar-hide px-1 md:px-10 snap-x snap-mandatory lg:justify-between lg:overflow-x-visible"
+            className="flex gap-2 sm:gap-3 overflow-x-auto scrollbar-hide px-1 md:px-10 snap-x snap-mandatory lg:flex-wrap lg:justify-center lg:gap-4 lg:overflow-x-visible lg:snap-none"
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
             {categories.map((category) => (
@@ -165,11 +136,11 @@ export function CategoryCarousel() {
                 <div className="flex flex-col items-center gap-2">
                   {/* Circular Image Container */}
                   {category.is_view_all ? (
-                    <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 lg:w-28 lg:h-28 xl:w-32 xl:h-32 rounded-full border-2 border-rich-black bg-rich-black flex items-center justify-center text-center px-2 font-medium text-[11px] sm:text-sm md:text-base uppercase tracking-wide text-ivory group-hover:border-primary group-hover:bg-primary group-hover:text-rich-black transition-all select-none">
+                    <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 lg:w-28 lg:h-28 xl:w-32 xl:h-32 rounded-2xl border-2 border-rich-black bg-rich-black flex items-center justify-center text-center px-2 font-medium text-[11px] sm:text-sm md:text-base uppercase tracking-wide text-ivory group-hover:border-primary group-hover:bg-primary group-hover:text-rich-black transition-all select-none">
                       View All
                     </div>
                   ) : (
-                    <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 lg:w-28 lg:h-28 xl:w-32 xl:h-32 rounded-full border-2 border-transparent group-hover:border-primary overflow-hidden transition-all duration-300 group-hover:shadow-gold group-hover:scale-105">
+                    <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 lg:w-28 lg:h-28 xl:w-32 xl:h-32 rounded-2xl border-2 border-transparent group-hover:border-primary overflow-hidden transition-all duration-300 group-hover:shadow-gold group-hover:scale-105">
                       <img 
                         src={category.image_url || '/placeholder.svg'} 
                         alt={category.name}
