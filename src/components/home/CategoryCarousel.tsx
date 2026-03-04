@@ -123,7 +123,7 @@ export function CategoryCarousel() {
             onMouseLeave={handleInteractionEnd}
             onTouchStart={handleInteractionStart}
             onTouchEnd={handleInteractionEnd}
-            className="flex gap-2 sm:gap-3 overflow-x-auto scrollbar-hide px-1 md:px-10 snap-x snap-mandatory lg:flex-wrap lg:justify-center lg:gap-4 lg:overflow-x-visible lg:snap-none"
+            className="flex gap-2 sm:gap-3 overflow-x-auto scrollbar-hide px-1 md:px-10 snap-x snap-mandatory lg:flex-nowrap lg:justify-start lg:gap-4 lg:overflow-x-auto"
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
             {categories.map((category) => (
