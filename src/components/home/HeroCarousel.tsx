@@ -57,7 +57,7 @@ export function HeroCarousel() {
   const slide = slides[currentSlide];
 
   return (
-    <section className="relative h-[65vh] md:h-[85vh] overflow-hidden">
+    <section className="relative h-[50vh] md:h-[70vh] overflow-hidden">
       {/* Background Images */}
       {slides.map((s, index) => (
         <div
