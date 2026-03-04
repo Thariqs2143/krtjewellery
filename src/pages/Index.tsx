@@ -18,18 +18,16 @@ const Index = () => {
   
   return (
     <Layout>
-      <CategoryCarousel />
       <HeroCarousel />
+      <CategoryCarousel />
+      <TrustBadges />
       <MarqueeSection />
       <GoldRateWidget />
       <FeaturedProducts />
       <CollectionBanner />
-      <RotatingCardsSection />
-      <CategoryShowcase />
       <WhyChooseUs />
       <CustomerReviews />
       <BridalBanner />
-      <TrustBadges />
       <InstagramFeed />
       <GoogleReviewBadge />
     </Layout>
