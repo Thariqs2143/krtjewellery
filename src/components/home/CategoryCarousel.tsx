@@ -1,7 +1,5 @@
 import { Link } from 'react-router-dom';
 import { useRef, useEffect, useState, useCallback } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -32,6 +30,9 @@ export function CategoryCarousel() {
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const autoPlayRef = useRef<NodeJS.Timeout | null>(null);
   const [showArrows, setShowArrows] = useState(false);
+  const isDraggingRef = useRef(false);
+  const dragStartXRef = useRef(0);
+  const dragScrollLeftRef = useRef(0);
 
   const { data: categories = defaultCategories } = useQuery({
     queryKey: ['carouselCategories'],
@@ -111,9 +112,29 @@ export function CategoryCarousel() {
     }, 5000);
   };
 
+  const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (!scrollRef.current) return;
+    isDraggingRef.current = true;
+    dragStartXRef.current = event.clientX;
+    dragScrollLeftRef.current = scrollRef.current.scrollLeft;
+    scrollRef.current.setPointerCapture(event.pointerId);
+  };
+
+  const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (!isDraggingRef.current || !scrollRef.current) return;
+    const deltaX = event.clientX - dragStartXRef.current;
+    scrollRef.current.scrollLeft = dragScrollLeftRef.current - deltaX;
+  };
+
+  const handlePointerUp = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (!scrollRef.current) return;
+    isDraggingRef.current = false;
+    scrollRef.current.releasePointerCapture(event.pointerId);
+  };
+
   return (
     <section className="py-4 md:py-6 bg-background border-b">
-      <div className="container mx-auto px-2 md:px-4">
+      <div className="w-full px-4 md:px-8">
         <div className="relative">
           {/* Scroll Buttons - Only show if content overflows */}
           {/* Categories Container - Spread evenly on large screens */}
@@ -123,32 +144,30 @@ export function CategoryCarousel() {
             onMouseLeave={handleInteractionEnd}
             onTouchStart={handleInteractionStart}
             onTouchEnd={handleInteractionEnd}
-            className="flex gap-2 sm:gap-3 overflow-x-auto scrollbar-hide px-1 md:px-10 snap-x snap-mandatory lg:flex-nowrap lg:justify-start lg:gap-4 lg:overflow-x-auto"
+            onPointerDown={handlePointerDown}
+            onPointerMove={handlePointerMove}
+            onPointerUp={handlePointerUp}
+            onPointerLeave={handlePointerUp}
+            className="flex gap-2 sm:gap-3 overflow-x-auto scrollbar-hide px-2 md:px-6 snap-x snap-mandatory lg:flex-nowrap lg:justify-start lg:gap-4 lg:overflow-x-auto cursor-grab active:cursor-grabbing touch-pan-x"
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
-            {categories.map((category) => (
+            {categories.filter((category) => !category.is_view_all).map((category) => (
               <Link
                 key={category.slug}
-                to={category.is_view_all ? '/shop' : `/collections/${category.slug}`}
+                to={`/collections/${category.slug}`}
                 className="flex-shrink-0 lg:flex-shrink group snap-start"
                 onClick={handleInteractionStart}
               >
                 <div className="flex flex-col items-center gap-2">
                   {/* Circular Image Container */}
-                  {category.is_view_all ? (
-                    <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 lg:w-28 lg:h-28 xl:w-32 xl:h-32 rounded-2xl border-2 border-rich-black bg-rich-black flex items-center justify-center text-center px-2 font-medium text-[11px] sm:text-sm md:text-base uppercase tracking-wide text-ivory group-hover:border-primary group-hover:bg-primary group-hover:text-rich-black transition-all select-none">
-                      View All
-                    </div>
-                  ) : (
-                    <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 lg:w-28 lg:h-28 xl:w-32 xl:h-32 rounded-2xl border-2 border-transparent group-hover:border-primary overflow-hidden transition-all duration-300 group-hover:shadow-gold group-hover:scale-105">
-                      <img 
-                        src={category.image_url || '/placeholder.svg'} 
-                        alt={category.name}
-                        className="w-full h-full object-cover"
-                        loading="eager"
-                      />
-                    </div>
-                  )}
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 lg:w-28 lg:h-28 xl:w-32 xl:h-32 rounded-2xl border-2 border-transparent group-hover:border-primary overflow-hidden transition-all duration-300 group-hover:shadow-gold group-hover:scale-105">
+                    <img 
+                      src={category.image_url || '/placeholder.svg'} 
+                      alt={category.name}
+                      className="w-full h-full object-cover"
+                      loading="eager"
+                    />
+                  </div>
                   {/* Category Name */}
                   <span className="text-[10px] sm:text-xs md:text-sm font-medium text-center whitespace-nowrap group-hover:text-primary transition-colors select-none">
                     {category.name}
