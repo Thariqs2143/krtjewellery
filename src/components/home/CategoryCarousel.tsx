@@ -31,6 +31,7 @@ export function CategoryCarousel() {
   const autoPlayRef = useRef<NodeJS.Timeout | null>(null);
   const [showArrows, setShowArrows] = useState(false);
   const isDraggingRef = useRef(false);
+  const didDragRef = useRef(false);
   const dragStartXRef = useRef(0);
   const dragScrollLeftRef = useRef(0);
 
@@ -115,6 +116,7 @@ export function CategoryCarousel() {
   const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
     if (!scrollRef.current) return;
     isDraggingRef.current = true;
+    didDragRef.current = false;
     dragStartXRef.current = event.clientX;
     dragScrollLeftRef.current = scrollRef.current.scrollLeft;
     scrollRef.current.setPointerCapture(event.pointerId);
@@ -123,6 +125,9 @@ export function CategoryCarousel() {
   const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
     if (!isDraggingRef.current || !scrollRef.current) return;
     const deltaX = event.clientX - dragStartXRef.current;
+    if (Math.abs(deltaX) > 4) {
+      didDragRef.current = true;
+    }
     scrollRef.current.scrollLeft = dragScrollLeftRef.current - deltaX;
   };
 
@@ -130,6 +135,9 @@ export function CategoryCarousel() {
     if (!scrollRef.current) return;
     isDraggingRef.current = false;
     scrollRef.current.releasePointerCapture(event.pointerId);
+    setTimeout(() => {
+      didDragRef.current = false;
+    }, 0);
   };
 
   return (
@@ -156,7 +164,14 @@ export function CategoryCarousel() {
                 key={category.slug}
                 to={`/collections/${category.slug}`}
                 className="flex-shrink-0 lg:flex-shrink group snap-start"
-                onClick={handleInteractionStart}
+                onClick={(event) => {
+                  if (didDragRef.current) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    return;
+                  }
+                  handleInteractionStart();
+                }}
               >
                 <div className="flex flex-col items-center gap-2">
                   {/* Circular Image Container */}
