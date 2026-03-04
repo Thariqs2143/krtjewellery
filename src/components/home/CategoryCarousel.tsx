@@ -165,11 +165,11 @@ export function CategoryCarousel() {
                 <div className="flex flex-col items-center gap-2">
                   {/* Circular Image Container */}
                   {category.is_view_all ? (
-                    <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 xl:w-24 xl:h-24 rounded-full border-2 border-rich-black bg-rich-black flex items-center justify-center text-center px-2 font-medium text-[10px] sm:text-xs md:text-sm uppercase tracking-wide text-ivory group-hover:border-primary group-hover:bg-primary group-hover:text-rich-black transition-all select-none">
+                    <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 lg:w-28 lg:h-28 xl:w-32 xl:h-32 rounded-full border-2 border-rich-black bg-rich-black flex items-center justify-center text-center px-2 font-medium text-[11px] sm:text-sm md:text-base uppercase tracking-wide text-ivory group-hover:border-primary group-hover:bg-primary group-hover:text-rich-black transition-all select-none">
                       View All
                     </div>
                   ) : (
-                    <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 xl:w-24 xl:h-24 rounded-full border-2 border-transparent group-hover:border-primary overflow-hidden transition-all duration-300 group-hover:shadow-gold group-hover:scale-105">
+                    <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 lg:w-28 lg:h-28 xl:w-32 xl:h-32 rounded-full border-2 border-transparent group-hover:border-primary overflow-hidden transition-all duration-300 group-hover:shadow-gold group-hover:scale-105">
                       <img 
                         src={category.image_url || '/placeholder.svg'} 
                         alt={category.name}
