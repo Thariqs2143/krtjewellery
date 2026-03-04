@@ -100,7 +100,7 @@ export function HeroCarousel() {
           
           <h1 
             key={`title-${currentSlide}`}
-            className="font-serif text-4xl md:text-6xl lg:text-7xl text-ivory font-medium mb-6 animate-fade-in-up leading-tight"
+            className="font-serif text-3xl sm:text-4xl md:text-6xl lg:text-7xl text-ivory font-medium mb-4 md:mb-6 animate-fade-in-up leading-tight"
             style={{ animationDelay: '100ms' }}
           >
             <span className="text-glow">{slide.title}</span>
@@ -108,7 +108,7 @@ export function HeroCarousel() {
           
           <p 
             key={`desc-${currentSlide}`}
-            className="text-ivory/80 text-base md:text-xl mb-10 max-w-lg animate-fade-in-up leading-relaxed"
+            className="text-ivory/80 text-sm sm:text-base md:text-xl mb-6 md:mb-10 max-w-lg animate-fade-in-up leading-relaxed"
             style={{ animationDelay: '200ms' }}
           >
             {slide.description}
@@ -120,14 +120,14 @@ export function HeroCarousel() {
             style={{ animationDelay: '300ms' }}
           >
             <Link to={slide.cta.href}>
-              <Button className="btn-premium text-base md:text-lg px-8 md:px-10 py-6 md:py-7 rounded-full font-medium shadow-xl hover:shadow-2xl transition-all">
+              <Button className="btn-premium text-sm sm:text-base md:text-lg px-5 sm:px-7 md:px-10 py-3 sm:py-4 md:py-7 rounded-full font-medium shadow-xl hover:shadow-2xl transition-all">
                 {slide.cta.text}
               </Button>
             </Link>
             <Link to="/gold-rate">
               <Button 
                 variant="outline" 
-                className="text-base md:text-lg px-8 md:px-10 py-6 md:py-7 rounded-full border-2 border-ivory/40 text-ivory bg-ivory/5 backdrop-blur-sm hover:bg-ivory/15 hover:border-ivory/70 transition-all"
+                className="text-sm sm:text-base md:text-lg px-5 sm:px-7 md:px-10 py-3 sm:py-4 md:py-7 rounded-full border-2 border-ivory/40 text-ivory bg-ivory/5 backdrop-blur-sm hover:bg-ivory/15 hover:border-ivory/70 transition-all"
               >
                 Today's Rate
               </Button>
