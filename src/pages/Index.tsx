@@ -20,7 +20,6 @@ const Index = () => {
     <Layout>
       <HeroCarousel />
       <CategoryCarousel />
-      <TrustBadges />
       <MarqueeSection />
       <GoldRateWidget />
       <FeaturedProducts />
@@ -28,6 +27,7 @@ const Index = () => {
       <WhyChooseUs />
       <CustomerReviews />
       <BridalBanner />
+      <TrustBadges />
       <InstagramFeed />
       <GoogleReviewBadge />
     </Layout>
