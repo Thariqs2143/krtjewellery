@@ -57,7 +57,7 @@ export function HeroCarousel() {
   const slide = slides[currentSlide];
 
   return (
-    <section className="relative h-[50vh] md:h-[70vh] overflow-hidden">
+    <section className="relative h-[42vh] sm:h-[50vh] md:h-[60vh] lg:h-[70vh] xl:h-[75vh] min-h-[260px] sm:min-h-[320px] max-h-[800px] overflow-hidden">
       {/* Background Images */}
       {slides.map((s, index) => (
         <div
@@ -70,7 +70,7 @@ export function HeroCarousel() {
             src={s.image}
             alt={s.title}
             loading={index === 0 ? 'eager' : 'lazy'}
-            className={`absolute inset-0 w-full h-full object-cover transform transition-transform duration-[8000ms] ease-out ${
+            className={`absolute inset-0 w-full h-full object-cover transform transition-transform duration-8000 ease-out ${
               index === currentSlide ? 'scale-105' : 'scale-100'
             }`}
           />
