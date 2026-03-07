@@ -14,6 +14,39 @@ export type Database = {
   }
   public: {
     Tables: {
+      carousel_categories: {
+        Row: {
+          created_at: string
+          display_order: number
+          id: string
+          image_url: string | null
+          is_active: boolean | null
+          is_view_all: boolean | null
+          name: string
+          slug: string
+        }
+        Insert: {
+          created_at?: string
+          display_order?: number
+          id?: string
+          image_url?: string | null
+          is_active?: boolean | null
+          is_view_all?: boolean | null
+          name: string
+          slug: string
+        }
+        Update: {
+          created_at?: string
+          display_order?: number
+          id?: string
+          image_url?: string | null
+          is_active?: boolean | null
+          is_view_all?: boolean | null
+          name?: string
+          slug?: string
+        }
+        Relationships: []
+      }
       addresses: {
         Row: {
           address_line1: string
