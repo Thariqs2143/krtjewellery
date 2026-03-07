@@ -101,7 +101,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
   const pageTitle = currentPage?.name || 'Admin';
 
   return (
-    <div className="min-h-screen flex bg-secondary/20 select-none">
+    <div className="min-h-screen flex bg-secondary/20 select-none admin-panel">
       {/* Mobile Header Bar */}
       <div className="fixed top-0 left-0 right-0 z-50 lg:hidden bg-card border-b shadow-sm select-none">
         <div className="flex items-center justify-between px-4 h-16">
@@ -110,29 +110,28 @@ export function AdminLayout({ children }: AdminLayoutProps) {
             size="icon"
             onClick={() => setSidebarOpen(!sidebarOpen)}
             className="shrink-0"
+            aria-label="Toggle menu"
           >
             {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </Button>
-          
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-gold-shimmer flex items-center justify-center">
-              <span className="text-primary-foreground font-serif font-bold text-sm">K</span>
-            </div>
-            <span className="font-serif text-lg font-bold text-primary">{pageTitle}</span>
+
+          <div className="text-center leading-tight">
+            <div className="font-serif text-base font-medium text-rich-black">KRT JEWELLERS</div>
+            <div className="text-[11px] text-muted-foreground">Admin Panel</div>
           </div>
-          
+
           <Button
             variant="ghost"
             size="icon"
             onClick={handleRefreshData}
             className="shrink-0"
             title="Refresh Data"
+            aria-label="Refresh data"
           >
             <RefreshCw className="w-5 h-5" />
           </Button>
         </div>
       </div>
-
       {/* Sidebar Backdrop (Mobile) */}
       {sidebarOpen && (
         <div
@@ -144,19 +143,16 @@ export function AdminLayout({ children }: AdminLayoutProps) {
       {/* Sidebar */}
       <aside
         className={cn(
-          'fixed inset-y-0 left-0 z-40 w-64 bg-card border-r shadow-lg transform transition-transform duration-300 lg:transform-none lg:static',
+          'fixed inset-y-0 left-0 z-40 w-64 bg-card border-r shadow-lg transform transition-transform duration-300 lg:transform-none lg:fixed pt-16 lg:pt-0',
           sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         )}
       >
         <div className="flex flex-col h-full">
           {/* Logo */}
-          <div className="p-6 border-b">
+          <div className="hidden lg:block p-6 border-b">
             <Link to="/admin" className="flex items-center gap-2">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-gold-shimmer flex items-center justify-center">
-                <span className="text-primary-foreground font-serif font-bold text-lg">K</span>
-              </div>
               <div>
-                <span className="font-serif text-xl font-bold text-primary">KRT</span>
+                <span className="font-serif text-xl font-medium text-rich-black">KRT JEWELLERS</span>
                 <span className="block text-xs text-muted-foreground">Admin Panel</span>
               </div>
             </Link>
@@ -219,12 +215,9 @@ export function AdminLayout({ children }: AdminLayoutProps) {
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 min-h-screen overflow-x-hidden">
-        {/* Add padding for mobile header */}
-        <div className="pt-16 lg:pt-0">
-          <div className="p-4 lg:p-8">
-            {children}
-          </div>
+      <main className="flex-1 min-h-screen overflow-x-hidden lg:pl-64">
+        <div className="pt-20 lg:pt-8 p-4 lg:p-8">
+          {children}
         </div>
       </main>
     </div>
