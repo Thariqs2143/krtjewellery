@@ -52,7 +52,7 @@ export default function AdminCarouselCategories() {
   const { data: categories = [], isLoading } = useQuery({
     queryKey: ['carouselCategories'],
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as unknown as { from: (table: string) => any })
         .from('carousel_categories')
         .select('*')
         .order('display_order', { ascending: true });
@@ -68,13 +68,13 @@ export default function AdminCarouselCategories() {
       }
 
       if (editingId) {
-        const { error } = await supabase
+        const { error } = await (supabase as any)
           .from('carousel_categories')
           .update(formData)
           .eq('id', editingId);
         if (error) throw error;
       } else {
-        const { error } = await supabase
+        const { error } = await (supabase as any)
           .from('carousel_categories')
           .insert({
             ...formData,
@@ -103,7 +103,7 @@ export default function AdminCarouselCategories() {
 
   const deleteCategoryMutation = useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from('carousel_categories')
         .delete()
         .eq('id', id);
@@ -128,7 +128,7 @@ export default function AdminCarouselCategories() {
   const reorderMutation = useMutation({
     mutationFn: async (updates: Array<{ id: string; display_order: number }>) => {
       for (const update of updates) {
-        const { error } = await supabase
+        const { error } = await (supabase as any)
           .from('carousel_categories')
           .update({ display_order: update.display_order })
           .eq('id', update.id);
@@ -157,7 +157,7 @@ export default function AdminCarouselCategories() {
   const seedCategoriesMutation = useMutation({
     mutationFn: async () => {
       // Check if categories already exist
-      const { data: existingData } = await supabase
+      const { data: existingData } = await (supabase as any)
         .from('carousel_categories')
         .select('id')
         .limit(1);
@@ -166,7 +166,7 @@ export default function AdminCarouselCategories() {
         throw new Error('Categories already exist. Delete them first or edit individually.');
       }
 
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from('carousel_categories')
         .insert(defaultCategories);
       if (error) throw error;
