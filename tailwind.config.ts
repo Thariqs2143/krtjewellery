@@ -143,6 +143,9 @@ export default {
         soft: "0 4px 20px -4px hsl(0 0% 0% / 0.1)",
         "card-hover": "0 20px 40px -15px hsl(43 74% 49% / 0.25)",
       },
+      transitionDuration: {
+        8000: "8000ms",
+      },
     },
   },
   plugins: [require("tailwindcss-animate" as unknown as string)],
