@@ -28,7 +28,7 @@ interface Enquiry {
   phone: string;
   subject: string;
   message: string;
-  is_replied: boolean;
+  is_resolved: boolean | null;
   created_at: string;
 }
 
@@ -82,8 +82,8 @@ export default function AdminEnquiries() {
     try {
       const { error } = await supabase
         .from('enquiries')
-        .update({ is_replied: true })
-        .eq('id', id);
+      .update({ is_resolved: true })
+      .eq('id', id);
 
       if (error) throw error;
 
@@ -144,8 +144,8 @@ export default function AdminEnquiries() {
     );
   });
 
-  const pendingEnquiries = filteredEnquiries.filter((e) => !e.is_replied);
-  const repliedEnquiries = filteredEnquiries.filter((e) => e.is_replied);
+  const pendingEnquiries = filteredEnquiries.filter((e) => !e.is_resolved);
+  const repliedEnquiries = filteredEnquiries.filter((e) => e.is_resolved);
   const totalEnquiries = filteredEnquiries.length;
   const replyRate = totalEnquiries === 0 ? 0 : Math.round((repliedEnquiries.length / totalEnquiries) * 100);
 
@@ -156,7 +156,7 @@ export default function AdminEnquiries() {
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-1">
               <CardTitle className="text-lg">{enquiry.name}</CardTitle>
-              {enquiry.is_replied ? (
+              {enquiry.is_resolved ? (
                 <Badge className="bg-green-500/20 text-green-700 border-green-200">
                   <CheckCircle2 className="w-3 h-3 mr-1" />
                   Replied
@@ -210,7 +210,7 @@ export default function AdminEnquiries() {
 
         {/* Actions */}
         <div className="flex gap-2 pt-2 mt-auto">
-          {!enquiry.is_replied && (
+          {!enquiry.is_resolved && (
             <Button
               size="sm"
               className="flex-1"
