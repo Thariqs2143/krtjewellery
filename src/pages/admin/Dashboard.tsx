@@ -35,30 +35,49 @@ export default function AdminDashboard() {
     },
   });
 
+  const { data: ordersCount } = useQuery({
+    queryKey: ['adminOrdersCount'],
+    queryFn: async () => {
+      const { count, error } = await supabase
+        .from('orders')
+        .select('id', { count: 'exact', head: true });
+      if (error) throw error;
+      return count || 0;
+    },
+  });
+
   const stats = [
     {
       title: 'Total Products',
       value: products?.length || 0,
       icon: Package,
       href: '/admin/products',
-      color: 'text-blue-600',
-      bgColor: 'bg-blue-100',
+      color: 'text-amber-800',
+      bgColor: 'bg-amber-200/70',
+    },
+    {
+      title: 'Total Orders',
+      value: ordersCount ?? 0,
+      icon: ShoppingCart,
+      href: '/admin/orders',
+      color: 'text-amber-800',
+      bgColor: 'bg-amber-200/70',
     },
     {
       title: "Today's 22K Rate",
       value: goldRate ? formatPrice(goldRate.rate_22k) + '/g' : 'N/A',
       icon: TrendingUp,
       href: '/admin/gold-rates',
-      color: 'text-primary',
-      bgColor: 'bg-amber-100',
+      color: 'text-amber-800',
+      bgColor: 'bg-amber-200/70',
     },
     {
       title: '24K Rate',
       value: goldRate ? formatPrice(goldRate.rate_24k) + '/g' : 'N/A',
       icon: DollarSign,
       href: '/admin/gold-rates',
-      color: 'text-yellow-600',
-      bgColor: 'bg-yellow-100',
+      color: 'text-amber-800',
+      bgColor: 'bg-amber-200/70',
     },
   ];
 
@@ -93,21 +112,23 @@ export default function AdminDashboard() {
         </div>
 
         {/* Stats Grid - 2x2 on mobile */}
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {stats.map((stat) => {
             const Icon = stat.icon;
             return (
               <Link key={stat.title} to={stat.href}>
-                <Card className="hover:shadow-lg transition-shadow h-full">
+                <Card className="group h-full border-2 border-amber-200 bg-gradient-to-br from-amber-50 via-amber-50 to-yellow-100/70 shadow-sm transition-all hover:border-amber-400 hover:shadow-gold">
                   <CardContent className="p-4">
                     <div className="flex items-start justify-between">
                       <div className="min-w-0 flex-1">
-                        <p className="text-xs sm:text-sm text-muted-foreground truncate">
+                        <p className="text-xs sm:text-sm text-amber-700 truncate group-hover:text-amber-900 transition-colors">
                           {stat.title}
                         </p>
-                        <p className="text-lg sm:text-2xl font-bold mt-1 truncate">{stat.value}</p>
+                        <p className="text-lg sm:text-2xl font-bold mt-1 text-amber-900 group-hover:text-amber-950 transition-colors truncate">
+                          {stat.value}
+                        </p>
                       </div>
-                      <div className={`p-2 sm:p-3 rounded-full ${stat.bgColor} flex-shrink-0`}>
+                      <div className={`p-2 sm:p-3 rounded-full ${stat.bgColor} ring-1 ring-amber-200/60 flex-shrink-0 transition-colors group-hover:ring-amber-400/70`}>
                         <Icon className={`w-4 h-4 sm:w-5 sm:h-5 ${stat.color}`} />
                       </div>
                     </div>
