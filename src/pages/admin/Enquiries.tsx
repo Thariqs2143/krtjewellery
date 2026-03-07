@@ -146,9 +146,11 @@ export default function AdminEnquiries() {
 
   const pendingEnquiries = filteredEnquiries.filter((e) => !e.is_replied);
   const repliedEnquiries = filteredEnquiries.filter((e) => e.is_replied);
+  const totalEnquiries = filteredEnquiries.length;
+  const replyRate = totalEnquiries === 0 ? 0 : Math.round((repliedEnquiries.length / totalEnquiries) * 100);
 
   const EnquiryCard = ({ enquiry }: { enquiry: Enquiry }) => (
-    <Card key={enquiry.id} className="mb-4">
+    <Card key={enquiry.id} className="h-full border-2 border-amber-100 bg-white/90 shadow-sm transition-all hover:border-amber-300 hover:shadow-gold">
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between">
           <div className="flex-1">
@@ -171,9 +173,9 @@ export default function AdminEnquiries() {
         </div>
       </CardHeader>
 
-      <CardContent className="space-y-3">
+      <CardContent className="space-y-3 flex flex-col h-full">
         {/* Contact Info */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-secondary/30 p-3 rounded-lg">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-amber-50/70 border border-amber-100 p-3 rounded-lg">
           <div className="flex items-center gap-2">
             <Mail className="w-4 h-4 text-primary" />
             <div>
@@ -195,7 +197,7 @@ export default function AdminEnquiries() {
         </div>
 
         {/* Message */}
-        <div className="bg-muted/50 p-3 rounded-lg">
+        <div className="bg-amber-50/60 border border-amber-100 p-3 rounded-lg max-h-24 overflow-auto">
           <p className="text-xs text-muted-foreground mb-1">Message</p>
           <p className="text-sm text-foreground whitespace-pre-wrap">{enquiry.message}</p>
         </div>
@@ -207,7 +209,7 @@ export default function AdminEnquiries() {
         </div>
 
         {/* Actions */}
-        <div className="flex gap-2 pt-2">
+        <div className="flex gap-2 pt-2 mt-auto">
           {!enquiry.is_replied && (
             <Button
               size="sm"
@@ -264,25 +266,32 @@ export default function AdminEnquiries() {
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Pending Replies</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold text-foreground">{pendingEnquiries.length}</div>
-              <p className="text-xs text-muted-foreground mt-1">Awaiting response</p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Replied</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold text-foreground">{repliedEnquiries.length}</div>
-              <p className="text-xs text-muted-foreground mt-1">Responses sent</p>
-            </CardContent>
-          </Card>
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {[
+            { label: 'Total Enquiries', value: totalEnquiries, note: 'All submissions' },
+            { label: 'Pending Replies', value: pendingEnquiries.length, note: 'Awaiting response' },
+            { label: 'Replied', value: repliedEnquiries.length, note: 'Responses sent' },
+            { label: 'Reply Rate', value: `${replyRate}%`, note: 'Overall response' },
+          ].map((stat) => (
+            <Card
+              key={stat.label}
+              className="group h-full border-2 border-amber-200 bg-gradient-to-br from-amber-50 via-amber-50 to-yellow-100/70 shadow-sm transition-all hover:border-amber-400 hover:shadow-gold"
+            >
+              <CardHeader className="pb-2">
+                <CardTitle className="text-xs sm:text-sm font-medium text-amber-700 group-hover:text-amber-900 transition-colors">
+                  {stat.label}
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl sm:text-3xl font-bold text-amber-900 group-hover:text-amber-950 transition-colors">
+                  {stat.value}
+                </div>
+                <p className="text-xs text-amber-700 mt-1 group-hover:text-amber-900 transition-colors">
+                  {stat.note}
+                </p>
+              </CardContent>
+            </Card>
+          ))}
         </div>
 
         {/* Search */}
@@ -320,22 +329,26 @@ export default function AdminEnquiries() {
             </CardContent>
           </Card>
         ) : (
-          <div className="space-y-4">
+          <div className="space-y-6">
             {pendingEnquiries.length > 0 && (
               <div>
                 <h2 className="text-lg font-semibold text-foreground mb-3">Pending Replies ({pendingEnquiries.length})</h2>
-                {pendingEnquiries.map((enquiry) => (
-                  <EnquiryCard key={enquiry.id} enquiry={enquiry} />
-                ))}
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                  {pendingEnquiries.map((enquiry) => (
+                    <EnquiryCard key={enquiry.id} enquiry={enquiry} />
+                  ))}
+                </div>
               </div>
             )}
 
             {repliedEnquiries.length > 0 && (
               <div>
                 <h2 className="text-lg font-semibold text-foreground mb-3 mt-6">Replied ({repliedEnquiries.length})</h2>
-                {repliedEnquiries.map((enquiry) => (
-                  <EnquiryCard key={enquiry.id} enquiry={enquiry} />
-                ))}
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                  {repliedEnquiries.map((enquiry) => (
+                    <EnquiryCard key={enquiry.id} enquiry={enquiry} />
+                  ))}
+                </div>
               </div>
             )}
           </div>
