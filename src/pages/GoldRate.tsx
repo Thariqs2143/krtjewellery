@@ -7,7 +7,6 @@ import { TrendingUp, Calendar, Zap, Lock, BarChart3 } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
-import Link from 'next/link';
 
 export default function GoldRatePage() {
 
@@ -31,7 +30,7 @@ export default function GoldRatePage() {
   return (
     <Layout>
 
-      {/* Hero Section */}
+      {/* Hero */}
       <section className="relative py-16 bg-gradient-to-r from-rich-black via-charcoal to-rich-black overflow-hidden">
         <div className="absolute inset-0 bg-pattern-dots opacity-10" />
 
@@ -74,7 +73,6 @@ export default function GoldRatePage() {
                 <p className="font-serif text-4xl text-gold-gradient font-medium">
                   {isLoading ? '...' : formatPrice(currentRate?.rate_22k || 0)}
                 </p>
-
                 <p className="text-ivory/50 text-sm mt-1">
                   Most popular for jewellery
                 </p>
@@ -95,7 +93,6 @@ export default function GoldRatePage() {
                 <p className="font-serif text-4xl text-gold-gradient font-medium">
                   {isLoading ? '...' : formatPrice(currentRate?.rate_24k || 0)}
                 </p>
-
                 <p className="text-ivory/50 text-sm mt-1">
                   Pure gold, coins & bars
                 </p>
@@ -116,7 +113,6 @@ export default function GoldRatePage() {
                 <p className="font-serif text-4xl text-ivory font-medium">
                   {isLoading ? '...' : currentRate?.silver_rate != null ? formatPrice(currentRate.silver_rate) : '—'}
                 </p>
-
                 <p className="text-ivory/50 text-sm mt-1">
                   Sterling & daily trade
                 </p>
@@ -144,7 +140,6 @@ export default function GoldRatePage() {
                       })
                     : '...'}
                 </p>
-
                 <p className="text-ivory/50 text-sm mt-1">
                   Source: {currentRate?.source || 'Market rate'}
                 </p>
@@ -174,11 +169,7 @@ export default function GoldRatePage() {
 
                       <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
 
-                      <XAxis
-                        dataKey="date"
-                        stroke="hsl(var(--muted-foreground))"
-                        fontSize={12}
-                      />
+                      <XAxis dataKey="date" stroke="hsl(var(--muted-foreground))" fontSize={12} />
 
                       <YAxis
                         stroke="hsl(var(--muted-foreground))"
@@ -191,27 +182,15 @@ export default function GoldRatePage() {
                         contentStyle={{
                           backgroundColor: 'hsl(var(--card))',
                           border: '1px solid hsl(var(--border))',
-                          borderRadius: '8px',
+                          borderRadius: '8px'
                         }}
                       />
 
                       <Legend />
 
-                      <Line
-                        type="monotone"
-                        dataKey="22K"
-                        stroke="hsl(43, 74%, 49%)"
-                        strokeWidth={2}
-                        dot={false}
-                      />
+                      <Line type="monotone" dataKey="22K" stroke="hsl(43,74%,49%)" strokeWidth={2} dot={false} />
 
-                      <Line
-                        type="monotone"
-                        dataKey="24K"
-                        stroke="hsl(48, 90%, 55%)"
-                        strokeWidth={2}
-                        dot={false}
-                      />
+                      <Line type="monotone" dataKey="24K" stroke="hsl(48,90%,55%)" strokeWidth={2} dot={false} />
 
                     </LineChart>
                   </ResponsiveContainer>
@@ -224,7 +203,6 @@ export default function GoldRatePage() {
               )}
 
             </CardContent>
-
           </Card>
 
 
@@ -255,61 +233,38 @@ export default function GoldRatePage() {
 
                 <div className="bg-white/50 backdrop-blur-sm p-6 rounded-xl border border-primary/10">
                   <div className="flex items-center gap-3 mb-4">
-
                     <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
                       <Zap className="w-5 h-5 text-primary" />
                     </div>
-
-                    <h3 className="font-serif text-lg font-medium text-foreground">
-                      Instant Purchase
-                    </h3>
-
+                    <h3 className="font-serif text-lg font-medium text-foreground">Instant Purchase</h3>
                   </div>
-
                   <p className="text-muted-foreground text-sm">
                     Buy gold in grams starting from ₹1.
                   </p>
-
                 </div>
-
 
                 <div className="bg-white/50 backdrop-blur-sm p-6 rounded-xl border border-primary/10">
                   <div className="flex items-center gap-3 mb-4">
-
                     <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
                       <Lock className="w-5 h-5 text-primary" />
                     </div>
-
-                    <h3 className="font-serif text-lg font-medium text-foreground">
-                      100% Secure
-                    </h3>
-
+                    <h3 className="font-serif text-lg font-medium text-foreground">100% Secure</h3>
                   </div>
-
                   <p className="text-muted-foreground text-sm">
                     Stored in insured certified vaults.
                   </p>
-
                 </div>
-
 
                 <div className="bg-white/50 backdrop-blur-sm p-6 rounded-xl border border-primary/10">
                   <div className="flex items-center gap-3 mb-4">
-
                     <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
                       <BarChart3 className="w-5 h-5 text-primary" />
                     </div>
-
-                    <h3 className="font-serif text-lg font-medium text-foreground">
-                      Easy Liquidation
-                    </h3>
-
+                    <h3 className="font-serif text-lg font-medium text-foreground">Easy Liquidation</h3>
                   </div>
-
                   <p className="text-muted-foreground text-sm">
                     Sell anytime at live market rates.
                   </p>
-
                 </div>
 
               </div>
@@ -322,11 +277,11 @@ export default function GoldRatePage() {
                   Start building your gold investment portfolio today.
                 </p>
 
-                <Link href="/contact">
+                <a href="/contact">
                   <Button className="btn-premium rounded-full px-10 py-6 text-base">
                     Buy Digital Gold Now
                   </Button>
-                </Link>
+                </a>
 
               </div>
 
